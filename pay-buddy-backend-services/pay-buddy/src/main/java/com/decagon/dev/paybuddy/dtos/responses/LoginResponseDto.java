@@ -15,6 +15,4 @@ public class LoginResponseDto extends BaseResponse {
     private String lastName;
     private String email;
     private String token;
-    //private String accountNumber;
-    //private BigDecimal accountBalance;
 }

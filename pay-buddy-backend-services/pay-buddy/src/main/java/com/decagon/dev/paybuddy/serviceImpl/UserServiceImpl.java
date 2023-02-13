@@ -167,8 +167,6 @@ public class UserServiceImpl implements UserService {
                 .lastName(users.getLastName())
                 .email(users.getEmail())
                 .token(token)
-               // .accountBalance(users.getWallet().getAccountBalance())
-               // .accountNumber(users.getWallet().getAccountNumber())
                 .build();
 
         return  responseCodeUtil.updateResponseDataReturnObject(new BaseResponse(ResponseCodeEnum.SUCCESS), ResponseCodeEnum.SUCCESS, responseDto);

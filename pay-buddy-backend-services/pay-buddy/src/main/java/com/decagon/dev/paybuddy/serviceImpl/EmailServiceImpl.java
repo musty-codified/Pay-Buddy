@@ -2,6 +2,7 @@ package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.EmailSenderDto;
 import com.decagon.dev.paybuddy.services.EmailService;
+
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

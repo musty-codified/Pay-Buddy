@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
         if (createUserRequest.getBvn().trim().length() == 0)
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.ERROR,
-                    "Password cannot be empty.");
+                    "Bvn cannot be empty.");
 
         if (createUserRequest.getPassword().trim().length() == 0)
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.ERROR,

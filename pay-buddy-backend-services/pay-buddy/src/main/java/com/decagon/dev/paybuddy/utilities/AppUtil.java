@@ -44,9 +44,5 @@ public class AppUtil {
         String combinedString = userId + email.hashCode() + String.valueOf(randomNumber);
         return combinedString.substring(0, 10);
     }
-    public Integer extractLastFourCharacterOfAccountNumber(String accountNumber){
 
-        return Integer.parseInt(accountNumber.substring(accountNumber.length() - 4));
-
-    }
 }

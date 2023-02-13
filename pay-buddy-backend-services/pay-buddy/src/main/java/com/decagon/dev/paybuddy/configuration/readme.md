@@ -1,1 +1,0 @@
-All configurations go here. All class should be in a folder.

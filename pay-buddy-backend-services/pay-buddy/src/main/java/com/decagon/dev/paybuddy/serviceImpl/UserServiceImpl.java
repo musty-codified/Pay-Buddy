@@ -3,6 +3,7 @@ package com.decagon.dev.paybuddy.serviceImpl;
 import com.decagon.dev.paybuddy.dtos.requests.EmailSenderDto;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
+import com.decagon.dev.paybuddy.enums.WalletStatus;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
 import com.decagon.dev.paybuddy.models.Wallet;
@@ -110,6 +111,7 @@ public class UserServiceImpl implements UserService {
             wallet.setAccountBalance(BigDecimal.valueOf(0));
             wallet.setPin("0000");
             wallet.setUser(existingUser.get());
+            wallet.setStatus(WalletStatus.LOCKED);
             walletRepository.save(wallet);
 
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.SUCCESS,

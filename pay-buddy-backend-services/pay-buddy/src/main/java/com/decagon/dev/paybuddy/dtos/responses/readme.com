@@ -1,0 +1,1 @@
+All responses dtos go in here. create package if necessary

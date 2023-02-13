@@ -17,7 +17,7 @@ const Text = () => {
                 vitae!
               </p>
               <div class="cta">
-                <a href="#" class="btn">Get started</a>
+                <a href="pay-buddy-frontend/pay-buddy-frontend/src/components/homeBody/Text#" class="btn">Get started</a>
               </div>
             </div>
 

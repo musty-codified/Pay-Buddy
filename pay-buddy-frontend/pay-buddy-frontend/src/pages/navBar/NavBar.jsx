@@ -7,10 +7,10 @@ const NavBar = () => {
     <header>
       <h3>PAY-BUDDY</h3>
       <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Signup</a>
-        <a href="#">Login</a>
+        <a href="pay-buddy-frontend/pay-buddy-frontend/src/pages/navBar/NavBar#">Home</a>
+        <a href="pay-buddy-frontend/pay-buddy-frontend/src/pages/navBar/NavBar#">About</a>
+        <a href="pay-buddy-frontend/pay-buddy-frontend/src/pages/navBar/NavBar#">Signup</a>
+        <a href="pay-buddy-frontend/pay-buddy-frontend/src/pages/navBar/NavBar#">Login</a>
         <button className='nav-btn nav-close-btn'>
           <FaTimes />
         </button>

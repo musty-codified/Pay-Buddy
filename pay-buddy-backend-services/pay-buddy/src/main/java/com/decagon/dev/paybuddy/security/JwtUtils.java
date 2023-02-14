@@ -52,8 +52,19 @@ public class JwtUtils {
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toHours(24)))
                 .signWith(SignatureAlgorithm.HS256, JWT_SECRET).compact();
+    }
+    public String generateSignUpConfirmationToken(String email){
+        Date currentDate = new Date();
+        Date expirationDate = new Date(currentDate.getTime() + 900000);
+
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .compact();
     }
     //    ========================================================================================================
     public String generatePasswordResetToken(String email){

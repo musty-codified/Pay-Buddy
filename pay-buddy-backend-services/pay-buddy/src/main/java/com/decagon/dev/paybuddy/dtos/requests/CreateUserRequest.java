@@ -16,8 +16,6 @@ import java.util.Collection;
 @Getter
 @Setter
 @AllArgsConstructor
-
-
 public class CreateUserRequest implements Serializable {
     @NotBlank(message = "First name cannot be blank")
     private  String firstName;

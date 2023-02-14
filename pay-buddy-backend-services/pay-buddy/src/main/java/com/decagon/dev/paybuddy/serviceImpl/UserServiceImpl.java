@@ -1,6 +1,8 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.EmailSenderDto;
+import com.decagon.dev.paybuddy.dtos.requests.LoginUserRequest;
+import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
@@ -12,6 +14,7 @@ import com.decagon.dev.paybuddy.repositories.RoleRepository;
 import com.decagon.dev.paybuddy.repositories.UserRepository;
 import com.decagon.dev.paybuddy.repositories.WalletRepository;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
+import com.decagon.dev.paybuddy.security.CustomUserDetailService;
 import com.decagon.dev.paybuddy.security.JwtUtils;
 import com.decagon.dev.paybuddy.services.EmailService;
 import com.decagon.dev.paybuddy.services.UserService;
@@ -19,6 +22,10 @@ import com.decagon.dev.paybuddy.utilities.AppUtil;
 import com.decagon.dev.paybuddy.utilities.ResponseCodeUtil;
 import com.decagon.dev.paybuddy.utilities.UserUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +39,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtUtils jwtUtil;
     private final EmailService emailService;
+
+    private final AuthenticationManager authenticationManager;
+    private final CustomUserDetailService customUserDetailService;
     private final AppUtil appUtil;
     private final UserUtil userUtil;
     private final ResponseCodeUtil responseCodeUtil = new ResponseCodeUtil();
@@ -141,6 +151,27 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("ErrorMessages.ACCESS_DENIED.getErrorMessage()");
         return roles;
     }
+    @Override
+    public BaseResponse login(LoginUserRequest request) {
+        BaseResponse response = new BaseResponse();
 
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+        UserDetails user = customUserDetailService.loadUserByUsername(request.getEmail());
+        String token = jwtUtil.generateToken(user);
+
+        User users = userRepository.findByEmail(user.getUsername()).orElseThrow(()
+                -> new UsernameNotFoundException("Username Not Found"));
+
+        LoginResponseDto responseDto = LoginResponseDto.builder()
+                .firstName(users.getFirstName())
+                .lastName(users.getLastName())
+                .email(users.getEmail())
+                .token(token)
+                .build();
+
+        return  responseCodeUtil.updateResponseDataReturnObject(new BaseResponse(ResponseCodeEnum.SUCCESS), ResponseCodeEnum.SUCCESS, responseDto);
+    }
 
 }

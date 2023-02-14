@@ -1,8 +1,8 @@
 import React from 'react'
 import { FaBars, FaTimes } from 'react-icons/fa'
-import './NavBar.css'
+import './Header.css'
 
-const NavBar = () => {
+const Header = () => {
   return (
     <header>
       <h3>PAY-BUDDY</h3>
@@ -22,4 +22,4 @@ const NavBar = () => {
   );
 }
 
-export default NavBar
+export default Header

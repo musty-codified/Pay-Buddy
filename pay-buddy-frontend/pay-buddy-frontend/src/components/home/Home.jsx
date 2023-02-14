@@ -1,8 +1,8 @@
 import React from 'react'
-import './Text.css'
+import './Home.css'
 import person from '../../assets/person.png'
 
-const Text = () => {
+const Home = () => {
   return (
     <div class="showcase-area">
           <div class="showcase-content">
@@ -29,4 +29,4 @@ const Text = () => {
   )
 }
 
-export default Text
+export default Home

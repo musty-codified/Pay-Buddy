@@ -39,13 +39,10 @@ public class AppUtil {
         }
         return  formattedNumber;
     }
-    public  String generateAccountNumber(Long userId, String email) {
+    public String generateAccountNumber(Long userId, String email) {
         int randomNumber = ThreadLocalRandom.current().nextInt(1000000000, 2000000000);
-        return userId + email.hashCode() + String.valueOf(randomNumber);
+        String combinedString = userId + email.hashCode() + String.valueOf(randomNumber);
+        return combinedString.substring(0, 10);
     }
-    public Integer extractLastFourCharacterOfAccountNumber(String accountNumber){
 
-        return Integer.parseInt(accountNumber.substring(accountNumber.length() - 4));
-
-    }
 }

@@ -5,6 +5,7 @@ import com.decagon.dev.paybuddy.dtos.requests.LoginUserRequest;
 import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
+import com.decagon.dev.paybuddy.enums.WalletStatus;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
 import com.decagon.dev.paybuddy.models.Wallet;
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
         if (createUserRequest.getBvn().trim().length() == 0)
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.ERROR,
-                    "Password cannot be empty.");
+                    "Bvn cannot be empty.");
 
         if (createUserRequest.getPassword().trim().length() == 0)
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.ERROR,
@@ -120,6 +121,7 @@ public class UserServiceImpl implements UserService {
             wallet.setAccountBalance(BigDecimal.valueOf(0));
             wallet.setPin("0000");
             wallet.setUser(existingUser.get());
+            wallet.setStatus(WalletStatus.LOCKED);
             walletRepository.save(wallet);
 
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.SUCCESS,

@@ -1,7 +1,6 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
-import com.decagon.dev.paybuddy.dtos.requests.EmailSenderDto;
-import com.decagon.dev.paybuddy.dtos.requests.LoginUserRequest;
+import com.decagon.dev.paybuddy.dtos.requests.*;
 import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
@@ -9,7 +8,6 @@ import com.decagon.dev.paybuddy.enums.WalletStatus;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
 import com.decagon.dev.paybuddy.models.Wallet;
-import com.decagon.dev.paybuddy.dtos.requests.CreateUserRequest;
 import com.decagon.dev.paybuddy.repositories.RoleRepository;
 import com.decagon.dev.paybuddy.repositories.UserRepository;
 import com.decagon.dev.paybuddy.repositories.WalletRepository;
@@ -22,6 +20,7 @@ import com.decagon.dev.paybuddy.utilities.AppUtil;
 import com.decagon.dev.paybuddy.utilities.ResponseCodeUtil;
 import com.decagon.dev.paybuddy.utilities.UserUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +34,9 @@ import java.util.*;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Value("${forgot.password.url:http://localhost:3000/reset-password/}")
+    private String forgotPasswordUrl;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtUtils jwtUtil;
@@ -172,6 +174,32 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         return  responseCodeUtil.updateResponseDataReturnObject(new BaseResponse(ResponseCodeEnum.SUCCESS), ResponseCodeEnum.SUCCESS, responseDto);
+    }
+
+    @Override
+    public String forgotPasswordRequest(ForgetPasswordRequest forgotPasswordRequest) {
+        String email = forgotPasswordRequest.getEmail();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        String generatedToken = jwtUtil.generatePasswordResetToken(email);
+
+        String link = String.format("%s%s", forgotPasswordUrl, generatedToken + " expires in 15 minutes.");
+        emailService.sendPasswordResetEmail( forgotPasswordRequest.getEmail(), "forgot Password token", link);
+        return "Check your email for password reset instructions";
+
+    }
+
+    @Override
+    public String resetPassword(ResetPasswordRequest request) {
+        if (!request.getNewPassword().equals(request.getConfirmPassword()))
+            throw new InputMismatchException("Passwords do not match");
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+        return "Password reset successful";
     }
 
 }

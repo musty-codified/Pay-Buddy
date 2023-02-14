@@ -49,4 +49,14 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.info("Mail has been sent");
         }
     }
+
+    @Override
+    public void sendPasswordResetEmail(String email, String subject, String link) {
+        subject = "Reset Password";
+        String body = "Kindly use the link below to reset your password  " + link;
+
+        EmailSenderDto mailServiceDto = new EmailSenderDto(email, subject, body);
+        sendMail(mailServiceDto);
+
+    }
 }

@@ -1,10 +1,16 @@
 package com.decagon.dev.paybuddy.Controllers;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateUserRequest;
+import com.decagon.dev.paybuddy.dtos.requests.ForgetPasswordRequest;
+import com.decagon.dev.paybuddy.dtos.requests.ResetPasswordRequest;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 
 @RequestMapping("/api/v1/auth")
@@ -22,6 +28,16 @@ public class UserController {
     public BaseResponse confirmRegistration(@RequestParam (name = "token") String token) {
         return userService.confirmRegistration(token);
 
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody @Valid ForgetPasswordRequest request){
+        return new ResponseEntity<>(userService.forgotPasswordRequest(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestBody @Valid ResetPasswordRequest request){
+        return userService.resetPassword(request);
     }
 
 }

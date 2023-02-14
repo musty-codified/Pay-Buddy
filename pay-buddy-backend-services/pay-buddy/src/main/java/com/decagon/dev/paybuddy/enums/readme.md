@@ -1,1 +1,0 @@
-All enums go here. create new package if necessary

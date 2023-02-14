@@ -33,11 +33,13 @@ public class User
     private Integer userBvn;
     private LocalDate dateOfBirth;
     private Gender gender;
-    private Boolean isEmailVerified;
-    private Boolean isBvnVerified;
-    private Boolean isLocked;
+    private Boolean isEmailVerified = false;
+    private Boolean isBvnVerified = false;
+    private Boolean isLocked = false;
     @OneToOne
     private Wallet wallet;
+    private String confirmationToken;
+    private String phoneNumber;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",

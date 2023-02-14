@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 @Entity
@@ -19,8 +22,10 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long walletId;
-    private Long accountNumber;
-    private Integer pin;
+    private String accountNumber;
+    private BigDecimal accountBalance;
+//    @Max(value = 4) @Min(value = 4)
+    private String pin;
     @OneToOne
     private User user;
     private WalletStatus status;

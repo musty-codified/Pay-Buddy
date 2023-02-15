@@ -49,4 +49,5 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.info("Mail has been sent");
         }
     }
+
 }

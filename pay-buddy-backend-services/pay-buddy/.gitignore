@@ -33,6 +33,6 @@ build/
 .vscode/
 
 ###
-resources/application-local.yml
+application-local.yml
 ##resources/application-dev.properties
 

@@ -1,10 +1,8 @@
 package com.decagon.dev.paybuddy.services;
 
-import com.decagon.dev.paybuddy.dtos.requests.CreateUserRequest;
-import com.decagon.dev.paybuddy.dtos.requests.ForgetPasswordRequest;
-import com.decagon.dev.paybuddy.dtos.requests.LoginUserRequest;
-import com.decagon.dev.paybuddy.dtos.requests.ResetPasswordRequest;
+import com.decagon.dev.paybuddy.dtos.requests.*;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
+import org.springframework.http.ResponseEntity;
 
 public interface UserService {
 
@@ -15,6 +13,9 @@ public interface UserService {
 
     BaseResponse  forgotPasswordRequest(ForgetPasswordRequest forgotPasswordRequest);
 
-    BaseResponse resetPassword(ResetPasswordRequest request);
+    BaseResponse resetPassword(ResetPasswordRequest request, String token);
+
+//    BaseResponse verifyToken(VerifyTokenRequest verifyTokenRequest);
+
 }
 

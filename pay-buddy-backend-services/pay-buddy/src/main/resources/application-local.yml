@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/paybuddy_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: papimaciano
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 873223879448-ldjsnhrlk2k6hv9vjo3n3hrohp23oeok.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+server:
+  error:
+    whitelabel:
+      enabled: true

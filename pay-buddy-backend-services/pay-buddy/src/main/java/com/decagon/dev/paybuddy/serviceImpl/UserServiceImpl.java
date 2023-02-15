@@ -2,7 +2,9 @@ package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.EmailSenderDto;
 import com.decagon.dev.paybuddy.dtos.requests.LoginUserRequest;
+import com.decagon.dev.paybuddy.dtos.requests.SocialLoginUserRequest;
 import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
+import com.decagon.dev.paybuddy.dtos.responses.SocialLoginResponse;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
@@ -29,6 +31,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -172,6 +176,34 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         return  responseCodeUtil.updateResponseDataReturnObject(new BaseResponse(ResponseCodeEnum.SUCCESS), ResponseCodeEnum.SUCCESS, responseDto);
+    }
+
+    @Override
+    public SocialLoginResponse socialLogin(SocialLoginUserRequest request) {
+     Optional<User> userFound = userRepository.findByEmail(request.getEmail());
+        if (!userFound.isPresent()) {
+            String firstName = request.getFirstName();
+            String lastName = request.getLastName();
+            String email = request.getEmail();
+
+            User createUser = new User();
+            createUser.setFirstName(firstName);
+            createUser.setLastName(lastName);
+            createUser.setEmail(email);
+            createUser.setPassword("$2a$10$Ly3JVKkKFFQn2c97piHGou4T9aNuVSxbUvh9gUo17VaGfk9DPaB2K");
+            createUser.setIsEmailVerified(true);
+            userRepository.save(createUser);
+        }
+
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), "1234Buddy"));
+
+        UserDetails user = customUserDetailService.loadUserByUsername(request.getEmail());
+        String token = jwtUtil.generateToken(user);
+
+        SocialLoginResponse socialLoginResponse = new SocialLoginResponse(token);
+
+        return socialLoginResponse;
     }
 
 }

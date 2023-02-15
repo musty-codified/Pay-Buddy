@@ -169,7 +169,10 @@ public class UserServiceImpl implements UserService {
                 .token(token)
                 .build();
 
-        return  responseCodeUtil.updateResponseDataReturnObject(new BaseResponse(ResponseCodeEnum.SUCCESS), ResponseCodeEnum.SUCCESS, responseDto);
+        responseDto.setCode(0);
+        responseDto.setDescription(ResponseCodeEnum.SUCCESS.getDescription());
+
+        return  responseCodeUtil.updateResponseDataReturnObject(response, ResponseCodeEnum.SUCCESS, responseDto);
     }
 
 }

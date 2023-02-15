@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Setter
 @Table(name = "token_tb")
 @Entity
-public class Token {
+public class ResetPasswordToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

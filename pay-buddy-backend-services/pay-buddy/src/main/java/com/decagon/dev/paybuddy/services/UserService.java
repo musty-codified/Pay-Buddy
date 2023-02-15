@@ -13,8 +13,8 @@ public interface UserService {
 
     BaseResponse login(LoginUserRequest request);
 
-    String  forgotPasswordRequest(ForgetPasswordRequest forgotPasswordRequest);
+    BaseResponse  forgotPasswordRequest(ForgetPasswordRequest forgotPasswordRequest);
 
-    String resetPassword(ResetPasswordRequest request);
+    BaseResponse resetPassword(ResetPasswordRequest request);
 }
 

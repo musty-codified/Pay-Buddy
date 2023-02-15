@@ -31,12 +31,12 @@ public class UserController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody @Valid ForgetPasswordRequest request){
+    public ResponseEntity<BaseResponse> forgotPassword(@RequestBody @Valid ForgetPasswordRequest request){
         return new ResponseEntity<>(userService.forgotPasswordRequest(request), HttpStatus.OK);
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestBody @Valid ResetPasswordRequest request){
+    public BaseResponse resetPassword(@RequestBody @Valid ResetPasswordRequest request){
         return userService.resetPassword(request);
     }
 

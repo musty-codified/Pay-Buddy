@@ -5,6 +5,7 @@ import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
+import com.decagon.dev.paybuddy.models.ResetPasswordToken;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
 import com.decagon.dev.paybuddy.models.Wallet;
@@ -177,29 +178,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String forgotPasswordRequest(ForgetPasswordRequest forgotPasswordRequest) {
+    public BaseResponse forgotPasswordRequest(ForgetPasswordRequest forgotPasswordRequest) {
+
+        BaseResponse baseResponse = new BaseResponse();
         String email = forgotPasswordRequest.getEmail();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()){
+            String generatedToken = jwtUtil.generatePasswordResetToken(email);
 
-        String generatedToken = jwtUtil.generatePasswordResetToken(email);
+            ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
+            resetPasswordToken.setToken(generatedToken);
+            resetPasswordToken.setUser(user.get());
 
-        String link = String.format("%s%s", forgotPasswordUrl, generatedToken + " expires in 15 minutes.");
-        emailService.sendPasswordResetEmail( forgotPasswordRequest.getEmail(), "forgot Password token", link);
-        return "Check your email for password reset instructions";
+            String link = String.format("%s%s", forgotPasswordUrl, generatedToken + " expires in 15 minutes.");
+            EmailSenderDto emailSenderDto = new EmailSenderDto();
+            emailSenderDto.setTo(forgotPasswordRequest.getEmail());
+            emailSenderDto.setSubject("Forgot Password Token");
+            emailSenderDto.setContent(link);
+            emailService.sendMail(emailSenderDto);
 
+            return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS,
+                            "Check your email for password reset instructions");
+        }
+        else {
+            return responseCodeUtil.updateResponseData(baseResponse,ResponseCodeEnum.ERROR,
+                            "User not found");
+        }
     }
 
     @Override
-    public String resetPassword(ResetPasswordRequest request) {
+    public BaseResponse resetPassword(ResetPasswordRequest request) {
+        BaseResponse baseResponse = new BaseResponse();
         if (!request.getNewPassword().equals(request.getConfirmPassword()))
-            throw new InputMismatchException("Passwords do not match");
+            responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "Passwords do not match");
 
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        userRepository.save(user);
-        return "Password reset successful";
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        if (user.isPresent()){
+            user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
+            userRepository.save(user.get());
+            return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS, "Password Reset Successful");
+        }
+        else {
+            return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "User not found");
+        }
     }
 
 }

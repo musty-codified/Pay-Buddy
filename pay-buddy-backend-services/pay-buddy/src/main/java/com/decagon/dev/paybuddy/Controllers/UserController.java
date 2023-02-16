@@ -35,9 +35,14 @@ public class UserController {
         return new ResponseEntity<>(userService.forgotPasswordRequest(request), HttpStatus.OK);
     }
 
-    @PostMapping("/reset-password")
-    public BaseResponse resetPassword(@RequestBody @Valid ResetPasswordRequest request){
-        return userService.resetPassword(request);
+    @PostMapping("/reset-password/{token}")
+    public BaseResponse resetPassword(@RequestBody @Valid ResetPasswordRequest request, @PathVariable String token){
+        return userService.resetPassword(request, token);
     }
+//    @PostMapping("/verify-token")
+//    public ResponseEntity<BaseResponse> verifyToken(@RequestBody @Valid VerifyTokenRequest verifyTokenRequest){
+//        return ResponseEntity.ok(userService.verifyToken(verifyTokenRequest));
+//    }
+
 
 }

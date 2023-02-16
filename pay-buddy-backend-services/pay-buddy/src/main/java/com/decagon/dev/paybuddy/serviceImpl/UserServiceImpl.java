@@ -1,7 +1,7 @@
 package com.decagon.dev.paybuddy.serviceImpl;
-
 import com.decagon.dev.paybuddy.dtos.requests.*;
 import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
+import com.decagon.dev.paybuddy.dtos.responses.SocialLoginResponse;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
@@ -29,6 +29,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -210,12 +212,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseResponse resetPassword(ResetPasswordRequest request) {
+    public BaseResponse resetPassword(ResetPasswordRequest request, String token) {
+        String email = jwtUtil.extractUsername(token);
         BaseResponse baseResponse = new BaseResponse();
         if (!request.getNewPassword().equals(request.getConfirmPassword()))
             responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "Passwords do not match");
 
-        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()){
             user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(user.get());
@@ -224,6 +227,34 @@ public class UserServiceImpl implements UserService {
         else {
             return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "User not found");
         }
+    }
+
+    @Override
+    public SocialLoginResponse socialLogin(SocialLoginUserRequest request) {
+     Optional<User> userFound = userRepository.findByEmail(request.getEmail());
+        if (!userFound.isPresent()) {
+            String firstName = request.getFirstName();
+            String lastName = request.getLastName();
+            String email = request.getEmail();
+
+            User createUser = new User();
+            createUser.setFirstName(firstName);
+            createUser.setLastName(lastName);
+            createUser.setEmail(email);
+            createUser.setPassword("$2a$10$Ly3JVKkKFFQn2c97piHGou4T9aNuVSxbUvh9gUo17VaGfk9DPaB2K");
+            createUser.setIsEmailVerified(true);
+            userRepository.save(createUser);
+        }
+
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), "1234Buddy"));
+
+        UserDetails user = customUserDetailService.loadUserByUsername(request.getEmail());
+        String token = jwtUtil.generateToken(user);
+
+        SocialLoginResponse socialLoginResponse = new SocialLoginResponse(token);
+
+        return socialLoginResponse;
     }
 
 }

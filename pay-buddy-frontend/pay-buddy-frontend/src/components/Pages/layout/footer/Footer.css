@@ -1,0 +1,41 @@
+/*:root {*/
+/*	--mainColor: #29335c;*/
+/*	--mainColorLight: #5767aa;*/
+/*	--secondaryColor: #db2b39;*/
+/*	--textColor: #eee;*/
+/*}*/
+
+/*.main-footer {*/
+/*  */
+/*  color: white;*/
+/*  background-color: var(--mainColor);*/
+/*  padding-top: 0em;*/
+/*  position: relative;*/
+/*  bottom: 0;*/
+/*  width: 100%;*/
+/*}*/
+/*.row{*/
+/*    display: grid;*/
+/*    grid-template-columns: 1fr 1fr 1fr;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    margin: 3em;*/
+/*}*/
+/*.container {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: center;*/
+/*    !* align-items: center; *!*/
+/*    margin: auto;*/
+/*}*/
+/*.col-sm {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/
+/*.list-unstyled li{*/
+/*    list-style: none;*/
+/*}*/
+/*.copy-right {*/
+/*    margin: 1em 0 1em 0;*/
+/*}*/

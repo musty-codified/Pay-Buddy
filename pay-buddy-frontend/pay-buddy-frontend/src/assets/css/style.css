@@ -22,6 +22,8 @@
 .c-submit-button{
     width:100% !important;
     background-color: var(--primary600) !important;
+    border:none !important;
+    color: #fff !important;
 }
 .font-color-600{
     color :var(--primary600) !important;
@@ -61,6 +63,17 @@ button span{
 
 .banner{
     display: none;
+}
+
+.padding{
+    padding:0 45px 0 45px;
+}
+.nav-item li{
+    list-style: none;
+}
+
+.float-right{
+    float: right !important;
 }
 @media (min-width: 768px) {
     .banner{

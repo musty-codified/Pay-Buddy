@@ -24,7 +24,6 @@ public class Wallet {
     private Long walletId;
     private String accountNumber;
     private BigDecimal accountBalance;
-//    @Max(value = 4) @Min(value = 4)
     private String pin;
     @OneToOne
     private User user;

@@ -70,9 +70,9 @@ public class UserServiceImpl implements UserService {
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.ERROR,
                     "Last name cannot be empty.");
 
-        if (createUserRequest.getBvn().trim().length() == 0)
-            return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.ERROR,
-                    "Bvn cannot be empty.");
+//        if (createUserRequest.getBvn().trim().length() == 0)
+//            return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.ERROR,
+//                    "Bvn cannot be empty.");
 
         if (createUserRequest.getPassword().trim().length() == 0)
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.ERROR,

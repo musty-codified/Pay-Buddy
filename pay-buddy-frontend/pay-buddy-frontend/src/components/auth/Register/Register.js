@@ -11,7 +11,6 @@ const loginState = {
     otherName:'',
     email: '',
     phoneNumber: '',
-    bvn: '',
     password: '',
 
     isFirstNameValid: false,
@@ -19,13 +18,11 @@ const loginState = {
     isOtherNameValid:false,
     isEmailValid: false,
     isPhoneNumberValid: false,
-    isBvnValid: false,
     isPasswordValid: false,
 
     isFirstNameEmpty: true,
     isLastNameEmpty:true,
     isOtherNameEmpty:true,
-    isBvnEmpty: true,
     isEmailEmpty:true,
     isPhoneNumberEmpty: true,
     isPasswordEmpty:true
@@ -68,12 +65,6 @@ const Register =()=> {
             return setRegFormData({ ...regFormData, phoneNumber: value, isPhoneNumberValid: true, isPhoneNumberEmpty: false })
             return setRegFormData({ ...regFormData, phoneNumber: value, isPhoneNumberValid: false, isPhoneNumberEmpty: false })
 
-        case "bvn":
-            if(value.length === 0) return setRegFormData({ ...regFormData, bvn: value, isBvnValid: true, isBvnEmpty: true })
-            if(value.length === 10)
-            return setRegFormData({ ...regFormData, bvn: value, isBvnValid: true, isBvnEmpty: false })
-        return setRegFormData({ ...regFormData, bvn: value, isBvnValid: false, isBvnEmpty: false })
-
         case "password":
             if(value.length === 0) return setRegFormData({ ...regFormData, password: value, isPasswordValid :true, isPasswordEmpty: true })
             if(value.length > 7)
@@ -85,8 +76,7 @@ const Register =()=> {
 
  }
 
-    const { firstName , lastName, otherName, email, phoneNumber, bvn, password,isEmailEmpty,isEmailValid,isPhoneNumberEmpty,isPhoneNumberValid,
-    isBvnEmpty,isBvnValid,isPasswordEmpty,isPasswordValid,isFirstNameValid,isFirstNameEmpty,isLastNameEmpty,isLastNameValid,isOtherNameEmpty,isOtherNameValid } = regFormData
+    const { firstName , lastName, otherName, email, phoneNumber, password,isEmailEmpty,isEmailValid,isPhoneNumberEmpty,isPhoneNumberValid,isPasswordEmpty,isPasswordValid,isFirstNameValid,isFirstNameEmpty,isLastNameEmpty,isLastNameValid,isOtherNameEmpty,isOtherNameValid } = regFormData
 
 
     const allFieldsValid = isFirstNameValid && !isFirstNameEmpty 
@@ -94,7 +84,6 @@ const Register =()=> {
                         && isOtherNameValid && !isOtherNameEmpty 
                         && isEmailValid && !isEmailEmpty 
                         && isPhoneNumberValid && !isPhoneNumberEmpty 
-                        && isBvnValid && !isBvnEmpty 
                         && isPasswordValid && !isPasswordEmpty
 
  const handleClick=(e)=> {
@@ -106,7 +95,6 @@ const Register =()=> {
         otherName: otherName,
         email: email,
         phoneNumber: phoneNumber,
-        bvn: bvn,
         password: password,
     })
     .then(res => {
@@ -180,15 +168,7 @@ const Register =()=> {
                     placeholder="08039476277" />
                     {isPhoneNumberValid || (!isPhoneNumberEmpty && <p className="register-sentence">Input the complete phoneNumber</p>)}
             </label>
-            <label htmlFor ="Bvn" className="register-form">Bvn
-                <input type ="text" value={bvn} onChange={(e)=> handleRegFormData(e, "bvn")}
-                    name="Bvn" 
-                    className={isBvnEmpty ? "register-input" : isBvnValid ? "register-input input-valid" : "register-input input-error"} 
-                    placeholder="22516182399" />
-                   {isBvnValid || (!isBvnEmpty && <p className="register-sentence">Complete Bvn number is required</p>)}
-
-
-            </label>
+        
             <label htmlFor ="password " className="register-form">Password
                 <input type ="text" value={password} onChange={(e)=> handleRegFormData(e, "password")}
                     name="password" 

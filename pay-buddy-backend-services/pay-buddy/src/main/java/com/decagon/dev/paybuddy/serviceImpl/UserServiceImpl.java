@@ -201,7 +201,6 @@ public class UserServiceImpl implements UserService {
             emailSenderDto.setSubject("Forgot Password Token");
             emailSenderDto.setContent(link);
             emailService.sendMail(emailSenderDto);
-
             return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS,
                             "Check your email for password reset instructions");
         }

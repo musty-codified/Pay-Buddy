@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");*/
+.light {
+ --mainColor: #64bcf4;
+ --hoverColor: #5bacdf;
+ --backgroundColor: #f1f8fc;
+ --darkOne: #312f3a;
+ --darkTwo: #45424b;
+ --lightOne: #919191;
+ --lightTwo: #aaa;
+}
+.dark {
+ --mainColor: #64bcf4;
+ --hoverColor: #5bacdf;
+ --backgroundColor: #192e3a;
+ --darkOne: #f3f3f3;
+ --darkTwo: #fff;
+ --lightOne: #ccc;
+ --lightTwo: #e7e3e3;
+}
+*,
+*::before,
+*::after {
+ padding: 0;
+ margin: 0;
+ box-sizing: border-box;
+}
+.showcase-area{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   width: 100%;
+   position: relative;
+}
+.showcase-area img{
+   width: 100%;
+   height: 100%;
+}
+.showcase-content{
+ position: absolute;
+ top: 20%;
+ left: 7%;
+ display: flex;
+ width: 100%;
+}
+.showcase-content .big-title{
+ color: #003478;
+}
+.showcase-content .text{
+ font-size: 18px;
+ color: #003478;
+ width: 90%;
+ font-weight: 600;
+}
+.showcase-content .left {
+ width: 55%;
+}
+.showcase-content .right {
+ width: 40%;
+}
+.right img {
+ width: 100%;
+}
+.btn {
+ display: inline-block;
+ padding: 0.5rem 0.8rem;
+ margin-top: 10%;
+ border-radius: 16px;
+ text-transform: capitalize;
+ text-decoration: none;
+ transition: 0.3s;
+ color: var(--mainColor);
+ border: 2px solid #003478;
+ background-color: var(--hoverColor);
+}
+.btn:hover {
+ font-size: 16px;
+ color: #fff;
+ background-color: #003478;
+ transform: scale(1) !important;
+}

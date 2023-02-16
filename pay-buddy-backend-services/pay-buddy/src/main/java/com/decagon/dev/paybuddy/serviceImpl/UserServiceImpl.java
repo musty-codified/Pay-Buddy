@@ -1,15 +1,14 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
-import com.decagon.dev.paybuddy.dtos.requests.EmailSenderDto;
-import com.decagon.dev.paybuddy.dtos.requests.LoginUserRequest;
+import com.decagon.dev.paybuddy.dtos.requests.*;
 import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
+import com.decagon.dev.paybuddy.models.ResetPasswordToken;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
 import com.decagon.dev.paybuddy.models.Wallet;
-import com.decagon.dev.paybuddy.dtos.requests.CreateUserRequest;
 import com.decagon.dev.paybuddy.repositories.RoleRepository;
 import com.decagon.dev.paybuddy.repositories.UserRepository;
 import com.decagon.dev.paybuddy.repositories.WalletRepository;
@@ -22,6 +21,7 @@ import com.decagon.dev.paybuddy.utilities.AppUtil;
 import com.decagon.dev.paybuddy.utilities.ResponseCodeUtil;
 import com.decagon.dev.paybuddy.utilities.UserUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +35,9 @@ import java.util.*;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Value("${forgot.password.url:http://localhost:3000/reset-password/}")
+    private String forgotPasswordUrl;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtUtils jwtUtil;
@@ -171,7 +174,56 @@ public class UserServiceImpl implements UserService {
                 .token(token)
                 .build();
 
-        return  responseCodeUtil.updateResponseDataReturnObject(new BaseResponse(ResponseCodeEnum.SUCCESS), ResponseCodeEnum.SUCCESS, responseDto);
+        responseDto.setCode(0);
+        responseDto.setDescription(ResponseCodeEnum.SUCCESS.getDescription());
+
+        return  responseCodeUtil.updateResponseDataReturnObject(response, ResponseCodeEnum.SUCCESS, responseDto);
+    }
+
+    @Override
+    public BaseResponse forgotPasswordRequest(ForgetPasswordRequest forgotPasswordRequest) {
+
+        BaseResponse baseResponse = new BaseResponse();
+        String email = forgotPasswordRequest.getEmail();
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()){
+            String generatedToken = jwtUtil.generatePasswordResetToken(email);
+
+            ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
+            resetPasswordToken.setToken(generatedToken);
+            resetPasswordToken.setUser(user.get());
+
+            String link = String.format("%s%s", forgotPasswordUrl, generatedToken + " expires in 15 minutes.");
+            EmailSenderDto emailSenderDto = new EmailSenderDto();
+            emailSenderDto.setTo(forgotPasswordRequest.getEmail());
+            emailSenderDto.setSubject("Forgot Password Token");
+            emailSenderDto.setContent(link);
+            emailService.sendMail(emailSenderDto);
+
+            return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS,
+                            "Check your email for password reset instructions");
+        }
+        else {
+            return responseCodeUtil.updateResponseData(baseResponse,ResponseCodeEnum.ERROR,
+                            "User not found");
+        }
+    }
+
+    @Override
+    public BaseResponse resetPassword(ResetPasswordRequest request) {
+        BaseResponse baseResponse = new BaseResponse();
+        if (!request.getNewPassword().equals(request.getConfirmPassword()))
+            responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "Passwords do not match");
+
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        if (user.isPresent()){
+            user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
+            userRepository.save(user.get());
+            return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS, "Password Reset Successful");
+        }
+        else {
+            return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "User not found");
+        }
     }
 
 }

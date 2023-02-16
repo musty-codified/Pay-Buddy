@@ -212,12 +212,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseResponse resetPassword(ResetPasswordRequest request) {
+    public BaseResponse resetPassword(ResetPasswordRequest request, String token) {
+        String email = jwtUtil.extractUsername(token);
         BaseResponse baseResponse = new BaseResponse();
         if (!request.getNewPassword().equals(request.getConfirmPassword()))
             responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "Passwords do not match");
 
-        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()){
             user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(user.get());

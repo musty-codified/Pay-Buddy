@@ -1,14 +1,11 @@
 package com.decagon.dev.paybuddy.exceptions;
 
 
-import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
-import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.utilities.ErrorResponse;
-import com.decagon.dev.paybuddy.utilities.ResponseCodeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -25,9 +22,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@RestControllerAdvice
 @Slf4j
-public class GlobalExceptionHandler extends RuntimeException{
+@RestControllerAdvice
+public class GlobalExceptionHandler {
 
     private ErrorResponse buildErrorResponse(Object error, HttpStatus status){
         return ErrorResponse.builder()
@@ -69,17 +66,22 @@ public class GlobalExceptionHandler extends RuntimeException{
     }
 
     @ExceptionHandler(value = {UsernameNotFoundException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse UserNotFoundException(UsernameNotFoundException ex) {
-        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+        return buildErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(value = {BadCredentialsException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse BadCredentialsException(BadCredentialsException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
 
-//    @ExceptionHandler(UsernameNotFoundException.class)
-//    public BaseResponse UserNotFoundException (UsernameNotFoundException usernameNotFoundException){
-//
-//        BaseResponse response = new BaseResponse();
-//
-//        ResponseCodeUtil responseCodeUtil = new ResponseCodeUtil();
-//        return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.USER_NOT_FOUND, usernameNotFoundException.getMessage());
-//    }
+    @ExceptionHandler(value = {EmailNotConfirmedException.class})
+    @ResponseStatus(HttpStatus.LOCKED)
+    public ErrorResponse EmailNotConfirmedException(EmailNotConfirmedException ex) {
+        log.error(ex.getMessage());
+        return buildErrorResponse(ex.getMessage(), HttpStatus.LOCKED);
+    }
+
 }

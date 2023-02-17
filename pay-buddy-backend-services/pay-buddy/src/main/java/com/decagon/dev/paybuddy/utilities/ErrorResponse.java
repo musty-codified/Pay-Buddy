@@ -13,8 +13,9 @@ import java.util.List;
  * @project Pay-Buddy
  */
 
+@Data
 @Builder
-public class ErrorResponse extends BaseResponse {
+public class ErrorResponse {
     private int httpStatusCode;
     private List<Object> message;
     private LocalDateTime responseDate;

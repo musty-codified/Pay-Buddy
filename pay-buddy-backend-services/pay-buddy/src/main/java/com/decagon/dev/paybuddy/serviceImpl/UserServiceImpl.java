@@ -1,4 +1,5 @@
 package com.decagon.dev.paybuddy.serviceImpl;
+
 import com.decagon.dev.paybuddy.dtos.requests.*;
 import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
 import com.decagon.dev.paybuddy.dtos.responses.SocialLoginResponse;
@@ -6,6 +7,7 @@ import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
 import com.decagon.dev.paybuddy.exceptions.EmailNotConfirmedException;
+import com.decagon.dev.paybuddy.exceptions.UsernameNotFoundException;
 import com.decagon.dev.paybuddy.models.ResetPasswordToken;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
@@ -24,16 +26,15 @@ import com.decagon.dev.paybuddy.utilities.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
-    public BaseResponse signUp(CreateUserRequest createUserRequest){
+    public BaseResponse signUp(CreateUserRequest createUserRequest) {
         BaseResponse response = new BaseResponse();
 
         if (createUserRequest.getFirstName().trim().length() == 0 ||
@@ -99,7 +100,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(newUser);
 
         String URL = "http://localhost:8083/api/v1/auth/confirmRegistration?token=" + token;
-        String link = "<h3>Hello "  + createUserRequest.getFirstName()  +
+        String link = "<h3>Hello " + createUserRequest.getFirstName() +
                 "<br> Click the link below to activate your account <a href=" + URL + "><br>Activate</a></h3>";
 
         String subject = "Pay-Buddy Verification Code";
@@ -113,6 +114,7 @@ public class UserServiceImpl implements UserService {
         return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.SUCCESS,
                 "You have successful registered. Check your email to verify your account");
     }
+
     @Override
     public BaseResponse confirmRegistration(String token) {
         BaseResponse response = new BaseResponse();
@@ -139,6 +141,7 @@ public class UserServiceImpl implements UserService {
                     "User not found");
         }
     }
+
     private Collection<Role> getUserRoles(Collection<String> roleNames) {
         Collection<Role> roles = new HashSet<>();
         if (roleNames == null || roleNames.isEmpty()) {
@@ -159,15 +162,14 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("ErrorMessages.ACCESS_DENIED.getErrorMessage()");
         return roles;
     }
+
     @Override
     public BaseResponse login(LoginUserRequest request) {
-        BaseResponse response = new BaseResponse();
-
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()
-                -> new UsernameNotFoundException("Incorrect credentials."));
+                -> new BadCredentialsException("Bad credentials"));
 
         if (!user.getIsEmailVerified())
-            throw new EmailNotConfirmedException("Kindly confirm your email address.");
+            throw new EmailNotConfirmedException("Kindly confirm your email address");
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -183,13 +185,15 @@ public class UserServiceImpl implements UserService {
                 .loginCount(user.getLoginCount())
                 .token(token)
                 .build();
+        responseDto.setCode(0);
+        responseDto.setDescription(ResponseCodeEnum.SUCCESS.getDescription());
 
         if (user.getLoginCount() == 0) {
             user.setLoginCount(1);
             userRepository.save(user);
         }
 
-        return  responseCodeUtil.updateResponseDataReturnObject(response, ResponseCodeEnum.SUCCESS, responseDto);
+        return responseCodeUtil.updateResponseDataReturnObject(new BaseResponse(), ResponseCodeEnum.SUCCESS, responseDto);
     }
 
     @Override
@@ -198,7 +202,7 @@ public class UserServiceImpl implements UserService {
         BaseResponse baseResponse = new BaseResponse();
         String email = forgotPasswordRequest.getEmail();
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             String generatedToken = jwtUtil.generatePasswordResetToken(email);
 
             ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
@@ -213,11 +217,10 @@ public class UserServiceImpl implements UserService {
             emailService.sendMail(emailSenderDto);
 
             return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS,
-                            "Check your email for password reset instructions");
-        }
-        else {
-            return responseCodeUtil.updateResponseData(baseResponse,ResponseCodeEnum.ERROR,
-                            "User not found");
+                    "Check your email for password reset instructions");
+        } else {
+            return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR,
+                    "User not found");
         }
     }
 
@@ -229,19 +232,18 @@ public class UserServiceImpl implements UserService {
             responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "Passwords do not match");
 
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(user.get());
             return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS, "Password Reset Successful");
-        }
-        else {
+        } else {
             return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR, "User not found");
         }
     }
 
     @Override
     public SocialLoginResponse socialLogin(SocialLoginUserRequest request) {
-     Optional<User> userFound = userRepository.findByEmail(request.getEmail());
+        Optional<User> userFound = userRepository.findByEmail(request.getEmail());
         if (!userFound.isPresent()) {
             String firstName = request.getFirstName();
             String lastName = request.getLastName();

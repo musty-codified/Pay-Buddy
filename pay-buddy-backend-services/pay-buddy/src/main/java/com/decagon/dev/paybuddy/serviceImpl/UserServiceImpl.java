@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
         newUser.setConfirmationToken(token);
         userRepository.save(newUser);
 
-        String URL = "http://localhost:8080/api/v1/auth/confirmRegistration?token=" + token;
+        String URL = "http://localhost:8083/api/v1/auth/confirmRegistration?token=" + token;
         String link = "<h3>Hello "  + createUserRequest.getFirstName()  +
                 "<br> Click the link below to activate your account <a href=" + URL + "><br>Activate</a></h3>";
 

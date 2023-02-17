@@ -5,6 +5,7 @@ import com.decagon.dev.paybuddy.dtos.responses.SocialLoginResponse;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
+import com.decagon.dev.paybuddy.exceptions.EmailNotConfirmedException;
 import com.decagon.dev.paybuddy.models.ResetPasswordToken;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
@@ -24,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -160,24 +163,31 @@ public class UserServiceImpl implements UserService {
     public BaseResponse login(LoginUserRequest request) {
         BaseResponse response = new BaseResponse();
 
-        authenticationManager
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()
+                -> new UsernameNotFoundException("Incorrect credentials."));
+
+        if (!user.getIsEmailVerified())
+            throw new EmailNotConfirmedException("Kindly confirm your email address.");
+
+        Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetails user = customUserDetailService.loadUserByUsername(request.getEmail());
-        String token = jwtUtil.generateToken(user);
-
-        User users = userRepository.findByEmail(user.getUsername()).orElseThrow(()
-                -> new UsernameNotFoundException("Username Not Found"));
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(request.getEmail());
+        String token = jwtUtil.generateToken(userDetails);
 
         LoginResponseDto responseDto = LoginResponseDto.builder()
-                .firstName(users.getFirstName())
-                .lastName(users.getLastName())
-                .email(users.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .loginCount(user.getLoginCount())
                 .token(token)
                 .build();
 
-        responseDto.setCode(0);
-        responseDto.setDescription(ResponseCodeEnum.SUCCESS.getDescription());
+        if (user.getLoginCount() == 0) {
+            user.setLoginCount(1);
+            userRepository.save(user);
+        }
 
         return  responseCodeUtil.updateResponseDataReturnObject(response, ResponseCodeEnum.SUCCESS, responseDto);
     }

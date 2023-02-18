@@ -9,21 +9,22 @@ function Header() {
 
     const navigate= useNavigate();
     const userProfile = localStorage.getItem("userProfile");
-    if(userProfile !=null){
+    if(token || userProfile){
         const user= JSON.parse(userProfile);
         fullName= user.name;
         profileImage = user.picture;
     }
-
     const logout = () => {
         localStorage.removeItem("userProfile");
         localStorage.removeItem("token");
         navigate("/login");
     }
-    if(token) {
+    if(token || userProfile) {
         return (
+            <>
+            
             <nav className="navbar navbar-expand-lg navbar-light">
-                <div className="container-fluid padding">
+                <div className="container-fluid">
                     <a className="navbar-brand" href="#"><img src={logo} alt="Logo" width="30" height="30"/></a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -58,6 +59,7 @@ function Header() {
                     </div>
                 </div>
             </nav>
+            </>
         );
     }
 }

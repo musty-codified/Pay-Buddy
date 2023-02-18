@@ -4,6 +4,7 @@ import { apiPost } from './axios';
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
+import { Link } from 'react-router-dom';
 
 const loginState = {
     firstName: '',
@@ -201,7 +202,7 @@ const Register =()=> {
             </button>
             </form>
             <div className="sign-in-link">
-                <p>Already a member? <a href="hhy">Sign In</a></p>
+                <p>Already a member? <Link to ="/login">Sign In</Link></p>
             </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import appApi from "../../apis/AppApi";
 import { notifyError, notifySuccess } from "../notification/Toastify";
+import { ToastContainer } from "react-bootstrap";
 
 function Login() {
   const navigate= useNavigate();
@@ -30,17 +31,6 @@ function Login() {
     onError: (error) => console.log('Login Failed:', error)
   });
 
-  const socialLogin = (data) =>  {
-    appApi.post("/api/v1/auth/social-login",data)
-        .then(res => {
-            localStorage.setItem("token",res.data.jwtToken)
-            notifySuccess("Login suceessful");
-            navigate("/dashboard");
-        })
-        .catch(err => {
-          notifyError("Internal server error!");
-        });
-  }
 
   const localLogin = (data) => {
     appApi.post("/api/v1/auth/login",data)
@@ -49,7 +39,7 @@ function Login() {
           loginRef = loginRef.current.reset();
           localStorage.setItem("token",res.data.token)
           notifySuccess("Login suceessful");
-          navigate("/dashboard");
+          navigate("/pay-buddy/dashboard");
         })
         .catch(err => {
           notifyError("Internal server error!");
@@ -59,6 +49,18 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     localLogin(formData);
+  }
+
+  const socialLogin = (data) =>  {
+    appApi.post("/api/v1/auth/social-login",data)
+        .then(res => {
+            localStorage.setItem("token",res.data.jwtToken)
+            notifySuccess("Login suceessful");
+            navigate("/pay-buddy/dashboard");
+        })
+        .catch(err => {
+          notifyError("Internal server error!");
+        });
   }
 
   useEffect(
@@ -84,7 +86,7 @@ function Login() {
                   profileUrl: ""
                 }
                 socialLogin(data);
-                navigate("/dashboard");
+                navigate("/pay-buddy/dashboard");
               })
               .catch((err) => console.log(err));
         }
@@ -100,9 +102,9 @@ function Login() {
           <h4 className="h4 mb-3 mt-3">Log in</h4>
           <span>Enter your details to access your account</span>
 
-          <div className="mb-3 mt-3 form-control align-items-center">
+          <div className="mb-3 mt-3 form-control align-items-center social-login" onClick={() => login()}>
             <center>
-              <img src={googleLogo} alt="Google" width="20" height="20" onClick={() => login()}/>
+              <img src={googleLogo} alt="Google" width="25" height="25"/>
               <span> Log in with Google</span>
             </center>
           </div>
@@ -163,6 +165,10 @@ function Login() {
       </div>
 
       <Email open={open} handleClose={handleClose} handleOpen={handleOpen} />
+
+      <div className="rectangle-2">
+                <ToastContainer />
+      </div>
     </div>
   );
 }

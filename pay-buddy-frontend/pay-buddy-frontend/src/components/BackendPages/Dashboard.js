@@ -1,19 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { MyContext } from '../../statemanagement/ComponentState';
 import Sidebar from "./layout/Sidebar";
 
 function Dashboard() {
+    const { name, setPageName } = useContext(MyContext);
+    setPageName("Dashboard");
     return (
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-md-2">
-                    <Sidebar />
-                </div>
-                <div className="col-md-10 bg-color-50 banner">
-                    <div className="h-100vh"></div>
-                </div>
-            </div>
-
-        </div>
+        
+        <div className="h-100vh">DASHBOARD</div>
     );
 }
 

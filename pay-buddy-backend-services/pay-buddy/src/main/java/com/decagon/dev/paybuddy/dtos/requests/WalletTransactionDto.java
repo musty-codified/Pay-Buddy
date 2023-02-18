@@ -1,31 +1,24 @@
-package com.decagon.dev.paybuddy.models;
-
+package com.decagon.dev.paybuddy.dtos.requests;
 
 import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
-import lombok.*;
-
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDate;
-@Entity
 
-@Data
-@Builder
-@NoArgsConstructor
+
+@Getter
+@Setter
 @AllArgsConstructor
-public class Transaction {
-
-    @Id
-    private Long transactionId;
+@NoArgsConstructor
+public class WalletTransactionDto {
     private String referenceNumber;
     private Double amount;
     private TransactionType transactionType;
     private LocalDate dateOfTransaction;
     private TransactionStatus transactionStatus;
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "wallet_wallet_id")
-    private Wallet wallet;
-
 
 }

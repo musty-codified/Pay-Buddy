@@ -9,9 +9,9 @@ import Register from "./components/auth/Register/Register";
 import Home from "./components/Pages/Home";
 import Layout from "./components/BackendPages/layout/Layout";
 import SendMoney from "./components/BackendPages/SendMoney";
-import Payment from "./components/BackendPages/Payment";
 import { MyContextProvider } from "./statemanagement/ComponentState";
 import PasswordResetForm from "./components/auth/authenticationManager/PasswordResetForm";
+import Payment from "./components/BackendPages/Payment";
 
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
               <Route path = "pay-buddy"  element={<Layout />} >
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="send-money" element={<SendMoney />}/>
-                  <Route path="payment" element ={<Payment />} />
+                  <Route path="payment" element={ <Payment />} />
               </Route>
           </Routes>
       </MyContextProvider>

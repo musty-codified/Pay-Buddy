@@ -12,6 +12,7 @@ import SendMoney from "./components/BackendPages/SendMoney";
 import { MyContextProvider } from "./statemanagement/ComponentState";
 import PasswordResetForm from "./components/auth/authenticationManager/PasswordResetForm";
 import Payment from "./components/BackendPages/Payment";
+import Welcome from "./components/Pages/Welcome";
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
               <Route path="/reset" element={<PasswordReset />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-
+              <Route path="/welcome" element={<Welcome />} />
 
               <Route path = "pay-buddy"  element={<Layout />} >
                   <Route path="dashboard" element={<Dashboard />} />

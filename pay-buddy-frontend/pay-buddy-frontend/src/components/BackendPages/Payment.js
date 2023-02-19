@@ -5,7 +5,7 @@ import "./paymentStyle.css"
 import Wallet from '../../assets/icons/Wallet.svg'
 import Data from '../../assets/icons/Data.svg'
 import Electricity from '../../assets/icons/Electricity.svg'
-import Payment from '../../assets/icons/Payment.svg'
+import Airtime from '../../assets/icons/Payment.svg'
 
 const Payment = () => {
     const { pagename, setPageName } = useContext(MyContext);
@@ -26,7 +26,7 @@ const Payment = () => {
                 </div>
                 <div className="payment-item">
                     <div className="payment-svg-div">
-                        <img src={ Payment } alt="Payment-svg" />
+                        <img src={ Airtime } alt="Payment-svg" />
                     </div>
                     <div>
                         <h3 className="payment-header-title">Buy Airtime</h3>

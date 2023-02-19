@@ -1,4 +1,5 @@
 import logo from "../../../assets/images/logo.svg";
+import Ellipse from '../../../assets/icons/Ellipse.svg'
 import {useNavigate} from "react-router-dom";
 import { MyContext } from "../../../statemanagement/ComponentState";
 import { useContext, useEffect } from "react";
@@ -25,7 +26,10 @@ const TopNavbar = () => {
     return ( 
         <nav id="main-navbar" className="navbar navbar-expand-lg navbar-light bg-white fixed-top">
             <div className="container-fluid">
-              <div className="payment-caption"><span>{pagename}</span></div>
+              <div className="payment-caption">
+                <p>{pagename}</p>
+                <img style={{marginTop: '-10px'}} src={ Ellipse }/>
+              </div>
               {/* Toggle button */}
               <button className="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <i className="fas fa-bars" />

@@ -4,6 +4,7 @@ import { apiPost } from './axios';
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
+import { WiStars } from 'react-icons/wi'
 import { Link } from 'react-router-dom';
 
 const loginState = {
@@ -12,7 +13,6 @@ const loginState = {
     otherName:'',
     email: '',
     phoneNumber: '',
-    bvn: '',
     password: '',
 
     isFirstNameValid: false,
@@ -20,13 +20,11 @@ const loginState = {
     isOtherNameValid:false,
     isEmailValid: false,
     isPhoneNumberValid: false,
-    isBvnValid: false,
     isPasswordValid: false,
 
     isFirstNameEmpty: true,
     isLastNameEmpty:true,
     isOtherNameEmpty:true,
-    isBvnEmpty: true,
     isEmailEmpty:true,
     isPhoneNumberEmpty: true,
     isPasswordEmpty:true
@@ -69,12 +67,6 @@ const Register =()=> {
             return setRegFormData({ ...regFormData, phoneNumber: value, isPhoneNumberValid: true, isPhoneNumberEmpty: false })
             return setRegFormData({ ...regFormData, phoneNumber: value, isPhoneNumberValid: false, isPhoneNumberEmpty: false })
 
-        case "bvn":
-            if(value.length === 0) return setRegFormData({ ...regFormData, bvn: value, isBvnValid: true, isBvnEmpty: true })
-            if(value.length === 10)
-            return setRegFormData({ ...regFormData, bvn: value, isBvnValid: true, isBvnEmpty: false })
-        return setRegFormData({ ...regFormData, bvn: value, isBvnValid: false, isBvnEmpty: false })
-
         case "password":
             if(value.length === 0) return setRegFormData({ ...regFormData, password: value, isPasswordValid :true, isPasswordEmpty: true })
             if(value.length > 7)
@@ -86,8 +78,7 @@ const Register =()=> {
 
  }
 
-    const { firstName , lastName, otherName, email, phoneNumber, bvn, password,isEmailEmpty,isEmailValid,isPhoneNumberEmpty,isPhoneNumberValid,
-    isBvnEmpty,isBvnValid,isPasswordEmpty,isPasswordValid,isFirstNameValid,isFirstNameEmpty,isLastNameEmpty,isLastNameValid,isOtherNameEmpty,isOtherNameValid } = regFormData
+    const { firstName , lastName, otherName, email, phoneNumber, password,isEmailEmpty,isEmailValid,isPhoneNumberEmpty,isPhoneNumberValid,isPasswordEmpty,isPasswordValid,isFirstNameValid,isFirstNameEmpty,isLastNameEmpty,isLastNameValid,isOtherNameEmpty,isOtherNameValid } = regFormData
 
 
     const allFieldsValid = isFirstNameValid && !isFirstNameEmpty 
@@ -95,7 +86,6 @@ const Register =()=> {
                         && isOtherNameValid && !isOtherNameEmpty 
                         && isEmailValid && !isEmailEmpty 
                         && isPhoneNumberValid && !isPhoneNumberEmpty 
-                        && isBvnValid && !isBvnEmpty 
                         && isPasswordValid && !isPasswordEmpty
 
  const handleClick=(e)=> {
@@ -107,7 +97,6 @@ const Register =()=> {
         otherName: otherName,
         email: email,
         phoneNumber: phoneNumber,
-        bvn: bvn,
         password: password,
     })
     .then(res => {
@@ -136,8 +125,8 @@ const Register =()=> {
                 </div>
  
                 <div className="title">
-                    <h1>Sign Up</h1>
-                    <p>Create an account to enjoy our benefits **</p>
+                    <h1 className='heading'>Sign Up</h1>
+                    <p>Create an account to enjoy our benefits <span id="icon-wistars"><WiStars/> </span></p>
                     <button className="transparent-btn btn-signup">
                         <img src ='https://www.shareicon.net/data/2016/07/10/119930_google_512x512.png' 
                             alt='google-img'/> Sign up with Google</button>
@@ -181,15 +170,7 @@ const Register =()=> {
                     placeholder="08039476277" />
                     {isPhoneNumberValid || (!isPhoneNumberEmpty && <p className="register-sentence">Input the complete phoneNumber</p>)}
             </label>
-            <label htmlFor ="Bvn" className="register-form">Bvn
-                <input type ="text" value={bvn} onChange={(e)=> handleRegFormData(e, "bvn")}
-                    name="Bvn" 
-                    className={isBvnEmpty ? "register-input" : isBvnValid ? "register-input input-valid" : "register-input input-error"} 
-                    placeholder="22516182399" />
-                   {isBvnValid || (!isBvnEmpty && <p className="register-sentence">Complete Bvn number is required</p>)}
-
-
-            </label>
+        
             <label htmlFor ="password " className="register-form">Password
                 <input type ="text" value={password} onChange={(e)=> handleRegFormData(e, "password")}
                     name="password" 
@@ -202,21 +183,24 @@ const Register =()=> {
             </button>
             </form>
             <div className="sign-in-link">
-                <p>Already a member? <Link to ="/login">Sign In</Link></p>
+                <p>Already a member? <Link to="/login">Sign In</Link></p>
+
             </div>
             </div>
         </div>
 
         <div className="right-register-div">
-            <div className="register-text">
-                <h4>It takes 20 years to build a reputation 
-                    and five minutes<br/> to ruin it, 
-                    if you think about that, you'll do things 
-                    <br/>differently."</h4>
-                    </div>
-            <div className="quote-owner-details">
-            <h5 className="quote-owner-h4">-Boluwatife</h5>
-            <p className="quote-office-p">Founder,Pay-Buddy</p>
+            <div className="info-header">
+                <div className="register-text">
+                    <h3>It takes 20 years to build a reputation 
+                        and five minutes<br/> to ruin it, 
+                        if you think about that, you'll do things 
+                        <br/>differently."</h3>
+                        </div>
+                <div className="quote-owner-details">
+                <h5 className="quote-owner-h4">-Boluwatife</h5>
+                <p className="quote-office-p">Founder,Pay-Buddy</p>
+                </div>
             </div>
 
             <div className="right-div-design">     
@@ -226,7 +210,7 @@ const Register =()=> {
              </div>
             </div>
             </div>
-            </div>
+        </div>
 
      
        </section>

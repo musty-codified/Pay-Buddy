@@ -11,9 +11,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Builder
 public class ResetPasswordRequest {
-
-    @Email
-    private String email;
     @NotBlank(message = "New password field can't be empty")
     private String newPassword;
     @NotBlank(message = "Confirm password field can't be empty")

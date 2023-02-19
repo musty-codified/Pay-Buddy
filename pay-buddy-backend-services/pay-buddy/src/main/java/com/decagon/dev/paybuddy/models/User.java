@@ -40,6 +40,7 @@ public class User
     private Wallet wallet;
     private String confirmationToken;
     private String phoneNumber;
+    private int loginCount;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",

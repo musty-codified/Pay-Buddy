@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 :root{
     --dark-blue-color:  #2F80ED;
     --light-blue-color: #BCDCFF;
@@ -14,10 +15,11 @@
     margin:0;
     padding:0;
     box-sizing: border-box;
+    font-family: 'Inter';
 }
 
 .register-section{
-    font-family:sans-serif;
+    letter-spacing: -0.02em;
     height: 100vh;
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -28,14 +30,14 @@
     display: flex;
     flex-direction:column;
     align-items:flex-start;
-    gap: 20px;
+    gap: 13px;
 }
-.title.header{
+.title .heading {
     font-size: 30px;
+    margin-bottom: 5px;
+
 }
-.title.header-h1{
-    font-size: 30px;
-}
+
 .title .btn-signup{
     display: flex;
     align-items: center;
@@ -58,7 +60,7 @@
     display: flex;
     padding: 40px 40px;
     overflow-y:scroll;
-    scrollbar-height: none;
+    scrollbar-width: none;
 }
 
 .div-option {
@@ -71,7 +73,7 @@
 }
 
 .VI {
-    border: 1px solid var(--Neutral-color);
+    border: 1px solid var(--lightgray-color);
     width: 100%;
     height: 20px;
     border-top: none;
@@ -89,7 +91,7 @@
     flex: 1;
     height: 60px;
     width: 60px;
-    margin-bottom: 15px;
+    margin-bottom: 35px;
     border-radius: 100%;
     position: relative;
     background: var(--dark-blue-color);
@@ -116,7 +118,7 @@
 }
 .transparent-btn {
     background: transparent;
-    border: 1px solid var(--transparent-color);
+    border: 1px solid var(--lightgray-color);
 }
 .opaque-btn {
     background-color: var(--dark-blue-color);
@@ -150,7 +152,7 @@
     padding: 15px;
     border-radius: 6px;
     outline: none;
-    border: 1px solid var(--transparent-color);
+    border: 1px solid var(--lightgray-color);
 }
 
 .register-form .input-error {
@@ -159,7 +161,7 @@
 }
 
 .register-form .input-valid {
-    border: 1px solid limegreen;
+    border: 1px solid blue;
 }
 .register-sentence{
     color:red;
@@ -179,6 +181,16 @@
     overflow: hidden;
    background-color:var( --dark-blue-color);
 }
+.info-header {
+    height: 35vh;
+}
+
+#icon-wistars {
+    font-size: 50px; 
+    color: rgb(240, 208, 29);
+    margin-left: -15px;
+}
+
 .register-text{
     display: flex;
     flex-direction: column;
@@ -186,6 +198,7 @@
     text-align: left;
     margin-bottom: 20px;
     color: var(--white-color);
+   
 }
 .quote-owner-details{
     display: flex;
@@ -200,11 +213,12 @@
     width: 109%
 }
 .rectangle-1{
-    height: 106%;
-    padding: 13px;
+    height: 731px;
+    width: 1009px;
+    padding: 12px;
     padding-right:0 ;
     background-color: var(--white-color);
-    border-radius: 20px;
+    border-radius: 22px;
 }
 
 .rectangle-2{
@@ -233,4 +247,5 @@
 
     
 }
+
 

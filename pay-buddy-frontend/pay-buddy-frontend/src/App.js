@@ -13,6 +13,9 @@ import { MyContextProvider } from "./statemanagement/ComponentState";
 import PasswordResetForm from "./components/auth/authenticationManager/PasswordResetForm";
 import Payment from "./components/BackendPages/Payment";
 import Welcome from "./components/Pages/Welcome";
+import TransactionPin from "./components/BackendPages/TransactionPin";
+import SettingsMenu from "./components/Settings/Settings";
+
 
 
 function App() {
@@ -31,7 +34,10 @@ function App() {
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="send-money" element={<SendMoney />}/>
                   <Route path="payment" element={ <Payment />} />
+                  <Route path="create-transaction-pin" element={<TransactionPin />} />
+                  <Route path="settings-menu" element={<SettingsMenu />} />
               </Route>
+              {/* <Route path="create-transaction-pin" element={<TransactionPin />} /> */}
           </Routes>
       </MyContextProvider>
           

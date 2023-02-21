@@ -22,6 +22,7 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long walletId;
+
     private String accountNumber;
     private BigDecimal accountBalance;
 //    @Max(value = 4) @Min(value = 4)
@@ -30,6 +31,7 @@ public class Wallet {
     private User user;
     private WalletStatus status;
     private LocalDate lastTransactionDate;
+
     @OneToMany
-    private List<Transaction> transactionHistory;
+    private List<Transaction> transaction;
 }

@@ -3,23 +3,31 @@ package com.decagon.dev.paybuddy.models;
 
 import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 @Entity
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
 public class Transaction {
-    @Id
 
+    @Id
     private Long transactionId;
     private String referenceNumber;
-    private Double amount;
+    private BigDecimal amount;
     private TransactionType transactionType;
     private LocalDate dateOfTransaction;
     private TransactionStatus transactionStatus;
     private String description;
+
+    @ManyToOne
+    private Wallet wallet;
 
 
 }

@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import {Button} from "react-bootstrap";
+import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import appApi from "../../apis/AppApi";
 
 function TransactionPin(props) {
     const [createPin, setCreatePin] = useState("");
     const [confirmCreatePin, setConfirmCreatePin] = useState("");
     const [isError, setIsError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+
 
 const TransactionPinInput = async(e)=>{
     e.preventDefault()
@@ -18,7 +21,7 @@ const TransactionPinInput = async(e)=>{
     setErrorMessage("Passwords do not match")
    }else{
         try {
-            const {data} = await axios.post("http://127.0.0.1:8080/api/v1/wallet/updateWalletPin", {createPin, confirmCreatePin});
+            const {data} = await appApi.post("/api/v1/wallet/updateWalletPin", {createPin, confirmCreatePin});
             if (data.status === 200){
                 setCreatePin("")
                 setConfirmCreatePin("")

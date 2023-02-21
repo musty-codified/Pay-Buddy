@@ -45,22 +45,20 @@
     background-color: #fff;
     position: absolute;
     left: 45%;
-    bottom: -10px;
+    bottom: -18px;
     padding:5px;
     color: var(--ligh-border-color);
 }
 
-.social-button{
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow:1px 1px 1px #ced4da !important;
+.social-login:hover{
+    background-color: var(--primary600);
+    color:#fff;
+    cursor: pointer;
 }
 button span{
     text-align: center !important;
     font-weight: 700 !important;
 }
-
 .banner{
     display: none;
 }
@@ -79,6 +77,20 @@ button span{
     .banner{
         display: block;
     }
+}
+.fas{
+    color:red !important;
+}
+.payment-caption{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.payment-caption img {
+    width: 6px;
 }
 
 

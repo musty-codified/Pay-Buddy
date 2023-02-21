@@ -14,5 +14,6 @@ public class LoginResponseDto extends BaseResponse {
     private String firstName;
     private String lastName;
     private String email;
+    private int loginCount;
     private String token;
 }

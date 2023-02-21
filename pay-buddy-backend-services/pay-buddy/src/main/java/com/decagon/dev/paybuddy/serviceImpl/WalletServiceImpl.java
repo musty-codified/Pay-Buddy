@@ -26,25 +26,14 @@ public class WalletServiceImpl implements WalletService {
     private final ResponseCodeUtil responseCodeUtil = new ResponseCodeUtil();
 
     @Override
-    public WalletResponse getWalletBalance() {
-        return null;
-    }
-
-    @Override
-    public WalletResponse fundWallet(BigDecimal bigDecimal, String transactionType) {
-        return null;
-    }
-
-    @Override
     public BaseResponse updateWalletPin(CreateTransactionPinDto createTransactionPinDto) {
         BaseResponse baseResponse = new BaseResponse();
         String authEmail = userUtil.getAuthenticatedUserEmail();
-//        User walletOwner = userUtil.currentUser();
-//        Wallet userWallet = walletRepository.findByUser_UserId(walletOwner.getUserId());
+
         Wallet userWallet = walletRepository.findWalletByUser_Email(authEmail);
         if (userWallet != null){
-//            userWallet.setPin(passwordEncoder.encode(createTransactionPinDto.getPin()));
-            userWallet.setPin(createTransactionPinDto.getPin());
+
+            userWallet.setPin(passwordEncoder.encode(createTransactionPinDto.getPin()));
             walletRepository.save(userWallet);
             return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS,
                     "Wallet pin successfully changed");

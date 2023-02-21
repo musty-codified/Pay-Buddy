@@ -8,8 +8,6 @@ import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import java.math.BigDecimal;
 
 public interface WalletService {
-    WalletResponse getWalletBalance();
-    WalletResponse fundWallet(BigDecimal bigDecimal, String transactionType);
     BaseResponse updateWalletPin(CreateTransactionPinDto createTransactionPinDto);
 
 }

@@ -29,6 +29,8 @@ public class Wallet {
     @OneToOne
     private User user;
     private WalletStatus status;
+    @OneToMany(mappedBy = "wallet")
+    private List<BankDetails> bankDetails;
 
     @CreationTimestamp
     private LocalDate createdAt;

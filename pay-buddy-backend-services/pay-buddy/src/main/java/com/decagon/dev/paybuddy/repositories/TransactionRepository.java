@@ -1,10 +1,9 @@
 package com.decagon.dev.paybuddy.repositories;
 
-import com.decagon.dev.paybuddy.models.Wallet;
+import com.decagon.dev.paybuddy.models.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WalletRepository extends JpaRepository<Wallet, Long> {
-    Wallet findWalletByUser_Email(String email);
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 }

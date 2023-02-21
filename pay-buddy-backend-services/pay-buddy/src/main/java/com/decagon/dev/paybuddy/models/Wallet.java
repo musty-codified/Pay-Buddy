@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +29,13 @@ public class Wallet {
     @OneToOne
     private User user;
     private WalletStatus status;
+    @OneToMany(mappedBy = "wallet")
+    private List<BankDetails> bankDetails;
+
+    @CreationTimestamp
+    private LocalDate createdAt;
+
+    @UpdateTimestamp
     private LocalDate lastTransactionDate;
     @OneToMany
     private List<Transaction> transactionHistory;

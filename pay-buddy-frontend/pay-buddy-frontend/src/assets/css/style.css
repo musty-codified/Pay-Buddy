@@ -81,16 +81,66 @@ button span{
 .fas{
     color:red !important;
 }
-.payment-caption{
+.page-title{
     display:flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position:absolute;
+    left :50%;
+
+}
+  .activePage{
+    color: var(--primary600);
+  }
+
+.page-title img {
+    width: 6px;
+}
+
+form{
+    background-color: #fff;
+    padding:15px;
+}
+
+main{
+    background-color: var(--primary50);
+    height: 100vh !important;
+    padding: 50px;
+}
+
+form button{
+    width : 100% !important;
+    background-color: var(--primary600) !important;
 
 }
 
-.payment-caption img {
-    width: 6px;
+form label{
+    font-weight: 500;
+    color : var(--neutra-700);
+}
+
+.payment-info span {
+    font-size:16px;
+    font-weight: 400;
+}
+
+.list-group-item{
+    border:none !important;
+    margin-top :20px;
+}
+
+.payment-link{
+    background-color: var(--primary50);
+}
+
+.button-margin{
+    margin-top :35px !important;
+}
+
+form button {
+    text-transform: capitalize !important;
+    font-size: 20px !important;
 }
 
 

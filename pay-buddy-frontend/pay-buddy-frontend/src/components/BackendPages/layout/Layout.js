@@ -6,18 +6,23 @@ import Sidebar from './Sidebar';
 import TopNavbar from './TopNavbar';
 
 const Layout = () => {
+        let mainWidth = "";
+        let float = "none";
+        if(window.innerWidth>990){
+                mainWidth =  window.innerWidth-240;
+                float = "right";
+        }
+
     return ( 
             <>
             <header>
              <Sidebar/>
              <TopNavbar />
             </header>
-             <main style={{marginTop: '58px'}}>
-                <div className="container pt-4">
+             <main style={{marginTop: '58px',width:mainWidth,float:float}}>
                     <Outlet />
-                </div>
             </main>
-      <Footer />
+      {/* <Footer /> */}
       </>
      );
 }

@@ -1,9 +1,7 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
-import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
-import com.decagon.dev.paybuddy.models.User;
 import com.decagon.dev.paybuddy.models.Wallet;
 import com.decagon.dev.paybuddy.repositories.WalletRepository;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
@@ -13,8 +11,6 @@ import com.decagon.dev.paybuddy.utilities.UserUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 @Service
 @AllArgsConstructor

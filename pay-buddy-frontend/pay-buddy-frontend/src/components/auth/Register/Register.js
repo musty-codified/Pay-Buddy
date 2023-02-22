@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
 import { WiStars } from 'react-icons/wi'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const loginState = {
     firstName: '',
@@ -34,7 +34,7 @@ const Register =()=> {
     const[regFormData, setRegFormData] = useState(loginState)
     const[isLoading, setIsLoading] = useState(false)
     const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
-
+    const navigate = useNavigate();
 
     const handleRegFormData = (e, type) => {
     const value = e.target.value
@@ -105,7 +105,7 @@ const Register =()=> {
         setRegFormData(loginState)
         setIsLoading(false)
         if(res.data.code === -1) notifyWarning(data.description)
-        else notifySuccess(data.description)
+        else navigate("/welcome", { state: firstName });
     })
     .catch(err => {
         console.log(err)
@@ -184,6 +184,7 @@ const Register =()=> {
             </form>
             <div className="sign-in-link">
                 <p>Already a member? <Link to="/login">Sign In</Link></p>
+
             </div>
             </div>
         </div>

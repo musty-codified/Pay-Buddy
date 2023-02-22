@@ -6,6 +6,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import appApi from "../../apis/AppApi";
+import "./TransactionPin.css";
 
 function TransactionPin(props) {
     const [createPin, setCreatePin] = useState("");
@@ -36,15 +37,14 @@ const TransactionPinInput = async(e)=>{
     return (
         <>
             <Modal show={props.open} onHide={props.handleClose}>
-                <Modal.Header closeButton>
-                    {/* <Modal.Title className='modal-title'>Create Transaction Pin</Modal.Title> */}
-                </Modal.Header>
+                {/* <Modal.Header closeButton>
+                </Modal.Header> */}
                 <Modal.Body>
-                <div className='container mt-1'>
+                <div className='container_modal mt-1' >
                     <div> 
-                        <h3 style={{fontWeight: "bold"}}>Create Transaction Pin</h3>
-                        <p>
-                            Create a transaction pin to be able to make a secured transaction
+                        <h3 className="create-transaction-h3" style={{fontWeight: "bold"}}>Create Transaction Pin</h3>
+                        <p className="secured-transaction-p_tag">
+                            Create a transaction pin to be able to make a <br></br>secured transaction
                         </p>
                     </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>

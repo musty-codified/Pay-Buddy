@@ -27,7 +27,7 @@ public class WalletServiceImpl implements WalletService {
         String authEmail = userUtil.getAuthenticatedUserEmail();
 
         Wallet userWallet = walletRepository.findWalletByUser_Email(authEmail);
-        if (userWallet != null){
+        if (userWallet != null || userWallet.getPin() != null || !userWallet.getPin().isBlank()){
 
             userWallet.setPin(passwordEncoder.encode(createTransactionPinDto.getPin()));
             walletRepository.save(userWallet);

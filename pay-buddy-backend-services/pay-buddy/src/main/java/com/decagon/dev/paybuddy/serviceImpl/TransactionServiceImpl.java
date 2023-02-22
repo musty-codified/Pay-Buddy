@@ -34,7 +34,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         if (loggedInUser.isPresent()){
             Wallet userWallet = loggedInUser.get().getWallet();
-            List<Transaction> walletTransaction = userWallet.getTransaction();
+            List<Transaction> walletTransaction = userWallet.getTransactionHistory();
 
             List<TransactionRequest> transactionList =  new ArrayList<>();
 

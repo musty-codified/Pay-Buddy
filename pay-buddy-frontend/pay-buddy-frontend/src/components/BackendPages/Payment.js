@@ -6,6 +6,7 @@ import Wallet from '../../assets/icons/Wallet.svg'
 import Data from '../../assets/icons/Data.svg'
 import Electricity from '../../assets/icons/Electricity.svg'
 import Airtime from '../../assets/icons/Payment.svg'
+import { Link } from "react-router-dom";
 
 const Payment = () => {
     const { pagename, setPageName } = useContext(MyContext);
@@ -18,10 +19,13 @@ const Payment = () => {
                         <img src={ Wallet } alt="Wallet-svg" />
                     </div>
                     <div>
-                        <h3 className="payment-header-title">Send Money</h3>
-                        <p className="payment-header-p">Lorem Ipsum is simply dummy text of the 
-                            printing and typesetting industry. Lorem Ipsum has been the 
-                            industry's standard dummy text ever since the 1500s</p>
+                        <Link to="/pay-buddy/send-money-1" >
+                            <h3 className="payment-header-title">Send Money</h3>
+                            <p className="payment-header-p">Lorem Ipsum is simply dummy text of the 
+                                printing and typesetting industry. Lorem Ipsum has been the 
+                                industry's standard dummy text ever since the 1500s</p>
+                        </Link>
+                        
                     </div>
                 </div>
                 <div className="payment-item">

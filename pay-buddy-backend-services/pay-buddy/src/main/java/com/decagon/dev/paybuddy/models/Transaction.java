@@ -1,6 +1,5 @@
 package com.decagon.dev.paybuddy.models;
 
-
 import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 @Entity
@@ -17,8 +19,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
-    @Id
 
+    @Id
     private Long transactionId;
     private String referenceNumber;
     private BigDecimal amount;
@@ -30,6 +32,5 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "wallet_wallet_id")
     private Wallet wallet;
-
 
 }

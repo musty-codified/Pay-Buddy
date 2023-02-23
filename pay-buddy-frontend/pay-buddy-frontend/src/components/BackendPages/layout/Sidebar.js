@@ -1,5 +1,8 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import homeLogo from "../../../assets/images/home-logo.svg";
+import paymentLogo from "../../../assets/images/payment-logo.svg";
+import settingsLogo from "../../../assets/images/settings-logo.svg";
 import  "./layout.css";
 
 function Sidebar() {

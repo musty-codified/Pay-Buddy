@@ -8,7 +8,8 @@ import Dashboard from "./components/BackendPages/Dashboard";
 import Register from "./components/auth/Register/Register";
 import Home from "./components/Pages/Home";
 import Layout from "./components/BackendPages/layout/Layout";
-import SendMoney from "./components/BackendPages/SendMoney";
+import SendMoneyPartOne from "./components/BackendPages/SendMoneyPartOne";
+import SendMoneyPartTwo from "./components/BackendPages/SendMoneyPartTwo";
 import { MyContextProvider } from "./statemanagement/ComponentState";
 import PasswordResetForm from "./components/auth/authenticationManager/PasswordResetForm";
 import Payment from "./components/BackendPages/Payment";
@@ -32,12 +33,14 @@ function App() {
 
               <Route path = "pay-buddy"  element={<Layout />} >
                   <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="send-money" element={<SendMoney />}/>
                   <Route path="payment" element={ <Payment />} />
+
                   <Route path="create-transaction-pin" element={<TransactionPin />} />
                   <Route path="settings-menu" element={<SettingsMenu />} />
+
+                  <Route path="send-money-1" element={<SendMoneyPartOne />}/>
+                  <Route path="send-money-2" element={<SendMoneyPartTwo />}/>
               </Route>
-              {/* <Route path="create-transaction-pin" element={<TransactionPin />} /> */}
           </Routes>
       </MyContextProvider>
           

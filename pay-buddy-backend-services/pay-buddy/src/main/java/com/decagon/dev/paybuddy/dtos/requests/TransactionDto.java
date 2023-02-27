@@ -4,7 +4,6 @@ import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,9 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Builder
-public class TransactionRequest {
-
-    @NotNull(message = "Amount is required")
+public class TransactionDto {
     private BigDecimal amount;
     private TransactionType transactionType;
     private LocalDate dateOfTransaction;

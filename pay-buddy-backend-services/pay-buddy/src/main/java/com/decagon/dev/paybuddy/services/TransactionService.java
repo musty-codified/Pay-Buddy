@@ -1,8 +1,11 @@
 package com.decagon.dev.paybuddy.services;
 
 
-import com.decagon.dev.paybuddy.dtos.responses.WalletTransactionResponse;
+import com.decagon.dev.paybuddy.dtos.responses.TransactionResponse;
+
+import java.util.List;
+
 
 public interface TransactionService {
-    WalletTransactionResponse viewWalletTransaction();
+    List<TransactionResponse> viewWalletTransaction(int page, int limit);
 }

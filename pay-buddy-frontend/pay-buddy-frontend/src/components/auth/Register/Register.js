@@ -4,6 +4,8 @@ import { apiPost } from './axios';
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
+import { WiStars } from 'react-icons/wi'
+import { Link, useNavigate } from 'react-router-dom';
 
 const loginState = {
     firstName: '',
@@ -32,7 +34,7 @@ const Register =()=> {
     const[regFormData, setRegFormData] = useState(loginState)
     const[isLoading, setIsLoading] = useState(false)
     const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
-
+    const navigate = useNavigate();
 
     const handleRegFormData = (e, type) => {
     const value = e.target.value
@@ -103,7 +105,7 @@ const Register =()=> {
         setRegFormData(loginState)
         setIsLoading(false)
         if(res.data.code === -1) notifyWarning(data.description)
-        else notifySuccess(data.description)
+        else navigate("/welcome", { state: firstName });
     })
     .catch(err => {
         console.log(err)
@@ -123,8 +125,8 @@ const Register =()=> {
                 </div>
  
                 <div className="title">
-                    <h1>Sign Up</h1>
-                    <p>Create an account to enjoy our benefits **</p>
+                    <h1 className='heading'>Sign Up</h1>
+                    <p>Create an account to enjoy our benefits <span id="icon-wistars"><WiStars/> </span></p>
                     <button className="transparent-btn btn-signup">
                         <img src ='https://www.shareicon.net/data/2016/07/10/119930_google_512x512.png' 
                             alt='google-img'/> Sign up with Google</button>
@@ -181,21 +183,24 @@ const Register =()=> {
             </button>
             </form>
             <div className="sign-in-link">
-                <p>Already a member? <a href="hhy">Sign In</a></p>
+                <p>Already a member? <Link to="/login">Sign In</Link></p>
+
             </div>
             </div>
         </div>
 
         <div className="right-register-div">
-            <div className="register-text">
-                <h4>It takes 20 years to build a reputation 
-                    and five minutes<br/> to ruin it, 
-                    if you think about that, you'll do things 
-                    <br/>differently."</h4>
-                    </div>
-            <div className="quote-owner-details">
-            <h5 className="quote-owner-h4">-Boluwatife</h5>
-            <p className="quote-office-p">Founder,Pay-Buddy</p>
+            <div className="info-header">
+                <div className="register-text">
+                    <h3>It takes 20 years to build a reputation 
+                        and five minutes<br/> to ruin it, 
+                        if you think about that, you'll do things 
+                        <br/>differently."</h3>
+                        </div>
+                <div className="quote-owner-details">
+                <h5 className="quote-owner-h4">-Boluwatife</h5>
+                <p className="quote-office-p">Founder,Pay-Buddy</p>
+                </div>
             </div>
 
             <div className="right-div-design">     
@@ -205,7 +210,7 @@ const Register =()=> {
              </div>
             </div>
             </div>
-            </div>
+        </div>
 
      
        </section>

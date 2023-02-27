@@ -1,20 +1,251 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { MyContext } from '../../statemanagement/ComponentState';
 import Sidebar from "./layout/Sidebar";
-
+import { useState } from 'react'
+import '../../assets/css/dashboard.css';
+import { RiFilter3Fill } from "react-icons/ri"
+import { BsBank2 } from "react-icons/bs"
+import { BsFillPlusSquareFill } from "react-icons/bs"
+import { AiOutlineSearch } from "react-icons/ai"
+import { MdAccountBalanceWallet } from 'react-icons/md'
+import Mastercard from "../../assets/images/mastercard.svg"
+import HappyUser from "../../assets/images/happyuser.svg"
+import bankLogo from "../../assets/images/bank-logo.svg"
 function Dashboard() {
-    return (
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-md-2">
-                    <Sidebar />
-                </div>
-                <div className="col-md-10 bg-color-50 banner">
-                    <div className="h-100vh"></div>
-                </div>
-            </div>
+    const { name, setPageName } = useContext(MyContext);
+    setPageName("Dashboard");
+
+    const [Search, setSearch] = useState('')
+
+    function HandleChange(e) {
+        setSearch(e.target.value)
+    }
+
+    function getInitials(name) {
+        const nameArr = name.split(' ');
+        const initials = nameArr.map(word => word[0].toUpperCase());
+        return initials.join('');
+    }
+
+    const aa = [
+        {
+            id: 1,
+            user: "olayinka sulaiman",
+            bankname: "ecobank",
+            amount: 3000,
+            transactionType: "DEBIT"
+        },
+        {
+            id: 2,
+            user: "teju kolawole",
+            bankname: "access",
+            amount: 4000,
+            transactionType: "CREDIT"
+        },
+        {
+            id: 3,
+            user: "olayinka sulaiman",
+            bankname: "ecobank",
+            amount: 3000,
+            transactionType: "DEBIT"
+        },
+        {
+            id: 4,
+            user: "teju kolawole",
+            bankname: "access",
+            amount: 4000,
+            transactionType: "CREDIT"
+        },
+        {
+            id: 5,
+            user: "olayinka sulaiman",
+            bankname: "ecobank",
+            amount: 3000,
+            transactionType: "DEBIT"
+        }
+    ]
+
+    const QuickTransfer = aa.map(list =>
+
+        <div className="recipient-info">
+            <button>{getInitials(list.user)}</button>
+            
+
+            <p>{list.user}</p>
 
         </div>
-    );
+    )
+
+
+
+    const ListOfTransaction = Search === "" ?
+        aa.map(list => {
+           const getDebit =  list.transactionType=== "DEBIT" ? 'red text-right' : list.transactionType === "CREDIT text-right" ? 'green text-center' : "text-right";
+        
+            return (
+               <div className='row'>
+    
+                       <div className='col-2'><div className='bank-logo'><img src={bankLogo} alt ="" /></div></div> 
+                        <div className='col-6  user-name'>
+                            <h4>{list.user}</h4>
+                            <p>{list.bankname}</p>
+                        </div>
+                    <div className='col-4'>
+                        <h5 className={getDebit}>{list.amount}</h5>
+                    </div>
+                   
+                    </div>
+            )
+        }
+        ) :
+        aa.filter(p => p.user.includes(Search)).map(list => {
+            const getDebit =  list.transactionType=== "DEBIT" ? 'red text-right' : list.transactionType === "CREDIT text-right" ? 'green text-center' : "text-right";
+
+            return (
+                <div className='row'>
+    
+                     <div className='col-2'><div className='bank-logo'><img src={bankLogo} alt ="" /></div></div> 
+                 <div className='col-6  user-name'>
+                     <h4>{list.user}</h4>
+                     <p>{list.bankname}</p>
+                 </div>
+             <div className='col-4'>
+                 <h5 className={getDebit}>{list.amount}</h5>
+             </div>
+            
+             </div>
+            )
+        }
+        )
+
+
+
+    return (
+
+            <>
+            <div className="row dashboard ">
+                <div className="col-md-8 ">
+                    {/* the user card  starts here*/}
+                    <div className="row mt-3">
+                        
+                        <div className='col-md-6'>
+                        <div className="total-balance-div">
+                        <div>
+                             <MdAccountBalanceWallet size={30} className ="blue" />
+                             <p>Total Balance</p>
+                       </div>
+                         <h4>N400,523</h4>
+                     </div>
+                        </div>
+                                    <div className='col-md-6'>
+                                <div className="card-balance-div">
+                                <div className='card-balance-icon'>
+                                     <img src={Mastercard} alt="" />
+                                    <p>Gift Chuks</p>
+                                </div>
+                             <h4>***1523</h4>
+
+                     </div>
+                        </div>
+                       
+
+                    </div> 
+                            {/* the user card ends here */}
+
+                            {/* Add amount starts here */}
+                            <div className='row'>
+                                <div className='col-md-12 mt-3 hmmn'>
+                                <div className="add-money-dashboard-div">
+                    <p>Add money to your wallet</p>
+                 <div className="add-money">
+                        <button>
+                            <BsFillPlusSquareFill id="add-money-icon" />
+                           <div>Fund Account</div>
+                        </button>
+                     </div>
+                </div>
+                                </div>
+                        
+                            </div>
+                             {/* Add amount ends here */}
+
+                              {/* Quick transfer starts here */}
+                              <div className='row' >
+                                <div className='col-md-12 mt-3'>
+                                <div className="transfer-dashboard-div">
+                 <p>Quick Transfer</p>
+                     <div className="d-flex align-items-center justify-content-between ">
+                     {QuickTransfer}
+
+                     </div>
+                </div>
+                                </div>
+                              </div>
+
+                              {/* Quick transfer ends here */}
+                              {/* refer and end start here */}
+                              <div className='row'>
+                                <div className= "col-md-12 mt-3">
+                                <div className="refer-dashboard-div">
+                                             <p>Earn and Refer</p>
+                                  <div className='refer'>
+                                        <img src={HappyUser} alt="" />
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                </div>
+                              
+                               {/* refer and end earn here */}
+
+                </div>
+
+                <div className="col-md-4 list-of-transaction">
+                    {/* search transaction starts here */}
+                        <div className='row mt-3'>
+                            <div className='col-10'>
+
+                            <div className='transaction-search-box d-flex align-items-center'>
+                                <div className='search-icon'>
+                                <AiOutlineSearch />
+                                </div>
+                                <div className='search-input-field'>
+                                <input type="search" value={Search} onChange={HandleChange} placeholder='Search Transaction' />
+                                </div>
+                            
+                            </div>
+                        </div>
+                            <div className='col-2'>
+                            <div className="search-filter">
+                        <RiFilter3Fill className='filter'/>
+
+                            </div>
+                        </div>
+
+                    </div>
+                
+                 
+                        <div className='mt-5'> 
+                            {ListOfTransaction}
+                        </div>
+                            
+                      
+                   
+                    
+                </div>
+
+
+            </div>
+            
+            </>
+
+       
+
+
+
+      
+    )
 }
 
 export default Dashboard;

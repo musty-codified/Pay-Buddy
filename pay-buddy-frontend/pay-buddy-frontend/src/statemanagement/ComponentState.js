@@ -3,11 +3,10 @@ import React, { createContext, useState } from 'react';
 const MyContext = createContext();
 
 const MyContextProvider = ({ children }) => {
-    const [count, setCount] = useState(0);
-    const [name, setName] = useState('John Doe');
+    const [pagename, setPageName] = useState('');
 
     return (
-        <MyContext.Provider value={{ count, setCount, name, setName }}>
+        <MyContext.Provider value={{pagename, setPageName }}>
             {children}
         </MyContext.Provider>
     );

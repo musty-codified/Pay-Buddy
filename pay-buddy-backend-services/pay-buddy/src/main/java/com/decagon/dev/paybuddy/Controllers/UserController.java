@@ -39,6 +39,7 @@ public class UserController {
     public BaseResponse resetPassword(@RequestBody @Valid ResetPasswordRequest request, @PathVariable String token){
         return userService.resetPassword(request, token);
     }
+
 //    @PostMapping("/verify-token")
 //    public ResponseEntity<BaseResponse> verifyToken(@RequestBody @Valid VerifyTokenRequest verifyTokenRequest){
 //        return ResponseEntity.ok(userService.verifyToken(verifyTokenRequest));

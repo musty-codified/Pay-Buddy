@@ -7,7 +7,6 @@ import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
 import com.decagon.dev.paybuddy.exceptions.EmailNotConfirmedException;
-import com.decagon.dev.paybuddy.exceptions.UsernameNotFoundException;
 import com.decagon.dev.paybuddy.models.ResetPasswordToken;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
@@ -34,9 +33,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
-    public BaseResponse signUp(CreateUserRequest createUserRequest) {
+    public BaseResponse signUp(CreateUserRequest createUserRequest){
         BaseResponse response = new BaseResponse();
 
         if (createUserRequest.getFirstName().trim().length() == 0 ||
@@ -99,8 +100,8 @@ public class UserServiceImpl implements UserService {
         newUser.setConfirmationToken(token);
         userRepository.save(newUser);
 
-        String URL = "http://localhost:8083/api/v1/auth/confirmRegistration?token=" + token;
-        String link = "<h3>Hello " + createUserRequest.getFirstName() +
+        String URL = "http://localhost:8080/api/v1/auth/confirmRegistration?token=" + token;
+        String link = "<h3>Hello "  + createUserRequest.getFirstName()  +
                 "<br> Click the link below to activate your account <a href=" + URL + "><br>Activate</a></h3>";
 
         String subject = "Pay-Buddy Verification Code";
@@ -114,7 +115,6 @@ public class UserServiceImpl implements UserService {
         return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.SUCCESS,
                 "You have successful registered. Check your email to verify your account");
     }
-
     @Override
     public BaseResponse confirmRegistration(String token) {
         BaseResponse response = new BaseResponse();
@@ -141,7 +141,6 @@ public class UserServiceImpl implements UserService {
                     "User not found");
         }
     }
-
     private Collection<Role> getUserRoles(Collection<String> roleNames) {
         Collection<Role> roles = new HashSet<>();
         if (roleNames == null || roleNames.isEmpty()) {
@@ -162,7 +161,6 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("ErrorMessages.ACCESS_DENIED.getErrorMessage()");
         return roles;
     }
-
     @Override
     public BaseResponse login(LoginUserRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()
@@ -202,7 +200,7 @@ public class UserServiceImpl implements UserService {
         BaseResponse baseResponse = new BaseResponse();
         String email = forgotPasswordRequest.getEmail();
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent()) {
+        if (user.isPresent()){
             String generatedToken = jwtUtil.generatePasswordResetToken(email);
 
             ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
@@ -242,7 +240,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SocialLoginResponse socialLogin(SocialLoginUserRequest request) {
-        Optional<User> userFound = userRepository.findByEmail(request.getEmail());
+     Optional<User> userFound = userRepository.findByEmail(request.getEmail());
         if (!userFound.isPresent()) {
             String firstName = request.getFirstName();
             String lastName = request.getLastName();

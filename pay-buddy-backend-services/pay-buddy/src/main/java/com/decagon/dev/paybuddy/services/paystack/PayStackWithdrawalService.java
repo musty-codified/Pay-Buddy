@@ -9,4 +9,5 @@ import java.util.List;
 public interface PayStackWithdrawalService {
     ResponseEntity<List<Bank>> getAllBanks();
     ResponseEntity<String> withDrawFromWallet(String account_number, String bank_code, BigDecimal amount);
+    ResponseEntity<String> verifyAccountNumber(String account_number, String bank_code);
 }

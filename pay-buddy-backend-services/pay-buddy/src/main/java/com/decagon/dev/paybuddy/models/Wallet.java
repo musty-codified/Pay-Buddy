@@ -26,6 +26,7 @@ public class Wallet {
     private BigDecimal accountBalance;
     private String pin;
     @OneToOne
+    @JoinColumn(name = "user_user_id")
     private User user;
     private WalletStatus status;
     @OneToMany(mappedBy = "wallet")

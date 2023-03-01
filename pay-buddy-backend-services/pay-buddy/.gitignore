@@ -34,5 +34,6 @@ build/
 
 ###
 application-local.yml
+/src/main/resources/application-dev.properties
 ##resources/application-dev.properties
 

@@ -15,7 +15,5 @@ public class SocialLoginUserRequest {
     private  String lastName;
     @Email(message = "Email name cannot be blank")
     private  String email;
-    @NotBlank(message = "Confirm password name cannot be blank")
-    private  String password;
     private  String profileUrl;
 }

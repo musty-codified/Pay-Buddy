@@ -16,6 +16,6 @@ public interface WalletService {
     BaseResponse updateWalletPin(CreateTransactionPinDto createTransactionPinDto);
     ResponseEntity<List<Bank>> getAllBanks();
     ResponseEntity<String> walletWithdrawal(WithDrawalDto withDrawalDto);
-    ResponseEntity<String> verifyAccountNumber(String account_number, String bank_code);
+    ResponseEntity<String> verifyAccountNumber(String accountNumber, String bankCode);
 
 }

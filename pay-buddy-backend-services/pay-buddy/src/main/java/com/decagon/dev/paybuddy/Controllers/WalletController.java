@@ -48,7 +48,7 @@ public class WalletController {
         return walletService.walletWithdrawal(withDrawalDto);
     }
     @PostMapping("/verifyAccountNumber")
-    public ResponseEntity<String> verifyAccountNumber(@RequestParam String account_number, @RequestParam String bank_code){
-        return walletService.verifyAccountNumber(account_number, bank_code);
+    public ResponseEntity<String> verifyAccountNumber(@RequestParam String accountNumber, @RequestParam String bankCode){
+        return walletService.verifyAccountNumber(accountNumber, bankCode);
     }
 }

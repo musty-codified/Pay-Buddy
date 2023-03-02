@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Builder
 public class TransferRequest {
-    private final String reason ="Withdrawal from FoodMart Wallet";
+    private final String reason ="Withdrawal from pay-buddy Wallet";
     private BigDecimal amount;
     private String reference;
     private String recipient;

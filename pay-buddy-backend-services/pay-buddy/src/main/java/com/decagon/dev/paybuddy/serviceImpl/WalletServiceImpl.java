@@ -104,7 +104,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public ResponseEntity<String> verifyAccountNumber(String account_number, String bank_code) {
-        return payStackWithdrawalService.verifyAccountNumber(account_number, bank_code);
+    public ResponseEntity<String> verifyAccountNumber(String accountNumber, String bankCode) {
+        return payStackWithdrawalService.verifyAccountNumber(accountNumber, bankCode);
     }
 }

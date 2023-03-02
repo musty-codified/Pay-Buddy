@@ -7,7 +7,6 @@ import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;
 import com.decagon.dev.paybuddy.exceptions.EmailNotConfirmedException;
-import com.decagon.dev.paybuddy.exceptions.UsernameNotFoundException;
 import com.decagon.dev.paybuddy.models.ResetPasswordToken;
 import com.decagon.dev.paybuddy.models.Role;
 import com.decagon.dev.paybuddy.models.User;
@@ -34,9 +33,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
-    public BaseResponse signUp(CreateUserRequest createUserRequest) {
+    public BaseResponse signUp(CreateUserRequest createUserRequest){
         BaseResponse response = new BaseResponse();
 
         if (createUserRequest.getFirstName().trim().length() == 0 ||
@@ -99,8 +100,8 @@ public class UserServiceImpl implements UserService {
         newUser.setConfirmationToken(token);
         userRepository.save(newUser);
 
-        String URL = "http://localhost:8083/api/v1/auth/confirmRegistration?token=" + token;
-        String link = "<h3>Hello " + createUserRequest.getFirstName() +
+        String URL = "http://localhost:8080/api/v1/auth/confirmRegistration?token=" + token;
+        String link = "<h3>Hello "  + createUserRequest.getFirstName()  +
                 "<br> Click the link below to activate your account <a href=" + URL + "><br>Activate</a></h3>";
 
         String subject = "Pay-Buddy Verification Code";
@@ -114,25 +115,19 @@ public class UserServiceImpl implements UserService {
         return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.SUCCESS,
                 "You have successful registered. Check your email to verify your account");
     }
-
     @Override
     public BaseResponse confirmRegistration(String token) {
         BaseResponse response = new BaseResponse();
         Optional<User> existingUser = userRepository.findByConfirmationToken(token);
         if (existingUser.isPresent()) {
 
-            existingUser.get().setRoles(getUserRoles(Collections.singleton(String.valueOf(Roles.ROLE_USER))));
-            existingUser.get().setConfirmationToken(null);
-            existingUser.get().setIsEmailVerified(true);
-            userRepository.save(existingUser.get());
+            User user = existingUser.get();
+            user.setRoles(getUserRoles(Collections.singleton(String.valueOf(Roles.ROLE_USER))));
+            user.setConfirmationToken(null);
+            user.setIsEmailVerified(true);
+            userRepository.save(user);
 
-            Wallet wallet = new Wallet();
-            wallet.setAccountNumber(appUtil.generateAccountNumber(existingUser.get().getUserId(), existingUser.get().getEmail()));
-            wallet.setAccountBalance(BigDecimal.valueOf(0));
-            wallet.setPin("0000");
-            wallet.setUser(existingUser.get());
-            wallet.setStatus(WalletStatus.LOCKED);
-            walletRepository.save(wallet);
+            createWallet(user);
 
             return responseCodeUtil.updateResponseData(response, ResponseCodeEnum.SUCCESS,
                     "Account verification successful");
@@ -162,7 +157,6 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("ErrorMessages.ACCESS_DENIED.getErrorMessage()");
         return roles;
     }
-
     @Override
     public BaseResponse login(LoginUserRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()
@@ -171,12 +165,18 @@ public class UserServiceImpl implements UserService {
         if (!user.getIsEmailVerified())
             throw new EmailNotConfirmedException("Kindly confirm your email address");
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        Authentication authentication;
+        try {
+             authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (Exception e) {
+            throw new BadCredentialsException("Bad credentials");
+        }
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserDetails userDetails = customUserDetailService.loadUserByUsername(request.getEmail());
-        String token = jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.generateToken(userDetails.getUsername());
 
         LoginResponseDto responseDto = LoginResponseDto.builder()
                 .firstName(user.getFirstName())
@@ -202,7 +202,7 @@ public class UserServiceImpl implements UserService {
         BaseResponse baseResponse = new BaseResponse();
         String email = forgotPasswordRequest.getEmail();
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent()) {
+        if (user.isPresent()){
             String generatedToken = jwtUtil.generatePasswordResetToken(email);
 
             ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
@@ -242,8 +242,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SocialLoginResponse socialLogin(SocialLoginUserRequest request) {
-        Optional<User> userFound = userRepository.findByEmail(request.getEmail());
-        if (!userFound.isPresent()) {
+     Optional<User> userFound = userRepository.findByEmail(request.getEmail());
+        if (userFound.isEmpty()) {
             String firstName = request.getFirstName();
             String lastName = request.getLastName();
             String email = request.getEmail();
@@ -252,20 +252,24 @@ public class UserServiceImpl implements UserService {
             createUser.setFirstName(firstName);
             createUser.setLastName(lastName);
             createUser.setEmail(email);
-            createUser.setPassword("$2a$10$Ly3JVKkKFFQn2c97piHGou4T9aNuVSxbUvh9gUo17VaGfk9DPaB2K");
             createUser.setIsEmailVerified(true);
             userRepository.save(createUser);
+
+            createWallet(createUser);
         }
 
-        authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), "1234Buddy"));
+        String token = jwtUtil.generateToken(request.getEmail());
+        return new SocialLoginResponse(token);
+    }
 
-        UserDetails user = customUserDetailService.loadUserByUsername(request.getEmail());
-        String token = jwtUtil.generateToken(user);
-
-        SocialLoginResponse socialLoginResponse = new SocialLoginResponse(token);
-
-        return socialLoginResponse;
+    private void createWallet(User user) {
+        Wallet wallet = new Wallet();
+        wallet.setAccountNumber(appUtil.generateAccountNumber(user.getUserId(), user.getEmail()));
+        wallet.setAccountBalance(BigDecimal.ZERO);
+        wallet.setPin(passwordEncoder.encode("0000"));
+        wallet.setUser(user);
+        wallet.setStatus(WalletStatus.LOCKED);
+        walletRepository.save(wallet);
     }
 
 }

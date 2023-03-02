@@ -36,8 +36,6 @@ public class User
     private Boolean isEmailVerified = false;
     private Boolean isBvnVerified = false;
     private Boolean isLocked = false;
-    @OneToOne
-    private Wallet wallet;
     private String confirmationToken;
     private String phoneNumber;
     private int loginCount;

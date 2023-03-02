@@ -1,10 +1,12 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.responses.TransactionResponse;
+import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.models.Transaction;
 import com.decagon.dev.paybuddy.repositories.TransactionRepository;
 import com.decagon.dev.paybuddy.repositories.UserRepository;
 import com.decagon.dev.paybuddy.services.TransactionService;
+import com.decagon.dev.paybuddy.utilities.ResponseCodeUtil;
 import com.decagon.dev.paybuddy.utilities.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,9 +34,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         if (page > 0) page -= 1;
         Pageable pageable = PageRequest.of(page, limit);
-        Page<Transaction> pagelist = transactionRepository.findAll(pageable);
+        Page<Transaction> pageList = transactionRepository.findAll(pageable);
 
-        List<Transaction> transactionList = pagelist.getContent();
+        List<Transaction> transactionList = pageList.getContent();
 
         return TransactionResponse.mapFromTransaction(transactionList);
 

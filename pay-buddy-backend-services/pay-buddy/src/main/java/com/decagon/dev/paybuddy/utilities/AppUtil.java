@@ -40,7 +40,7 @@ public class AppUtil {
         return  formattedNumber;
     }
     public String generateAccountNumber(Long userId, String email) {
-        int randomNumber = ThreadLocalRandom.current().nextInt(1000000000, 2000000000);
+        int randomNumber = Math.abs(ThreadLocalRandom.current().nextInt(1000000000, 2000000000));
         String combinedString = userId + email.hashCode() + String.valueOf(randomNumber);
         return combinedString.substring(0, 10);
     }

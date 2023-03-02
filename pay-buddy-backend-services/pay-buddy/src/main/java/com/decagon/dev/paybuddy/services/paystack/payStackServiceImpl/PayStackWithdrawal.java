@@ -37,13 +37,16 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
     private final TransactionRepository walletTransactionRepository;
     private final EmailService emailService;
     private final UserUtil userUtil;
-    private HttpHeaders headers;
-    private String email ;
     private Wallet wallet;
     private User users;
-    private BigDecimal requestAmount;
-    private  BankDetails bankDetails;
+    private BankDetails bankDetails;
     private TransferRequest transferRequest;
+    public static HttpHeaders headers;
+
+    static {
+        headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + PayStackUtil.SECRET_KEY);
+    }
 
     @Override
     public ResponseEntity<List<Bank>> getAllBanks() {
@@ -61,13 +64,9 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
     }
     @Override
     public ResponseEntity<String> withDrawFromWallet(String accountNumber, String bankCode, BigDecimal amount) {
-        email = userUtil.getAuthenticatedUserEmail();
+        String email = userUtil.getAuthenticatedUserEmail();
         users = userRepository.findByEmail(email).get();
         wallet = walletRepository.findByUser_UserId(users.getUserId());
-        requestAmount = amount;
-
-        headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + PayStackUtil.SECRET_KEY);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> allBankResponse;
@@ -99,7 +98,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
 
                 wallet = walletRepository.findByUser_UserId(users.getUserId());
 
-                if (verifyWithdrawalAmount(requestAmount) > 0)
+                if (verifyWithdrawalAmount(amount) > 0)
                 {
                     bankDetails = bankDetailsRepository.findByAccountNumberAndBankCode(accountNumber, bankCode);
                     TransferRecipient transferRecipient;
@@ -126,7 +125,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
                             .accountNumber(bankDetails.getAccountNumber())
                             .bankCode(bankDetails.getBankCode())
                             .email(email)
-                            .amount(requestAmount)
+                            .amount(amount)
                             .build();
                     return createTransferRecipient(transferRecipient);
                 }
@@ -143,8 +142,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
 
     @Override
     public ResponseEntity<String> verifyAccountNumber(String accountNumber, String bankCode) {
-        headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + PayStackUtil.SECRET_KEY);
+
         RestTemplate restTemplate = new RestTemplate();
         String accountName;
         ResponseEntity<WithdrawalResponse> response = restTemplate.exchange(PayStackUtil.RESOLVE_BANK +
@@ -169,7 +167,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
             String recipient = transferRecipientResponse.getData().getRecipientCode();
             transferRequest = TransferRequest.builder()
                     .recipient(recipient)
-                    .amount(requestAmount)
+                    .amount(transferRecipient.getAmount())
                     .reference(PayStackUtil.generateTransactionReference())
                     .build();
             return initiateTransfer(transferRequest);
@@ -185,7 +183,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
         WithdrawalResponse newResponse = new WithdrawalResponse();
 
         if(response.getStatusCodeValue()==200){
-            updateWallet(requestAmount);
+            updateWallet(transferRequest.getAmount());
         return new ResponseEntity<>("Your account "+bankDetails.getAccountName()+
                 ": "+bankDetails.getAccountNumber()+" has been successfully credited with "
                 +transferRequest.getAmount(),HttpStatus.OK);

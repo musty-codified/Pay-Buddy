@@ -111,10 +111,10 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
                         bankDetails = new BankDetails();
                         bankDetails.setWallet(walletRepository.findByUser_UserId(users.getUserId()));
 
-                        bankDetails.setAccountName(verifiedBankDetails.getData().getAccount_name());
-                        bankDetails.setAccountNumber(verifiedBankDetails.getData().getAccount_number());
+                        bankDetails.setAccountName(verifiedBankDetails.getData().getAccountName());
+                        bankDetails.setAccountNumber(verifiedBankDetails.getData().getAccountNumber());
                         bankDetails.setBankCode(bankCode);
-                        bankDetails.setBankId(verifiedBankDetails.getData().getBank_id());
+                        bankDetails.setBankId(verifiedBankDetails.getData().getBankId());
 
                         bankDetailsRepository.save(bankDetails);
                         wallet.getBankDetails().add(bankDetails);
@@ -123,8 +123,8 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
                     }
                     transferRecipient = TransferRecipient.builder()
                             .name(bankDetails.getAccountName())
-                            .account_number(bankDetails.getAccountNumber())
-                            .bank_code(bankDetails.getBankCode())
+                            .accountNumber(bankDetails.getAccountNumber())
+                            .bankCode(bankDetails.getBankCode())
                             .email(email)
                             .amount(requestAmount)
                             .build();
@@ -153,7 +153,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
         if (response.getStatusCode().is2xxSuccessful()){
             WithdrawalResponse withdrawalResponse;
             withdrawalResponse = response.getBody();
-            accountName = withdrawalResponse.getData().getAccount_name();
+            accountName = withdrawalResponse.getData().getAccountName();
             return new ResponseEntity<>(accountName, HttpStatus.ACCEPTED);
         }
         return  new ResponseEntity<>("Account number not found", HttpStatus.BAD_REQUEST);
@@ -166,7 +166,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
                 , request, WithdrawalResponse.class);
         if (response.getStatusCode().is2xxSuccessful()) {
             WithdrawalResponse transferRecipientResponse = response.getBody();
-            String recipient = transferRecipientResponse.getData().getRecipient_code();
+            String recipient = transferRecipientResponse.getData().getRecipientCode();
             transferRequest = TransferRequest.builder()
                     .recipient(recipient)
                     .amount(requestAmount)

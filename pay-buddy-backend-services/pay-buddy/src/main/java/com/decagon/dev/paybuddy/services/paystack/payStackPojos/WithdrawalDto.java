@@ -1,5 +1,6 @@
 package com.decagon.dev.paybuddy.services.paystack.payStackPojos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Setter
@@ -9,10 +10,15 @@ import lombok.*;
 @Builder
 @ToString
 public class WithdrawalDto {
-    private String account_number;
-    private String account_name;
-    private int bank_id;
-    private String bank_code;
-    private String recipient_code;
+    @JsonProperty("account_number")
+    private String accountNumber;
+    @JsonProperty("account_name")
+    private String accountName;
+    @JsonProperty("bank_id")
+    private int bankId;
+    @JsonProperty("bank_code")
+    private String bankCode;
+    @JsonProperty("recipient_code")
+    private String recipientCode;
     private String reference;
 }

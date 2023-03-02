@@ -1,7 +1,7 @@
 package com.decagon.dev.paybuddy.Controllers;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
-import com.decagon.dev.paybuddy.dtos.requests.WithDrawalDto;
+import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
 import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.WalletService;
@@ -44,7 +44,7 @@ public class WalletController {
         return walletService.getAllBanks();
     }
     @PostMapping("/sendMoney")
-    public ResponseEntity<String> walletWithdrawal(@RequestBody WithDrawalDto withDrawalDto){
+    public ResponseEntity<String> walletWithdrawal(@RequestBody WithdrawalDto withDrawalDto){
         return walletService.walletWithdrawal(withDrawalDto);
     }
     @PostMapping("/verifyAccountNumber")

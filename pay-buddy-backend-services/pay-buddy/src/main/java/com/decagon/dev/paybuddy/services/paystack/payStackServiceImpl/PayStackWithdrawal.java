@@ -1,6 +1,7 @@
 package com.decagon.dev.paybuddy.services.paystack.payStackServiceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.EmailSenderDto;
+import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
 import com.decagon.dev.paybuddy.enums.TransactionType;
 import com.decagon.dev.paybuddy.models.BankDetails;
 import com.decagon.dev.paybuddy.models.Transaction;
@@ -37,154 +38,147 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
     private final TransactionRepository walletTransactionRepository;
     private final EmailService emailService;
     private final UserUtil userUtil;
-    private Wallet wallet;
-    private User users;
-    private BankDetails bankDetails;
-    private TransferRequest transferRequest;
-    public static HttpHeaders headers;
 
-    static {
-        headers = new HttpHeaders();
+
+    private HttpHeaders getHeaders() {
+        final HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + PayStackUtil.SECRET_KEY);
+        return headers;
+    }
+
+    private User getUserObjectWithEmail() {
+        final String email = userUtil.getAuthenticatedUserEmail();
+        final Optional<User> dbUser = userRepository.findByEmail(email);
+        return dbUser.isPresent() ? dbUser.get() : null;
     }
 
     @Override
     public ResponseEntity<List<Bank>> getAllBanks() {
-            RestTemplate restTemplate = new RestTemplate();
-            BankDetailsResponse response = restTemplate.getForObject(PayStackUtil.GET_ALL_BANKS, BankDetailsResponse.class);
-            if(response != null){
+        RestTemplate restTemplate = new RestTemplate();
+        BankDetailsResponse response = restTemplate.getForObject(PayStackUtil.GET_ALL_BANKS, BankDetailsResponse.class);
+        if(response != null){
             List<BankResponseDto> banks = response.getData();
             List<Bank> bankList = new ArrayList<>();
+
             for (BankResponseDto bank : banks) {
                 bankList.add(new Bank(bank.getName(), bank.getCode()));
             }
             return ResponseEntity.ok(bankList);
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @Override
-    public ResponseEntity<String> withDrawFromWallet(String accountNumber, String bankCode, BigDecimal amount) {
-        String email = userUtil.getAuthenticatedUserEmail();
-        users = userRepository.findByEmail(email).get();
-        wallet = walletRepository.findByUser_UserId(users.getUserId());
+    public ResponseEntity<String> withDrawFromWallet(WithdrawalDto withdrawalDto) {
+        final User users = getUserObjectWithEmail();
+        if(users == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
+        }
+        Wallet wallet = walletRepository.findByUser_UserId(users.getUserId());
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> allBankResponse;
 
         //QUERY TO FETCH FULL BANK DETAILS USING ACCOUNT NUMBER AND CORRESPONDING BANK CODE
-
-        try{
-        allBankResponse = restTemplate.exchange(PayStackUtil.RESOLVE_BANK + "?account_number=" + accountNumber +
-                        "&bank_code=" + bankCode, HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        } catch(Exception e){
+        try {
+            allBankResponse = restTemplate.exchange(PayStackUtil.RESOLVE_BANK
+                            + "?account_number=" + withdrawalDto.getAccountNumber()
+                            + "&bank_code=" + withdrawalDto.getBankCode(),
+                    HttpMethod.GET, new HttpEntity<>(getHeaders()), String.class);
+        } catch(Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Incorrect bank details", HttpStatus.BAD_REQUEST);
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            if (allBankResponse.getStatusCode().is2xxSuccessful()) {
-                WithdrawalResponse verifiedBankDetails = mapper.readValue(allBankResponse.getBody(),
-                        WithdrawalResponse.class);
-                Optional<User> user = userRepository.findByEmail(email);
-
-         //VERIFY IF USER IS AUTHORIZED AND GET USER'S WALLET
-
-                if (user.isPresent()) {
-                    users = user.get();
-                }
-                else {return new ResponseEntity<>("User not Authorized to make this request",
-                        HttpStatus.UNAUTHORIZED);}
-
-                wallet = walletRepository.findByUser_UserId(users.getUserId());
-
-                if (verifyWithdrawalAmount(amount) > 0)
-                {
-                    bankDetails = bankDetailsRepository.findByAccountNumberAndBankCode(accountNumber, bankCode);
-                    TransferRecipient transferRecipient;
-                    if (Objects.isNull(bankDetails))
-                    {
-
-          //IF BANK DETAILS IS NOT SAVED, SAVE IT AND PROCEED WITH TRANSACTION
-
-                        bankDetails = new BankDetails();
-                        bankDetails.setWallet(walletRepository.findByUser_UserId(users.getUserId()));
-
-                        bankDetails.setAccountName(verifiedBankDetails.getData().getAccountName());
-                        bankDetails.setAccountNumber(verifiedBankDetails.getData().getAccountNumber());
-                        bankDetails.setBankCode(bankCode);
-                        bankDetails.setBankId(verifiedBankDetails.getData().getBankId());
-
-                        bankDetailsRepository.save(bankDetails);
-                        wallet.getBankDetails().add(bankDetails);
-                        userRepository.save(users);
-
-                    }
-                    transferRecipient = TransferRecipient.builder()
-                            .name(bankDetails.getAccountName())
-                            .accountNumber(bankDetails.getAccountNumber())
-                            .bankCode(bankDetails.getBankCode())
-                            .email(email)
-                            .amount(amount)
-                            .build();
-                    return createTransferRecipient(transferRecipient);
-                }
-                else {
-                        return new ResponseEntity<>("Insufficient Balance in your wallet", HttpStatus.BAD_REQUEST);
-                    }
-                }
-                    return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
-            } catch(IOException e){
-                e.printStackTrace();
-                return new ResponseEntity<>("Check your bank details", HttpStatus.BAD_REQUEST);
-            }
+        if (!allBankResponse.getStatusCode().is2xxSuccessful()) {
+            return new ResponseEntity<>("An error occurred", HttpStatus.BAD_REQUEST);
         }
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            WithdrawalResponse verifiedBankDetails = mapper.readValue(allBankResponse.getBody(),
+                    WithdrawalResponse.class);
+
+            if (verifyWithdrawalAmount(withdrawalDto.getAmount(), wallet) > 0) {
+                BankDetails bankDetails = bankDetailsRepository.findByAccountNumberAndBankCode(
+                        withdrawalDto.getAccountNumber(), withdrawalDto.getBankCode());
+
+                //IF BANK DETAILS IS NOT SAVED, SAVE IT AND PROCEED WITH TRANSACTION
+                if (Objects.isNull(bankDetails)) {
+                    bankDetails = new BankDetails();
+
+                    bankDetails.setWallet(walletRepository.findByUser_UserId(users.getUserId()));
+                    bankDetails.setAccountName(verifiedBankDetails.getData().getAccountName());
+                    bankDetails.setAccountNumber(verifiedBankDetails.getData().getAccountNumber());
+                    bankDetails.setBankCode(withdrawalDto.getBankCode());
+                    bankDetails.setBankId(verifiedBankDetails.getData().getBankId());
+
+                    bankDetailsRepository.save(bankDetails);
+                    wallet.getBankDetails().add(bankDetails);
+                }
+
+                TransferRecipient transferRecipient = TransferRecipient.builder()
+                        .name(bankDetails.getAccountName())
+                        .accountNumber(bankDetails.getAccountNumber())
+                        .bankCode(bankDetails.getBankCode())
+                        .email(users.getEmail())
+                        .amount(withdrawalDto.getAmount())
+                        .build();
+
+                return createTransferRecipient(transferRecipient, bankDetails, wallet);
+            } else {
+                    return new ResponseEntity<>("Insufficient Balance in your wallet", HttpStatus.BAD_REQUEST);
+            }
+
+        } catch(IOException e){
+            e.printStackTrace();
+            return new ResponseEntity<>("Check your bank details", HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @Override
     public ResponseEntity<String> verifyAccountNumber(String accountNumber, String bankCode) {
-
-        RestTemplate restTemplate = new RestTemplate();
-        String accountName;
-        ResponseEntity<WithdrawalResponse> response = restTemplate.exchange(PayStackUtil.RESOLVE_BANK +
+        ResponseEntity<WithdrawalResponse> response = new RestTemplate().exchange(PayStackUtil.RESOLVE_BANK +
                         "?account_number=" + accountNumber + "&bank_code=" + bankCode,
-                HttpMethod.GET, new HttpEntity<>(headers), WithdrawalResponse.class);
+                HttpMethod.GET, new HttpEntity<>(getHeaders()), WithdrawalResponse.class);
+
+        WithdrawalResponse withdrawalResponse = response.getBody();
+        String accountName = withdrawalResponse.getData().getAccountName(); //TODO: this would throw a nullPointerException if Data is null
+
         if (response.getStatusCode().is2xxSuccessful()){
-            WithdrawalResponse withdrawalResponse;
-            withdrawalResponse = response.getBody();
-            accountName = withdrawalResponse.getData().getAccountName();
             return new ResponseEntity<>(accountName, HttpStatus.ACCEPTED);
         }
         return  new ResponseEntity<>("Account number not found", HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<String> createTransferRecipient(TransferRecipient transferRecipient) {
-        HttpEntity<TransferRecipient> request = new HttpEntity<>(transferRecipient, headers);
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<WithdrawalResponse> response = restTemplate.postForEntity(PayStackUtil.CREATE_TRANSFER_RECEIPIENT
+    public ResponseEntity<String> createTransferRecipient(TransferRecipient transferRecipient, BankDetails bankDetails, Wallet wallet) {
+        HttpEntity<TransferRecipient> request = new HttpEntity<>(transferRecipient, getHeaders());
+
+        ResponseEntity<WithdrawalResponse> response = new RestTemplate().postForEntity(PayStackUtil.CREATE_TRANSFER_RECEIPIENT
                 , request, WithdrawalResponse.class);
+
+        WithdrawalResponse transferRecipientResponse = response.getBody();
+        String recipient = transferRecipientResponse.getData().getRecipientCode(); //TODO: this would throw a nullPointerException if Data is null
+
         if (response.getStatusCode().is2xxSuccessful()) {
-            WithdrawalResponse transferRecipientResponse = response.getBody();
-            String recipient = transferRecipientResponse.getData().getRecipientCode();
-            transferRequest = TransferRequest.builder()
+            TransferRequest transferRequest = TransferRequest.builder()
                     .recipient(recipient)
                     .amount(transferRecipient.getAmount())
                     .reference(PayStackUtil.generateTransactionReference())
                     .build();
-            return initiateTransfer(transferRequest);
+            return initiateTransfer(transferRequest, bankDetails, wallet);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<String> initiateTransfer(TransferRequest transferRequest){
-        HttpEntity<TransferRequest> request = new HttpEntity<>(transferRequest, headers);
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.postForEntity(PayStackUtil.INITIATE_TRANSFER, request,
-                String.class);
-        WithdrawalResponse newResponse = new WithdrawalResponse();
+    public ResponseEntity<String> initiateTransfer(TransferRequest transferRequest, BankDetails bankDetails, Wallet wallet){
+        HttpEntity<TransferRequest> request = new HttpEntity<>(transferRequest, getHeaders());
 
-        if(response.getStatusCodeValue()==200){
-            updateWallet(transferRequest.getAmount());
-        return new ResponseEntity<>("Your account "+bankDetails.getAccountName()+
+        ResponseEntity<String> response = new RestTemplate().postForEntity(PayStackUtil.INITIATE_TRANSFER, request,
+                String.class);
+
+        if (response.getStatusCodeValue() == 200) {
+            updateWallet(transferRequest, wallet, bankDetails);
+            return new ResponseEntity<>("Your account "+bankDetails.getAccountName()+
                 ": "+bankDetails.getAccountNumber()+" has been successfully credited with "
                 +transferRequest.getAmount(),HttpStatus.OK);
         }
@@ -193,33 +187,32 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
 
     //CHECKS IF AMOUNT TO BE WITHDRAWN IS LESS OR EQUAL TO WALLET BALANCE
 
-    public int verifyWithdrawalAmount(BigDecimal amount){
+    public int verifyWithdrawalAmount(BigDecimal amount, Wallet wallet){
         if(wallet.getAccountBalance().compareTo(amount)>=0)
             return 1;
         return -1;
     }
 
-    public void updateWallet(BigDecimal amount){
-        BigDecimal balance = wallet.getAccountBalance().subtract(amount);
+    public void updateWallet(TransferRequest transferRequest, Wallet wallet, BankDetails bankDetails){
+        BigDecimal balance = wallet.getAccountBalance().subtract(transferRequest.getAmount());
         wallet.setAccountBalance(balance);
         walletRepository.save(wallet);
 
         Transaction walletTransaction = Transaction.builder()
                 .wallet(wallet)
                 .transactionType(TransactionType.WITHDRAWAL)
-                .amount(amount)
+                .amount(transferRequest.getAmount())
                 .transactionReference(transferRequest.getReference())
                 .build();
         walletTransactionRepository.save(walletTransaction);
 
         EmailSenderDto mailDto = EmailSenderDto.builder()
-                .to(users.getEmail())
-                .subject("Wallet debit"+ " Your wallet has been debited with "+ amount)
-                .content("A withdrawal of "+ amount+" has been sent to your account: "+bankDetails.getAccountName()+" "
+                .to(wallet.getUser().getEmail())
+                .subject("Wallet debit"+ " Your wallet has been debited with "+ transferRequest.getAmount())
+                .content("A withdrawal of "+ transferRequest.getAmount()+" has been sent to your account: "+bankDetails.getAccountName()+" "
                         +bankDetails.getAccountNumber()+ " Your new balance is now: "+ wallet.getAccountBalance()
                         +"Reference: "+ transferRequest.getReference())
                 .build();
         emailService.sendMail(mailDto);
     }
-
 }

@@ -1,7 +1,7 @@
 package com.decagon.dev.paybuddy.services;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
-import com.decagon.dev.paybuddy.dtos.requests.WithDrawalDto;
+import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
 import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.paystack.payStackPojos.Bank;
@@ -15,7 +15,7 @@ public interface WalletService {
     ResponseEntity<String> verifyPayment(String reference, String transactionType);
     BaseResponse updateWalletPin(CreateTransactionPinDto createTransactionPinDto);
     ResponseEntity<List<Bank>> getAllBanks();
-    ResponseEntity<String> walletWithdrawal(WithDrawalDto withDrawalDto);
+    ResponseEntity<String> walletWithdrawal(WithdrawalDto withDrawalDto);
     ResponseEntity<String> verifyAccountNumber(String accountNumber, String bankCode);
 
 }

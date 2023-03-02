@@ -8,5 +8,5 @@ import lombok.Setter;
 public class WithdrawalResponse {
     private boolean status;
     private String message;
-    private WithdrawalDto data;
+    private PaystackWithdrawalDto data;
 }

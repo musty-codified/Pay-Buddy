@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class WithdrawalDto {
+public class PaystackWithdrawalDto {
     @JsonProperty("account_number")
     private String accountNumber;
     @JsonProperty("account_name")

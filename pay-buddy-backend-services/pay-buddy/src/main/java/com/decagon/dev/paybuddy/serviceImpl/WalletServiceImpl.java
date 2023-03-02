@@ -1,7 +1,7 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
-import com.decagon.dev.paybuddy.dtos.requests.WithDrawalDto;
+import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
 import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.models.User;
@@ -98,9 +98,8 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public ResponseEntity<String> walletWithdrawal(WithDrawalDto withDrawalDto) {
-
-        return payStackWithdrawalService.withDrawFromWallet(withDrawalDto.getAccount_number(), withDrawalDto.getBank_code(), withDrawalDto.getAmount());
+    public ResponseEntity<String> walletWithdrawal(WithdrawalDto withDrawalDto) {
+        return payStackWithdrawalService.withDrawFromWallet(withDrawalDto);
     }
 
     @Override

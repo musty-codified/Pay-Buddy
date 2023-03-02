@@ -17,6 +17,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table (name = "wallet_tbl")
 public class Wallet {
 
     @Id
@@ -37,6 +38,6 @@ public class Wallet {
 
     @UpdateTimestamp
     private LocalDate lastTransactionDate;
-    @OneToMany
-    private List<Transaction> transactionHistory;
+    @OneToMany (mappedBy = "wallet", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
 }

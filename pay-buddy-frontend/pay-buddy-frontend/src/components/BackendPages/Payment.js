@@ -1,4 +1,4 @@
-import { useContext } from "react";
+gtiimport { useContext } from "react";
 import { MyContext } from "../../statemanagement/ComponentState";
 import "./paymentStyle.css"
 
@@ -21,9 +21,8 @@ const Payment = () => {
                     <div>
                         <Link to="/pay-buddy/send-money-1" >
                             <h3 className="payment-header-title">Send Money</h3>
-                            <p className="payment-header-p">Lorem Ipsum is simply dummy text of the 
-                                printing and typesetting industry. Lorem Ipsum has been the 
-                                industry's standard dummy text ever since the 1500s</p>
+                            <p className="payment-header-p">Send money instantly to family and 
+                            friends without any hidden charges</p>
                         </Link>
                         
                     </div>
@@ -34,9 +33,8 @@ const Payment = () => {
                     </div>
                     <div>
                         <h3 className="payment-header-title">Buy Airtime</h3>
-                        <p className="payment-header-p">Lorem Ipsum is simply dummy text of the 
-                            printing and typesetting industry. Lorem Ipsum has been the 
-                            industry's standard dummy text ever since the 1500s</p>
+                        <p className="payment-header-p">Never run out of airtime to reach important people in your life.
+                         Get 10% discount on every recharge</p>
                     </div>
                 </div>
                 <div className="payment-item">
@@ -45,9 +43,8 @@ const Payment = () => {
                     </div>
                     <div>
                         <h3 className="payment-header-title">Buy Data</h3>
-                        <p className="payment-header-p">Lorem Ipsum is simply dummy text of the 
-                            printing and typesetting industry. Lorem Ipsum has been the 
-                            industry's standard dummy text ever since the 1500s</p>
+                        <p className="payment-header-p">Data is life! Buy instant data to stay connected to your world.
+                         Get a 20% discount on every data purchase</p>
                     </div>
                 </div>
                 <div className="payment-item">
@@ -56,9 +53,8 @@ const Payment = () => {
                     </div>
                     <div>
                         <h3 className="payment-header-title">Buy Electricity</h3>
-                        <p className="payment-header-p">Lorem Ipsum is simply dummy text of the 
-                            printing and typesetting industry. Lorem Ipsum has been the 
-                            industry's standard dummy text ever since the 1500s</p>
+                        <p className="payment-header-p">Never run out of power! 
+                        Prepaid and postpaid services available</p>
                     </div>
                 </div>
             </div>

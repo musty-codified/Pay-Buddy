@@ -43,14 +43,14 @@ public class JwtUtils {
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails);
+        return createToken(claims, email);
     }
-    private String createToken(Map<String, Object> claims, UserDetails userDetails) {
+    private String createToken(Map<String, Object> claims, String email) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
                 .signWith(SignatureAlgorithm.HS256, JWT_SECRET).compact();

@@ -253,6 +253,7 @@ public class UserServiceImpl implements UserService {
             createUser.setLastName(lastName);
             createUser.setEmail(email);
             createUser.setIsEmailVerified(true);
+            createUser.setRoles(getUserRoles(Collections.singleton(String.valueOf(Roles.ROLE_USER))));
             userRepository.save(createUser);
 
             createWallet(createUser);

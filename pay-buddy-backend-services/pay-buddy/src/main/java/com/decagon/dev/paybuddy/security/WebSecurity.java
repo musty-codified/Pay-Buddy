@@ -33,7 +33,7 @@ public class WebSecurity {
             path +"/login", path +"/social-login", path + "/forgot-password", path + "/reset-password",
             path + "/register", path + "/verify-code", path + "/references" ,
             "/v3/api-docs/**",  "/configuration/**",   "/swagger*/**",
-            "/swagger-ui/**",  "/webjars/**", "/wallet/verifyPayment/**",
+            "/swagger-ui/**",  "/webjars/**", "/wallet/**", "/wallet/verifyPayment/**",
             path + "/register", path + "/verify-code", path + "/references",
             path + "/forgot-password/**",
             path + "/reset-password/**",

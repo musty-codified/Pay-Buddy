@@ -75,6 +75,9 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
         }
         Wallet wallet = walletRepository.findByUser_UserId(users.getUserId());
 
+        if (!wallet.getPin().equals(withdrawalDto.getWalletPin()))
+            return new ResponseEntity<>("Invalid transaction pin", HttpStatus.UNAUTHORIZED);
+
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> allBankResponse;
 

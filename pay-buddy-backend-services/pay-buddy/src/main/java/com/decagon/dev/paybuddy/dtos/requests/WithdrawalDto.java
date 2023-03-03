@@ -16,4 +16,6 @@ public class WithdrawalDto {
     private String bankCode;
     @NotNull
     private BigDecimal amount;
+    @NotNull
+    private String walletPin;
 }

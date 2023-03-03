@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
             Wallet wallet = new Wallet();
             wallet.setAccountNumber(appUtil.generateAccountNumber(existingUser.get().getUserId(), existingUser.get().getEmail()));
             wallet.setAccountBalance(BigDecimal.valueOf(0));
-            wallet.setPin("0000");
+            wallet.setPin(passwordEncoder.encode("0000"));
             wallet.setUser(existingUser.get());
             wallet.setStatus(WalletStatus.LOCKED);
             walletRepository.save(wallet);

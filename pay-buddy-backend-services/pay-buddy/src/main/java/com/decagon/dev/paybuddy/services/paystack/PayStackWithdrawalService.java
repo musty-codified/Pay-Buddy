@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PayStackWithdrawalService {
     ResponseEntity<List<Bank>> getAllBanks();
-    ResponseEntity<String> withDrawFromWallet(WithdrawalDto withdrawalDto);
+    ResponseEntity<?> withDrawFromWallet(WithdrawalDto withdrawalDto);
     ResponseEntity<String> verifyAccountNumber(String account_number, String bank_code);
 }

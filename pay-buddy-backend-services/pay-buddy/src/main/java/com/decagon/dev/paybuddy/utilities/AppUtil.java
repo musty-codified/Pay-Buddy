@@ -44,5 +44,12 @@ public class AppUtil {
         String combinedString = userId + email.hashCode() + String.valueOf(randomNumber);
         return combinedString.substring(0, 10);
     }
+    public String concealAccountNumber(String accountNumber) {
+        if (accountNumber == null || accountNumber.length() != 10)
+            throw new IllegalArgumentException("Account number must be a 10-character string");
+
+        String obscured = "XXXXXXXX" + accountNumber.substring(6);
+        return obscured.substring(obscured.length() - 10);
+    }
 
 }

@@ -44,7 +44,7 @@ public class WalletController {
         return walletService.getAllBanks();
     }
     @PostMapping("/sendMoney")
-    public ResponseEntity<String> walletWithdrawal(@RequestBody WithdrawalDto withdrawalDto){
+    public ResponseEntity<?> walletWithdrawal(@RequestBody WithdrawalDto withdrawalDto){
         return walletService.walletWithdrawal(withdrawalDto);
     }
     @PostMapping("/verifyAccountNumber")

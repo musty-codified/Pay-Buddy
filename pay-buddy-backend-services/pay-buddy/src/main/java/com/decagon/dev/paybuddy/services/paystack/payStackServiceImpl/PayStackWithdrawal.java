@@ -2,6 +2,8 @@ package com.decagon.dev.paybuddy.services.paystack.payStackServiceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.EmailSenderDto;
 import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
+import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
+import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
 import com.decagon.dev.paybuddy.models.BankDetails;
 import com.decagon.dev.paybuddy.models.Transaction;
@@ -14,20 +16,19 @@ import com.decagon.dev.paybuddy.repositories.WalletRepository;
 import com.decagon.dev.paybuddy.services.EmailService;
 import com.decagon.dev.paybuddy.services.paystack.PayStackWithdrawalService;
 import com.decagon.dev.paybuddy.services.paystack.payStackPojos.*;
+import com.decagon.dev.paybuddy.utilities.AppUtil;
 import com.decagon.dev.paybuddy.utilities.PayStackUtil;
 import com.decagon.dev.paybuddy.utilities.UserUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -38,6 +39,8 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
     private final TransactionRepository walletTransactionRepository;
     private final EmailService emailService;
     private final UserUtil userUtil;
+    private final AppUtil appUtil;
+    private final PasswordEncoder passwordEncoder;
 
 
     private HttpHeaders getHeaders() {
@@ -68,14 +71,14 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @Override
-    public ResponseEntity<String> withDrawFromWallet(WithdrawalDto withdrawalDto) {
+    public ResponseEntity<?> withDrawFromWallet(WithdrawalDto withdrawalDto) {
         final User users = getUserObjectWithEmail();
-        if(users == null) {
+        if(users == null)
             return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
-        }
+
         Wallet wallet = walletRepository.findByUser_UserId(users.getUserId());
 
-        if (!wallet.getPin().equals(withdrawalDto.getWalletPin()))
+        if (!passwordEncoder.matches(withdrawalDto.getWalletPin(), wallet.getPin()))
             return new ResponseEntity<>("Invalid transaction pin", HttpStatus.UNAUTHORIZED);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -145,7 +148,10 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
                 HttpMethod.GET, new HttpEntity<>(getHeaders()), WithdrawalResponse.class);
 
         WithdrawalResponse withdrawalResponse = response.getBody();
-        String accountName = withdrawalResponse.getData().getAccountName(); //TODO: this would throw a nullPointerException if Data is null
+        if (withdrawalResponse == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        String accountName = withdrawalResponse.getData().getAccountName();
 
         if (response.getStatusCode().is2xxSuccessful()){
             return new ResponseEntity<>(accountName, HttpStatus.ACCEPTED);
@@ -153,14 +159,19 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
         return  new ResponseEntity<>("Account number not found", HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<String> createTransferRecipient(TransferRecipient transferRecipient, BankDetails bankDetails, Wallet wallet) {
+    public ResponseEntity<SendMoneyResponse> createTransferRecipient(TransferRecipient transferRecipient,
+                                                                     BankDetails bankDetails, Wallet wallet) {
         HttpEntity<TransferRecipient> request = new HttpEntity<>(transferRecipient, getHeaders());
 
-        ResponseEntity<WithdrawalResponse> response = new RestTemplate().postForEntity(PayStackUtil.CREATE_TRANSFER_RECEIPIENT
-                , request, WithdrawalResponse.class);
+        ResponseEntity<WithdrawalResponse> response = new RestTemplate().postForEntity(
+                PayStackUtil.CREATE_TRANSFER_RECEIPIENT
+                , request, WithdrawalResponse.class
+        );
 
         WithdrawalResponse transferRecipientResponse = response.getBody();
-        String recipient = transferRecipientResponse.getData().getRecipientCode(); //TODO: this would throw a nullPointerException if Data is null
+        if (transferRecipientResponse == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        String recipient = transferRecipientResponse.getData().getRecipientCode();
 
         if (response.getStatusCode().is2xxSuccessful()) {
             TransferRequest transferRequest = TransferRequest.builder()
@@ -173,19 +184,27 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<String> initiateTransfer(TransferRequest transferRequest, BankDetails bankDetails, Wallet wallet){
+    public ResponseEntity<SendMoneyResponse> initiateTransfer(TransferRequest transferRequest,
+                                                              BankDetails bankDetails, Wallet wallet){
         HttpEntity<TransferRequest> request = new HttpEntity<>(transferRequest, getHeaders());
 
         ResponseEntity<String> response = new RestTemplate().postForEntity(PayStackUtil.INITIATE_TRANSFER, request,
                 String.class);
 
-        if (response.getStatusCodeValue() == 200) {
+        if (response.getStatusCode().is2xxSuccessful()) {
             updateWallet(transferRequest, wallet, bankDetails);
-            return new ResponseEntity<>("Your account "+bankDetails.getAccountName()+
-                ": "+bankDetails.getAccountNumber()+" has been successfully credited with "
-                +transferRequest.getAmount(),HttpStatus.OK);
+            SendMoneyResponse sendMoneyResponse = SendMoneyResponse.builder()
+                    .RecipientName(bankDetails.getAccountName())
+                    .recipientBankCode(bankDetails.getBankCode())
+                    .recipientAccountNumber(appUtil.concealAccountNumber(bankDetails.getAccountNumber()))
+                    .transactionReference(transferRequest.getReference())
+                    .amountSent(transferRequest.getAmount())
+                    .date(new Date()).build();
+            sendMoneyResponse.setCode(0);
+            sendMoneyResponse.setDescription(ResponseCodeEnum.SUCCESS.getDescription());
+            return new ResponseEntity<>(sendMoneyResponse, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Transfer Failed. Try again",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     //CHECKS IF AMOUNT TO BE WITHDRAWN IS LESS OR EQUAL TO WALLET BALANCE
@@ -203,18 +222,20 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
 
         Transaction walletTransaction = Transaction.builder()
                 .wallet(wallet)
-                .transactionType(TransactionType.WITHDRAWAL)
+                .transactionType(TransactionType.DEBIT)
                 .amount(transferRequest.getAmount())
                 .transactionReference(transferRequest.getReference())
+                .transactionStatus(TransactionStatus.SUCCESS)
                 .build();
         walletTransactionRepository.save(walletTransaction);
 
         EmailSenderDto mailDto = EmailSenderDto.builder()
                 .to(wallet.getUser().getEmail())
-                .subject("Wallet debit"+ " Your wallet has been debited with "+ transferRequest.getAmount())
-                .content("A withdrawal of "+ transferRequest.getAmount()+" has been sent to your account: "+bankDetails.getAccountName()+" "
-                        +bankDetails.getAccountNumber()+ " Your new balance is now: "+ wallet.getAccountBalance()
-                        +"Reference: "+ transferRequest.getReference())
+                .subject("Debit Alert: "+ "N "+ transferRequest.getAmount())
+                .content("A withdrawal of "+ transferRequest.getAmount()+" has been sent to : "
+                        +bankDetails.getAccountName()+" " +appUtil.concealAccountNumber(bankDetails.getAccountNumber())
+                        + " Your new balance is now: "
+                        + wallet.getAccountBalance() +" Reference: "+ transferRequest.getReference())
                 .build();
         emailService.sendMail(mailDto);
     }

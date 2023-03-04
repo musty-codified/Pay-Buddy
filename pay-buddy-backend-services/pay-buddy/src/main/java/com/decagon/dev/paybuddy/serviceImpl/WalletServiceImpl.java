@@ -98,7 +98,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public ResponseEntity<String> walletWithdrawal(WithdrawalDto withdrawalDto) {
+    public ResponseEntity<?> walletWithdrawal(WithdrawalDto withdrawalDto) {
         return payStackWithdrawalService.withDrawFromWallet(withdrawalDto);
     }
 

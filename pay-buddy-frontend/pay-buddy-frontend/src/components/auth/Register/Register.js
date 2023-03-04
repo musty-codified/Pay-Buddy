@@ -1,6 +1,6 @@
 import './register.css';
 import React, { useState} from "react";
-import { apiPost } from './axios';
+import appApi from "../../../apis/AppApi";
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
@@ -91,7 +91,7 @@ const Register =()=> {
  const handleClick=(e)=> {
     e.preventDefault();
     setIsLoading(true)
-    apiPost("auth/register", {
+    appApi.post("/api/v1/auth/register", {
         firstName: firstName,
         lastName: lastName,
         otherName: otherName,

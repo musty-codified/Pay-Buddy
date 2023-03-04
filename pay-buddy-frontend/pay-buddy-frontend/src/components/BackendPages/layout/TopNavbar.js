@@ -7,16 +7,23 @@ const TopNavbar = () => {
   const { pagename, setPageName } = useContext(MyContext);
   const pageGroupName = (pagename =="Payment" || pagename=="Dashboard")?null:"Payment ";
 
-  let fullName="";
+    let fullName="";
     let  profileImage ="";
     let token = localStorage.getItem("token");
+    let user = localStorage.getItem("user");
 
     const navigate= useNavigate();
-    const userProfile = localStorage.getItem("userProfile");
-    if(token || userProfile){
-        const user= JSON.parse(userProfile);
-        fullName= user.name;
+    
+    if(token && user){
+        user= JSON.parse(user);
+        fullName= user.firstName +" " + user.lastName;
         profileImage = user.picture;
+        console.log(user);
+
+        console.log(fullName+" "+profileImage+" "+token)
+        console.log(token);
+    }else{
+      navigate("/login");
     }
     const logout = () => {
         localStorage.removeItem("userProfile");
@@ -48,9 +55,13 @@ const TopNavbar = () => {
                   </ul>
                 </li>
                 <li className="nav-item dropdown">
-                 <a className="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                    <img src={profileImage} className="rounded-circle" height={48} alt="" loading="lazy" />
-                  </a>
+                  
+                    <a className="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                      <div class="profileImage">
+                        <img src={profileImage} className="rounded-circle" height={48} alt="" loading="lazy" />
+                      </div>
+                    </a>
+                 
                   <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                     <li><a className="dropdown-item" href="#">My profile</a></li>
                     <li><a className="dropdown-item" href="#">Settings</a></li>

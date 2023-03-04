@@ -57,8 +57,8 @@ const TransactionPinInput = async(e)=>{
                                 name="username" placeholder="4 digit transaction pin"/>
                         </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
-                            <label htmlFor="username" className="form-label">Confirm Pin</label>
-                            <input type="email" className="form-control" id="username" value={confirmCreatePin} onChange={(e)=> {
+                            <label htmlFor="username" className="form-label form-label-pin">Confirm Pin</label>
+                            <input type="email" className="form-control form-control-pin" id="username" value={confirmCreatePin} onChange={(e)=> {
                                 setIsError(false)
                                 setConfirmCreatePin(e.target.value)
                             }
@@ -67,7 +67,7 @@ const TransactionPinInput = async(e)=>{
                         </div>
                         {isError && <div style={{color: "red"}}>{errorMessage}</div>}
                         <div className="mb-3 mt-5">
-                        <button className="btn btn-primary" onClick={TransactionPinInput}>Create</button>
+                        <button className="btn btn-primary btn-pin" onClick={TransactionPinInput}>Create</button>
                     </div>
                     </div>
                 </Modal.Body>

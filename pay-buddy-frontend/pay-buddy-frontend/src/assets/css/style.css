@@ -143,5 +143,16 @@ form button {
     font-size: 20px !important;
 }
 
+.profileImage{
+    height:48px;
+    width: 48px;
+    background-color: var(--primary50);
+    border-radius: 50%;
+}
+
+.accountName{
+    height: 35px;
+}
+
 
 

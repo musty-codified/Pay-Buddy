@@ -1,6 +1,7 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
+import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
 import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.models.User;
@@ -9,7 +10,9 @@ import com.decagon.dev.paybuddy.repositories.UserRepository;
 import com.decagon.dev.paybuddy.repositories.WalletRepository;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.WalletService;
+import com.decagon.dev.paybuddy.services.paystack.PayStackWithdrawalService;
 import com.decagon.dev.paybuddy.services.paystack.PaystackPaymentService;
+import com.decagon.dev.paybuddy.services.paystack.payStackPojos.Bank;
 import com.decagon.dev.paybuddy.utilities.ResponseCodeUtil;
 import com.decagon.dev.paybuddy.utilities.UserUtil;
 import lombok.AllArgsConstructor;
@@ -20,10 +23,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 @Slf4j
 @Service
 @AllArgsConstructor
 public class WalletServiceImpl implements WalletService {
+    private final PayStackWithdrawalService payStackWithdrawalService;
     private final PaystackPaymentService paystackPaymentService;
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
@@ -84,5 +90,20 @@ public class WalletServiceImpl implements WalletService {
         }
         return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR,
                 "Wallet not found");
+    }
+    @Override
+    public ResponseEntity<List<Bank>> getAllBanks() {
+
+        return payStackWithdrawalService.getAllBanks();
+    }
+
+    @Override
+    public ResponseEntity<?> walletWithdrawal(WithdrawalDto withdrawalDto) {
+        return payStackWithdrawalService.withDrawFromWallet(withdrawalDto);
+    }
+
+    @Override
+    public ResponseEntity<String> verifyAccountNumber(String accountNumber, String bankCode) {
+        return payStackWithdrawalService.verifyAccountNumber(accountNumber, bankCode);
     }
 }

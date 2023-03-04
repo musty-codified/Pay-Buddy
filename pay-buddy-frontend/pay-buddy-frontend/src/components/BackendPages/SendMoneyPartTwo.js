@@ -1,11 +1,15 @@
 import sendMoneyLogo from "../../assets/images/sendmoney-logo.svg";
 import axios from "axios";
 import { bankList } from "../../data/SendMoneyData";
-import { Link } from "react-router-dom";
+import { json, Link,useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from "../../statemanagement/ComponentState";
 
 const SendMoneyPartTwo = () => {
+    const navigate= useNavigate();
+    let bankDetails = JSON.parse(localStorage.getItem("bankDetails"));
+    console.log(bankDetails);
+    if(bankDetails["accountName"]=="") navigate("/pay-buddy/send-money-1"); 
 
     const { pagename, setPageName } = useContext(MyContext);
     setPageName("Send Money");

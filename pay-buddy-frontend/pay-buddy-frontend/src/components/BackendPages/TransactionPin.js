@@ -4,6 +4,7 @@ import "./TransactionPin.css";
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import appApi from "../../apis/AppApi";
+import { notifyError, notifySuccess } from "../notification/Toastify";
 
 function TransactionPin(props) {
     const [pin, setPin] = useState("");
@@ -17,26 +18,31 @@ const TransactionPinInput = async(e)=>{
     setIsError(true)
     setErrorMessage("Pin do not match")
    }else{
+    // appApi.put("api/v1/wallet/updateWalletPin", {pin:pin})
+    // .then(res => {
+    //     console.log(res);
+            // setPin("")
+            // setConfirmPin("")
+    // }).catch(err => console.log(err))
+    const token = localStorage.getItem('token')
+        try {
+            const {data} = await axios.put('http://localhost:8080/api/v1/wallet/updateWalletPin', {pin}, {headers:{
+                Authorization:`Bearer ${token}`
+        }})
+             console.log("data is ", data)
+             console.log("code is ", data.code)
 
-    appApi.put("api/v1/wallet/updateWalletPin", {pin:pin})
-    .then(res => {
-        console.log(res);
-
-    }).catch(err => console.log(err))
-    // const token = localStorage.getItem('token')
-    //     try {
-    //         // const {data} = await appApi.put("/api/v1/wallet/updateWalletPin", {pin});
-    //         const {data} = await axios.put('http://localhost:8080/api/v1/wallet/updateWalletPin', {pin}, {headers:{
-    //             Authorization:`Bearer ${token}`
-    //     }})
-    //          console.log("data is ", data)
-    //             setPin("")
-    //             setConfirmPin("")
-    //             toast.success("Pin changed successfully")
-    // }catch (error) {
-    //     console.log(error)
-    //     toast.error("Something went wrong")
-    // }
+             // const successMessage = notifySuccess("Success")
+             if (data.code === 0){
+                 toast.success("success")
+                }
+                setPin("")
+                setConfirmPin("")
+                // alert(notifyError("hello"))
+    }catch (error) {
+        console.log(error)
+            notifyError("Internal server Error")
+    }
     }   
     };
     return (

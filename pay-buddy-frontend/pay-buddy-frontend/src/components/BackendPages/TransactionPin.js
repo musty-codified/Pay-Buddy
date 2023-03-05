@@ -1,37 +1,42 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import {Button} from "react-bootstrap";
-import { ToastContainer } from 'react-toastify';
+import "./TransactionPin.css";
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import appApi from "../../apis/AppApi";
-import "./TransactionPin.css";
 
 function TransactionPin(props) {
-    const [createPin, setCreatePin] = useState("");
-    const [confirmCreatePin, setConfirmCreatePin] = useState("");
+    const [pin, setPin] = useState("");
+    const [confirmPin, setConfirmPin] = useState("");
     const [isError, setIsError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
-
-
+   
 const TransactionPinInput = async(e)=>{
     e.preventDefault()
-   if(createPin !== confirmCreatePin){
+   if(pin !== confirmPin){
     setIsError(true)
-    setErrorMessage("Passwords do not match")
+    setErrorMessage("Pin do not match")
    }else{
-        try {
-            const {data} = await appApi.post("/api/v1/wallet/updateWalletPin", {createPin, confirmCreatePin});
-            if (data.status === 200){
-                setCreatePin("")
-                setConfirmCreatePin("")
-                toast.success(data.data.description)
-        } 
-    }catch (error) {
-        console.log(error)
-        toast.error("Something went wrong")
-    }
+
+    appApi.put("api/v1/wallet/updateWalletPin", {pin:pin})
+    .then(res => {
+        console.log(res);
+
+    }).catch(err => console.log(err))
+    // const token = localStorage.getItem('token')
+    //     try {
+    //         // const {data} = await appApi.put("/api/v1/wallet/updateWalletPin", {pin});
+    //         const {data} = await axios.put('http://localhost:8080/api/v1/wallet/updateWalletPin', {pin}, {headers:{
+    //             Authorization:`Bearer ${token}`
+    //     }})
+    //          console.log("data is ", data)
+    //             setPin("")
+    //             setConfirmPin("")
+    //             toast.success("Pin changed successfully")
+    // }catch (error) {
+    //     console.log(error)
+    //     toast.error("Something went wrong")
+    // }
     }   
     };
     return (
@@ -49,18 +54,18 @@ const TransactionPinInput = async(e)=>{
                     </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
                             <label htmlFor="username" className="form-label">Create Pin</label>
-                            <input type="email" className="form-control" id="username" value={createPin} onChange={(e)=> {
+                            <input  maxlength="4" type="email" className="form-control" id="username" value={pin} onChange={(e)=> {
                                 setIsError(false)
-                                setCreatePin(e.target.value)
+                                setPin(e.target.value)
                             }
                             }
                                 name="username" placeholder="4 digit transaction pin"/>
                         </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
                             <label htmlFor="username" className="form-label">Confirm Pin</label>
-                            <input type="email" className="form-control" id="username" value={confirmCreatePin} onChange={(e)=> {
+                            <input maxlength="4" type="email" className="form-control" id="username" value={confirmPin} onChange={(e)=> {
                                 setIsError(false)
-                                setConfirmCreatePin(e.target.value)
+                                setConfirmPin(e.target.value)
                             }
                             }
                                 name="username" placeholder="4 digit transaction pin"/>

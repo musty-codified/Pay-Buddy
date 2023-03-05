@@ -1,4 +1,4 @@
-gtiimport { useContext } from "react";
+import React, { useContext } from 'react';
 import { MyContext } from "../../statemanagement/ComponentState";
 import "./paymentStyle.css"
 

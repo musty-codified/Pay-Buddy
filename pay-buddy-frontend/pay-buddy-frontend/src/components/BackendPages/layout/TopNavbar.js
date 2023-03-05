@@ -5,7 +5,7 @@ import { MyContext } from "../../../statemanagement/ComponentState";
 import { useContext, useEffect } from "react";
 const TopNavbar = () => {
   const { pagename, setPageName } = useContext(MyContext);
-  const pageGroupName = (pagename =="Payment" || pagename=="Dashboard")?null:"Payment ";
+  const pageGroupName = (pagename =="Payment" || pagename=="Dashboard" || pagename=="Settings")?null:"Payment ";
 
   let fullName="";
     let  profileImage ="";

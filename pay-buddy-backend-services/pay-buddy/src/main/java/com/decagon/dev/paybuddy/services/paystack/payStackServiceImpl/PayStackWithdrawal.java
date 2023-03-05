@@ -140,7 +140,6 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
             return new ResponseEntity<>("Check your bank details", HttpStatus.BAD_REQUEST);
         }
     }
-
     @Override
     public ResponseEntity<String> verifyAccountNumber(String accountNumber, String bankCode) {
         ResponseEntity<WithdrawalResponse> response = new RestTemplate().exchange(PayStackUtil.RESOLVE_BANK +

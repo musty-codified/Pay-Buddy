@@ -5,8 +5,10 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import appApi from "../../apis/AppApi";
 import { notifyError, notifySuccess } from "../notification/Toastify";
+import LoadingSpin from "react-loading-spin";
 
 function TransactionPin(props) {
+    const[isLoading, setIsLoading] = useState(false)
     const [pin, setPin] = useState("");
     const [confirmPin, setConfirmPin] = useState("");
     const [isError, setIsError] = useState(false)
@@ -18,6 +20,7 @@ const TransactionPinInput = async(e)=>{
     setIsError(true)
     setErrorMessage("Pin do not match")
    }else{
+    setIsLoading(true);
     // appApi.put("api/v1/wallet/updateWalletPin", {pin:pin})
     // .then(res => {
     //     console.log(res);
@@ -29,19 +32,18 @@ const TransactionPinInput = async(e)=>{
             const {data} = await axios.put('http://localhost:8080/api/v1/wallet/updateWalletPin', {pin}, {headers:{
                 Authorization:`Bearer ${token}`
         }})
-             console.log("data is ", data)
-             console.log("code is ", data.code)
-
-             // const successMessage = notifySuccess("Success")
-             if (data.code === 0){
-                 toast.success("success")
-                }
-                setPin("")
-                setConfirmPin("")
+             setPin("")
+             setConfirmPin("")
+             notifySuccess("success")
+             toast.success(data.description)
+             setIsLoading(false);
+            
+                
                 // alert(notifyError("hello"))
     }catch (error) {
         console.log(error)
             notifyError("Internal server Error")
+            setIsLoading(false);
     }
     }   
     };
@@ -78,7 +80,7 @@ const TransactionPinInput = async(e)=>{
                         </div>
                         {isError && <div style={{color: "red"}}>{errorMessage}</div>}
                         <div className="mb-3 mt-5">
-                        <button className="btn btn-primary" onClick={TransactionPinInput}>Create</button>
+                        <button className="btn btn-primary" onClick={TransactionPinInput}> { isLoading && <LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}Create</button>
                     </div>
                     </div>
                 </Modal.Body>

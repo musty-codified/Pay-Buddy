@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/wallet")
+@RequestMapping("/api/v1/auth")
 public class WalletController {
     private final WalletService walletService;
     @PutMapping("/updateWalletPin")

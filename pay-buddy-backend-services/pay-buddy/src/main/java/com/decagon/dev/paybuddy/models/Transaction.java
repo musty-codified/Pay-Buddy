@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-@Table(name = "transaction_tbl")
+//@Table(name = "transaction_tbl")
 public class Transaction {
 
     @Id
@@ -32,7 +32,7 @@ public class Transaction {
     private TransactionStatus transactionStatus;
     private String description;
     @ManyToOne
-    @JoinColumn(name = "wallet_tbl_id")
+    @JoinColumn(name = "wallet_wallet_id")
     private Wallet wallet;
 
 

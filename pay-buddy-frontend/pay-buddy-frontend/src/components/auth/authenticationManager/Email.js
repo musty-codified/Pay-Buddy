@@ -33,8 +33,8 @@ const emailInput = async(e)=>{
                 </Modal.Header>
                 <Modal.Body>
                     <div className="mb-3">
-                        <label htmlFor="username" className="form-label form-label-pin">Email address</label>
-                        <input type="email" className="form-control form-control-pin" id="username" value={email} onChange={(e)=> {
+                        <label htmlFor="username" className="form-label form-label-c">Email address</label>
+                        <input type="email" className="form-control form-control-c" id="username" value={email} onChange={(e)=> {
                             setIsClicked(true)
                             setEmail(e.target.value)
                         }
@@ -42,7 +42,7 @@ const emailInput = async(e)=>{
                                name="username" placeholder="name@companyemail.com"/>
                     </div>
                     <div className="mb-3 mt-3">
-                         <button className="btn btn-primary c-submit-button btn-pin" style={{cursor: `${isClicked ? "pointer" : "not-allowed"}`}} onClick={emailInput}>Send</button>
+                         <button className="btn btn-primary c-submit-button btn-c" style={{cursor: `${isClicked ? "pointer" : "not-allowed"}`}} onClick={emailInput}>Send</button>
                     </div>
                 </Modal.Body>
             </Modal>

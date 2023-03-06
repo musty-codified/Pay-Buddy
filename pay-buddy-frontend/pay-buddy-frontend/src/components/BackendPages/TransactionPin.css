@@ -18,7 +18,7 @@
     line-height: 20px;
     color: #737373;
     }
-    .form-label-pin{
+    .form-label-c{
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
@@ -28,22 +28,4 @@
     align-items: center;
     color: #404040;
     }
-    .form-control-pin{
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    padding: 20px 20px;
-    margin: 8px 0;
-    border: 1px solid #D4D4D4;
-    border-radius: 8px; 
-    }
-    .btn-pin{
-    padding: 15px 32px;
-    background: #2F80ED;
-    color: #FFFFFF;
-    border-radius: 4px;
-    font-family: 'Inter';
-    font-weight: 500;
-    font-size: 12px;
-    }
+    

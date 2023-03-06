@@ -7,6 +7,7 @@ import appApi from "../../apis/AppApi.js";
 import LoadingSpin from "react-loading-spin";
 
 const SendMoneyPartOne = () => {
+
     const[isLoading, setIsLoading] = useState(false)
     const [isDisabled , setIsDisabled] = useState(true);
     const navigate = useNavigate();
@@ -14,11 +15,28 @@ const SendMoneyPartOne = () => {
     const [accountName, setAccountName] = useState("");
     const [accountNumber, setAccountNumber] = useState('');
     const [bankCode, setBankCode] = useState(null)
+    const [bankName, setBankName] = useState(null)
     const { pagename, setPageName} = useContext(MyContext);
     setPageName("Send Money");
 
     const bankListCallCount = 1;
+    //BANK LIST
+    useEffect(() =>{
+        appApi.post("api/v1/wallet/getBankDetails")
+        .then(response => {
+           setBankLists(response.data)
+        })
+        .catch(err => console.log(err));   
+    },[bankListCallCount])
 
+     //ACCOUNT NUMBER
+     let bankAccountDigit=1;
+     const handleAccountNumber =(e) =>{
+        setAccountNumber(e.target.value);
+       console.log(e.target.value)
+     }
+
+     //ACCOUNT NAME  FUNCTION CALL
     useEffect(()=>{
         if (accountNumber.length===10){
             setIsLoading(true);
@@ -26,42 +44,9 @@ const SendMoneyPartOne = () => {
         }      
         
     },[accountNumber])
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        navigate("/pay-buddy/send-money-2");
 
-    }
-
-    //BANK LIST
-    useEffect(() =>{
-       
-        appApi.post("api/v1/wallet/getBankDetails")
-        .then(response => {
-           setBankLists(response.data)
-        })
-        .catch(err => console.log(err));
-
-       
-
-},[bankListCallCount])
-
-    
-    const handleBankCode = (e) =>{
-        setBankCode(e.target.value);
-
-    }
-     //ACCOUNT NUMBER
-     let bankAccountDigit=1;
-
-    
-     const handleAccountNumber =(e) =>{
-        setAccountNumber(e.target.value);
-       console.log(e.target.value)
-     }
- 
-
-    //ACCOUNT NAME
-    const getAccountName = ()=>{
+     //ACCOUNT NAME IMPLEMENTATION
+     const getAccountName = ()=>{
         appApi.post(`api/v1/wallet/verifyAccountNumber?accountNumber=${accountNumber}&bankCode=${bankCode}`)
         .then(response => {
             console.log(response)
@@ -72,8 +57,10 @@ const SendMoneyPartOne = () => {
             let bankDetails ={
                 accountName:response.data,
                 accountNumber:accountNumber,
-                bankCode: bankCode
+                bankCode: bankCode,
+                bankName : bankName
             }
+            console.log(bankDetails);
           localStorage.setItem("bankDetails", JSON.stringify(bankDetails));
            
         })
@@ -81,13 +68,24 @@ const SendMoneyPartOne = () => {
 
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        navigate("/pay-buddy/send-money-2");
+
+    }
+    const handleBankCode = (e) =>{
+        let bankcodeAndName= e.target.value.split("+")
+        setBankCode(bankcodeAndName[0]);
+        setBankName(bankcodeAndName[1])
+    }
+    
     return ( 
         <div class="row justify-content-center align-items-center">
             <div class="col-md-5">
                 <form onSubmit={handleSubmit}>
                     <div class="payment-logo mb-3">
                     <img src={sendMoneyLogo} />
-                    <div className="mt-3 payment-info"><span>Enter your details to send mone</span></div>
+                    <div className="mt-3 payment-info"><span>Enter your details to send money</span></div>
                     </div>
                     {bankLists &&
                     
@@ -96,14 +94,12 @@ const SendMoneyPartOne = () => {
                         <select class="form-select" aria-label="Select a bank"
                          required onChange={handleBankCode}>
                             {bankLists.map((bank)=>
-                                <option key={bank.code} value={bank.code}>{bank.name}</option>
+                                <option key={bank.code} value={`${bank.code}+${bank.name}`}>{bank.name}</option>
                             )}
                               
                         </select>
                     </div>}
-                        
-                    
-                    
+                          
                     <div class="mb-3">
                         <label for="accountNumber" class="form-label">Account Number</label>
                         <input type="text" class="form-control" id="accountNumber"

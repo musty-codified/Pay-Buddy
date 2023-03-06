@@ -1,8 +1,10 @@
 import logo from "../../../assets/images/logo.svg";
 import notification from "../../../assets/images/notification.svg";
+import usericon from "../../../assets/images/usericon.png";
 import {useNavigate} from "react-router-dom";
 import { MyContext } from "../../../statemanagement/ComponentState";
 import { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 const TopNavbar = () => {
   const { pagename, setPageName } = useContext(MyContext);
   const pageGroupName = (pagename =="Payment" || pagename=="Dashboard")?null:"Payment ";
@@ -38,9 +40,9 @@ const TopNavbar = () => {
               <button className="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <i className="fas fa-bars" />
               </button>
-              <a className="navbar-brand" href="#">
-                <img src={logo} alt="Logo" width="45" height="45" loading="lazy" />
-              </a>
+              <Link to="/pay_buddy/dashboard" className="navbar-brand">
+                <img src={logo} alt="Logo" width="45" height="45" loading="lazy" /> <b>Pay Buddy</b>
+              </Link>
               {/* Right links */}
               <ul className="navbar-nav ms-auto d-flex flex-row">
                 {/* Notification dropdown */}
@@ -57,8 +59,9 @@ const TopNavbar = () => {
                 <li className="nav-item dropdown">
                   
                     <a className="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                      <div class="profileImage">
-                        <img src={profileImage} className="rounded-circle" height={48} alt="" loading="lazy" />
+                      <div class="profileImage">      
+                      {!profileImage &&  <img src={usericon} height={48} className="rounded-circle" loading="lazy" />}
+                      {profileImage &&  <img src={profileImage} className="rounded-circle" height={48} alt="" loading="lazy" />}    
                       </div>
                     </a>
                  

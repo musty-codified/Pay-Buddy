@@ -16,6 +16,8 @@ import Payment from "./components/BackendPages/Payment";
 import Welcome from "./components/Pages/Welcome";
 import TransactionPin from "./components/BackendPages/TransactionPin";
 import SettingsMenu from "./components/Settings/Settings";
+import ConfirmFund from "./components/BackendPages/wallet/ConfirmFund";
+import SendMoneyPartThree from "./components/BackendPages/SendMoneyPartThree";
 
 
 
@@ -30,6 +32,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/welcome" element={<Welcome />} />
+              <Route path="verifyPayment/:reference" element={<ConfirmFund/>}/>
 
               <Route path = "pay-buddy"  element={<Layout />} >
                   <Route path="dashboard" element={<Dashboard />} />
@@ -40,6 +43,8 @@ function App() {
 
                   <Route path="send-money-1" element={<SendMoneyPartOne />}/>
                   <Route path="send-money-2" element={<SendMoneyPartTwo />}/>
+                  <Route path="send-money-3" element={<SendMoneyPartThree />}/>
+                 
               </Route>
           </Routes>
       </MyContextProvider>

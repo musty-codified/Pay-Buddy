@@ -73,6 +73,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
     @Override
     public ResponseEntity<?> withDrawFromWallet(WithdrawalDto withdrawalDto) {
         final User users = getUserObjectWithEmail();
+        System.out.println(withdrawalDto+" sendmoney sendmoney");
         if(users == null)
             return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
 

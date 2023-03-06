@@ -41,7 +41,6 @@ function Login() {
           console.log(res.data.token);
           loginRef = loginRef.current.reset();
           localStorage.setItem("token",res.data.token)
-          console.log(res.data.token);
           localStorage.setItem("user",JSON.stringify(res.data))
           notifySuccess("Login suceessful");
          navigate("/pay-buddy/dashboard");
@@ -113,7 +112,7 @@ function Login() {
           <h4 className="h4 mb-3 mt-3">Log in</h4>
           <span>Enter your details to access your account</span>
 
-          <div className="mb-3 mt-3 form-control align-items-center social-login" onClick={() => login()}>
+          <div className="mb-3 mt-3 form-control align-items-center social-login form-control-c" onClick={() => login()}>
             <center>
               <img src={googleLogo} alt="Google" width="25" height="25"/>
               <span> Log in with Google</span>
@@ -131,7 +130,7 @@ function Login() {
               </label>
               <input
                   type="text"
-                  className="form-control"
+                  className="form-control form-control-c"
                   id="username"
                   name="email"
                   placeholder="name@companyemail.com"
@@ -150,7 +149,7 @@ function Login() {
               </div>
               <input
                   type="password"
-                  className="form-control"
+                  className="form-control form-control-c"
                   id="password"
                   name="password"
                   placeholder="Password123@"
@@ -160,7 +159,7 @@ function Login() {
 
             <div className="mb-3 mt-5">
               {responseStatus && <div className="text-danger">{responseStatus}</div>}
-              <button className="btn btn-primary c-submit-button">
+              <button className="btn btn-primary c-submit-button btn-c">
                 { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}Sign in</button>
             </div>
 
@@ -169,8 +168,6 @@ function Login() {
             </div>
           </form>
         </div>
-
-
 
         <div className="col-md-8 bg-color-50 banner">
           <div class="h-100vh"></div>

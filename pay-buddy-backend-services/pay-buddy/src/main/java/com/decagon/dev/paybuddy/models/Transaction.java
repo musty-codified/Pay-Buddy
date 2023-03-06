@@ -23,6 +23,8 @@ public class Transaction {
     private Long transactionId;
     private String referenceNumber;
     private BigDecimal amount;
+    private String name;
+    private String bankCode;
     private String transactionReference;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;

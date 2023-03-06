@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 public class TransactionResponse {
     private Long transactionId;
     private String referenceNumber;
+    private String name;
+    private String bankCode;
     private BigDecimal amount;
     private String transactionReference;
     private TransactionType transactionType;
@@ -35,6 +37,8 @@ public class TransactionResponse {
         return TransactionResponse.builder()
                 .transactionId(transaction.getTransactionId())
                 .referenceNumber(transaction.getReferenceNumber())
+                .name(transaction.getName())
+                .bankCode(transaction.getBankCode())
                 .amount(transaction.getAmount())
                 .transactionReference(transaction.getTransactionReference())
                 .transactionType(transaction.getTransactionType())

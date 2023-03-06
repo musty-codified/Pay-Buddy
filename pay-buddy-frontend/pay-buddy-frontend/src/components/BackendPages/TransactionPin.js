@@ -21,12 +21,6 @@ const TransactionPinInput = async(e)=>{
     setErrorMessage("Pin do not match")
    }else{
     setIsLoading(true);
-    // appApi.put("api/v1/wallet/updateWalletPin", {pin:pin})
-    // .then(res => {
-    //     console.log(res);
-            // setPin("")
-            // setConfirmPin("")
-    // }).catch(err => console.log(err))
     const token = localStorage.getItem('token')
         try {
             const {data} = await axios.put('http://localhost:8080/api/v1/wallet/updateWalletPin', {pin}, {headers:{
@@ -37,9 +31,6 @@ const TransactionPinInput = async(e)=>{
              notifySuccess("success")
              toast.success(data.description)
              setIsLoading(false);
-            
-                
-                // alert(notifyError("hello"))
     }catch (error) {
         console.log(error)
             notifyError("Internal server Error")
@@ -50,8 +41,6 @@ const TransactionPinInput = async(e)=>{
     return (
         <>
             <Modal show={props.open} onHide={props.handleClose}>
-                {/* <Modal.Header closeButton>
-                </Modal.Header> */}
                 <Modal.Body>
                 <div className='container_modal mt-1' >
                     <div> 
@@ -61,22 +50,22 @@ const TransactionPinInput = async(e)=>{
                         </p>
                     </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
-                            <label htmlFor="username" className="form-label">Create Pin</label>
-                            <input  maxlength="4" type="email" className="form-control" id="username" value={pin} onChange={(e)=> {
+                            <label htmlFor="password" className="form-label">Create Pin</label>
+                            <input  maxlength="4" type="password" className="form-control" id="username" value={pin} onChange={(e)=> {
                                 setIsError(false)
                                 setPin(e.target.value)
                             }
                             }
-                                name="username" placeholder="4 digit transaction pin"/>
+                                name="password" placeholder="4 digit transaction pin"/>
                         </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
-                            <label htmlFor="username" className="form-label">Confirm Pin</label>
-                            <input maxlength="4" type="email" className="form-control" id="username" value={confirmPin} onChange={(e)=> {
+                            <label htmlFor="password" className="form-label">Confirm Pin</label>
+                            <input maxlength="4" type="password" className="form-control" id="username" value={confirmPin} onChange={(e)=> {
                                 setIsError(false)
                                 setConfirmPin(e.target.value)
                             }
                             }
-                                name="username" placeholder="4 digit transaction pin"/>
+                                name="password" placeholder="4 digit transaction pin"/>
                         </div>
                         {isError && <div style={{color: "red"}}>{errorMessage}</div>}
                         <div className="mb-3 mt-5">

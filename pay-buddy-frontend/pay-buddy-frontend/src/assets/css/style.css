@@ -143,5 +143,45 @@ form button {
     font-size: 20px !important;
 }
 
+.profileImage{
+    height:48px;
+    width: 48px;
+    background-color: var(--primary50);
+    border-radius: 50%;
+}
+
+.accountName{
+    height: 35px;
+}
+
+.border-dash{
+    border-bottom: 1px dashed var(--ligh-border-color);
+    font-size:13px;
+}
+
+.border-dash .col-10{
+    text-align: right;
+}
+
+.form-control-c{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 16px 16px;
+    margin: 8px 0;
+    border: 1px solid #D4D4D4;
+    border-radius: 8px; 
+    }
+
+    .btn-c{
+        padding: 15px 32px;
+        background: #2F80ED;
+        color: #FFFFFF;
+        border-radius: 4px;
+        font-family: 'Inter';
+        font-weight: 500;
+        font-size: 12px;
+        }
 
 

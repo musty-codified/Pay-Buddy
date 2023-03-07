@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/wallet")
 public class WalletController {
     private final WalletService walletService;
     @PutMapping("/updateWalletPin")

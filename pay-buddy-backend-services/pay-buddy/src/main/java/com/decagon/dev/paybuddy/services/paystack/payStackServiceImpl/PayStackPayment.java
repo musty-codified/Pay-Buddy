@@ -102,7 +102,7 @@ public class PayStackPayment implements PaystackPaymentService {
                         .transactionReference(paymentReference)
                         .build();
                 walletTransactionRepository.save(walletTransaction);
-                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/walletdashboard")).build();
+                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/pay-buddy/dashboard")).build();
 
                 }
             }

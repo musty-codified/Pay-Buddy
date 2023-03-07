@@ -7,5 +7,8 @@ export const clientId =
     currency: 'NGN',
     minimumFractionDigits: 2,
  }
-
  export const currency = new Intl.NumberFormat("en-NG", currencyFormat);
+
+
+ export const screenSize = window.innerWidth;
+

@@ -14,7 +14,16 @@ import bankLogo from "../../assets/images/bank-logo.svg"
 import appApi from "../../apis/AppApi.js";
 import { currency } from '../../includes/Config';
 import Wallet from './wallet/Wallet';
+import { screenSize } from '../../includes/Config';
+
 function Dashboard() {
+    //CONTENT DISPLAY LOGIC
+    let hiddenElement= "";
+    if(screenSize<768){
+        hiddenElement= "hiddenElement";
+    }
+    
+
     const { name, setPageName } = useContext(MyContext);
     setPageName("Dashboard");
     
@@ -23,7 +32,6 @@ function Dashboard() {
     const handleOpen = () => setOpen(true);
     const [walletBalance, setWalletBalance] = useState(0);
     const [Search, setSearch] = useState('');
-
     const rendercount=1;
     useEffect(()=>{
         getBalance();
@@ -79,28 +87,18 @@ function Dashboard() {
             bankname: "access",
             amount: currency.format(4000),
             transactionType: "CREDIT"
-        },
-        {
-            id: 5,
-            user: "olayinka sulaiman",
-            bankname: "ecobank",
-            amount: currency.format(3000),
-            transactionType: "DEBIT"
         }
     ]
 
     const QuickTransfer = aa.map(list =>
 
-        <div className="recipient-info">
+        <div className="recipient-info col-sm-3 col-6">
             <button>{getInitials(list.user)}</button>
-            
-
+        
             <p>{list.user}</p>
 
         </div>
     )
-
-
 
     const ListOfTransaction = Search === "" ?
         aa.map(list => {
@@ -143,7 +141,6 @@ function Dashboard() {
         )
 
 
-
     return (
 
             <>
@@ -152,7 +149,7 @@ function Dashboard() {
                     {/* the user card  starts here*/}
                     <div className="row mt-3">
                         
-                        <div className='col-md-6'>
+                        <div className='col-6'>
                         <div className="total-balance-div">
                         <div>
                              <MdAccountBalanceWallet size={30} className ="blue" />
@@ -161,7 +158,7 @@ function Dashboard() {
                          <h4>{walletBalance}</h4>
                      </div>
                         </div>
-                                    <div className='col-md-6'>
+                                    <div className='col-6'>
                                 <div className="card-balance-div">
                                 <div className='card-balance-icon'>
                                      <img src={Mastercard} alt="" />
@@ -198,7 +195,7 @@ function Dashboard() {
                                 <div className='col-md-12 mt-3'>
                                 <div className="transfer-dashboard-div">
                  <p>Quick Transfer</p>
-                     <div className="d-flex align-items-center justify-content-between ">
+                     <div className="row align-items-center justify-content-center ">
                      {QuickTransfer}
 
                      </div>
@@ -208,7 +205,7 @@ function Dashboard() {
 
                               {/* Quick transfer ends here */}
                               {/* refer and end start here */}
-                              <div className='row'>
+                              <div className={`row ${hiddenElement}`}>
                                 <div className= "col-md-12 mt-3">
                                 <div className="refer-dashboard-div">
                                              <p>Earn and Refer</p>

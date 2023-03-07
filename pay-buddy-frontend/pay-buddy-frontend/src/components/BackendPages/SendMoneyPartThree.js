@@ -14,7 +14,7 @@ export default function SendMoneyPartThree() {
   }
   return (
     <div className="welcome__parent">
-      <div className="welcome__content">
+      <div className="welcome__content bg-color-600">
         {<h1>Your money is on it's way  🥳 </h1>}
         <p>Your {currency.format(amountSent)} transfer to {beneficiary} is succesful and it’s on it’s way to his account</p>
         <button onClick={dashboard}>Continue</button>

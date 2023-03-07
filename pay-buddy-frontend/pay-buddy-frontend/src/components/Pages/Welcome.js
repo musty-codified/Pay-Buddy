@@ -13,7 +13,7 @@ const Welcome = () => {
 
   return (
     <div className="welcome__parent">
-      <div className="welcome__content">
+      <div className="welcome__content bg-color-600">
         <h1>Congratulations {state}🥳</h1>
         <p>Your account has been created. Sign in to view your dashboard</p>
         <button onClick={(e) => login(e)}>Continue</button>

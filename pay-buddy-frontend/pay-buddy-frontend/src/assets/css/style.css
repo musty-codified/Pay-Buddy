@@ -105,7 +105,7 @@ form{
 
 main{
     background-color: var(--primary50);
-    height: 100vh !important;
+    height: auto !important;
     padding: 50px;
 }
 
@@ -183,5 +183,12 @@ form button {
         font-weight: 500;
         font-size: 12px;
         }
+    .hiddenElement{
+        display: none;
+    }
+
+    .bg-color-600{
+        background-color: var(--primary600) !important;
+    }
 
 

@@ -93,6 +93,8 @@ public class PayStackPayment implements PaystackPaymentService {
                 walletRepository.save(wallet);
 
                 Transaction walletTransaction = Transaction.builder()
+                        .name(user.getFirstName() + " " + user.getLastName())
+                        .bankCode("CARD")
                         .wallet(wallet)
                         .transactionType(TransactionType.FUNDWALLET)
                         .transactionStatus(TransactionStatus.SUCCESS)

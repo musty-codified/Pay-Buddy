@@ -221,6 +221,8 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
         walletRepository.save(wallet);
 
         Transaction walletTransaction = Transaction.builder()
+                .name(bankDetails.getAccountName())
+                .bankCode(bankDetails.getBankCode())
                 .wallet(wallet)
                 .transactionType(TransactionType.DEBIT)
                 .amount(transferRequest.getAmount())

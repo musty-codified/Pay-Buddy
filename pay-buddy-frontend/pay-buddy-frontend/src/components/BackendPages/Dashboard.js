@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { MyContext } from '../../statemanagement/ComponentState';
 import Sidebar from "./layout/Sidebar";
 import { useState } from 'react'
@@ -11,11 +11,43 @@ import { MdAccountBalanceWallet } from 'react-icons/md'
 import Mastercard from "../../assets/images/mastercard.svg"
 import HappyUser from "../../assets/images/happyuser.svg"
 import bankLogo from "../../assets/images/bank-logo.svg"
+import appApi from "../../apis/AppApi.js";
+import { currency } from '../../includes/Config';
+import Wallet from './wallet/Wallet';
+import { screenSize } from '../../includes/Config';
+
 function Dashboard() {
+    //CONTENT DISPLAY LOGIC
+    let hiddenElement= "";
+    if(screenSize<768){
+        hiddenElement= "hiddenElement";
+    }
+    
+
     const { name, setPageName } = useContext(MyContext);
     setPageName("Dashboard");
+    
+    const [open, setOpen] = useState(false);
+    const handleClose = () => setOpen(false);
+    const handleOpen = () => setOpen(true);
+    const [walletBalance, setWalletBalance] = useState(0);
+    const [Search, setSearch] = useState('');
+    const rendercount=1;
+    useEffect(()=>{
+        getBalance();
+    },[rendercount])
 
-    const [Search, setSearch] = useState('')
+    const getBalance = () =>{
+        appApi.get("api/v1/wallet/balance")
+        .then(res =>{
+            console.log(res);
+            const balance =currency.format(res.data.walletBalance)
+           setWalletBalance(balance);
+        })
+        .catch(err =>{
+            console.log(err);
+        })
+    }
 
     function HandleChange(e) {
         setSearch(e.target.value)
@@ -32,51 +64,41 @@ function Dashboard() {
             id: 1,
             user: "olayinka sulaiman",
             bankname: "ecobank",
-            amount: 3000,
+            amount: currency.format(3000),
             transactionType: "DEBIT"
         },
         {
             id: 2,
             user: "teju kolawole",
             bankname: "access",
-            amount: 4000,
+            amount: currency.format(4000),
             transactionType: "CREDIT"
         },
         {
             id: 3,
             user: "olayinka sulaiman",
             bankname: "ecobank",
-            amount: 3000,
+            amount: currency.format(3000),
             transactionType: "DEBIT"
         },
         {
             id: 4,
             user: "teju kolawole",
             bankname: "access",
-            amount: 4000,
+            amount: currency.format(4000),
             transactionType: "CREDIT"
-        },
-        {
-            id: 5,
-            user: "olayinka sulaiman",
-            bankname: "ecobank",
-            amount: 3000,
-            transactionType: "DEBIT"
         }
     ]
 
     const QuickTransfer = aa.map(list =>
 
-        <div className="recipient-info">
+        <div className="recipient-info col-sm-3 col-6">
             <button>{getInitials(list.user)}</button>
-            
-
+        
             <p>{list.user}</p>
 
         </div>
     )
-
-
 
     const ListOfTransaction = Search === "" ?
         aa.map(list => {
@@ -119,7 +141,6 @@ function Dashboard() {
         )
 
 
-
     return (
 
             <>
@@ -128,16 +149,16 @@ function Dashboard() {
                     {/* the user card  starts here*/}
                     <div className="row mt-3">
                         
-                        <div className='col-md-6'>
+                        <div className='col-6'>
                         <div className="total-balance-div">
                         <div>
                              <MdAccountBalanceWallet size={30} className ="blue" />
                              <p>Total Balance</p>
                        </div>
-                         <h4>N400,523</h4>
+                         <h4>{walletBalance}</h4>
                      </div>
                         </div>
-                                    <div className='col-md-6'>
+                                    <div className='col-6'>
                                 <div className="card-balance-div">
                                 <div className='card-balance-icon'>
                                      <img src={Mastercard} alt="" />
@@ -153,12 +174,12 @@ function Dashboard() {
                             {/* the user card ends here */}
 
                             {/* Add amount starts here */}
-                            <div className='row'>
-                                <div className='col-md-12 mt-3 hmmn'>
-                                <div className="add-money-dashboard-div">
+                    <div className='row'>
+                        <div className='col-md-12 mt-3 hmmn'>
+                        <div className="add-money-dashboard-div">
                     <p>Add money to your wallet</p>
-                 <div className="add-money">
-                        <button>
+                    <div className="add-money">
+                        <button onClick={handleOpen}>
                             <BsFillPlusSquareFill id="add-money-icon" />
                            <div>Fund Account</div>
                         </button>
@@ -174,7 +195,7 @@ function Dashboard() {
                                 <div className='col-md-12 mt-3'>
                                 <div className="transfer-dashboard-div">
                  <p>Quick Transfer</p>
-                     <div className="d-flex align-items-center justify-content-between ">
+                     <div className="row align-items-center justify-content-center ">
                      {QuickTransfer}
 
                      </div>
@@ -184,7 +205,7 @@ function Dashboard() {
 
                               {/* Quick transfer ends here */}
                               {/* refer and end start here */}
-                              <div className='row'>
+                              <div className={`row ${hiddenElement}`}>
                                 <div className= "col-md-12 mt-3">
                                 <div className="refer-dashboard-div">
                                              <p>Earn and Refer</p>
@@ -237,6 +258,8 @@ function Dashboard() {
 
 
             </div>
+
+            <Wallet open={open} handleClose={handleClose} handleOpen={handleOpen} />
             
             </>
 

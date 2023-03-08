@@ -1,49 +1,45 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import "./TransactionPin.css";
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import {Button} from "react-bootstrap";
+import { ToastContainer } from 'react-toastify';
+import {useNavigate, useParams } from 'react-router-dom';
 import appApi from "../../apis/AppApi";
-import { notifyError, notifySuccess } from "../notification/Toastify";
+import "./TransactionPin.css";
 import LoadingSpin from "react-loading-spin";
+import { notifyError, notifySuccess, notifyWarning } from '../notification/Toastify';
 
 function TransactionPin(props) {
-    const[isLoading, setIsLoading] = useState(false)
-    const [pin, setPin] = useState("");
-    const [confirmPin, setConfirmPin] = useState("");
+    const [createPin, setCreatePin] = useState("");
+    const [confirmCreatePin, setConfirmCreatePin] = useState("");
     const [isError, setIsError] = useState(false)
-    const [errorMessage, setErrorMessage] = useState("")
-   
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+
 const TransactionPinInput = async(e)=>{
     e.preventDefault()
-   if(pin !== confirmPin){
+   if(createPin !== confirmCreatePin){
     setIsError(true)
     setErrorMessage("Pin do not match")
    }else{
     setIsLoading(true);
-    const token = localStorage.getItem('token')
-        try {
-            const {data} = await axios.put('http://localhost:8080/api/v1/wallet/updateWalletPin', {pin}, {headers:{
-                Authorization:`Bearer ${token}`
-        }})
-             setPin("")
-             setConfirmPin("")
-             notifySuccess("success")
-             toast.success(data.description)
-             setIsLoading(false);
-    }catch (error) {
-        console.log(error)
-            notifyError("Internal server Error")
-            setIsLoading(false);
-    }
-    }   
-    };
-    useEffect(() => {
-    
-    }, [])
+    appApi.put("/api/v1/wallet/updateWalletPin", {pin:createPin})
+    .then(res => {
+        console.log(res);
+        notifySuccess("Pin updated");
+        setIsLoading(false);
+    })
+    .catch(err =>{
+        console.log(err);
+        notifyError("Error");
+    });
+ };
+}
     return (
-        <div className='modals mt-1'>
+        <>
             <Modal show={props.open} onHide={props.handleClose}>
+                {/* <Modal.Header closeButton>
+                </Modal.Header> */}
                 <Modal.Body>
                 <div className='container_modal mt-1' >
                     <div> 
@@ -53,31 +49,34 @@ const TransactionPinInput = async(e)=>{
                         </p>
                     </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
-                            <label htmlFor="password" className="form-label">Create Pin</label>
-                            <input  maxlength="4" type="password" className="form-control" id="username" value={pin} onChange={(e)=> {
+                            <label htmlFor="username" className="form-label">Create Pin</label>
+                            <input type="email" className="form-control form-control-c" id="username" value={createPin} onChange={(e)=> {
                                 setIsError(false)
-                                setPin(e.target.value)
+                                setCreatePin(e.target.value)
                             }
                             }
-                                name="password" placeholder="4 digit transaction pin"/>
+                                name="username" placeholder="4 digit transaction pin"/>
                         </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
-                            <label htmlFor="password" className="form-label">Confirm Pin</label>
-                            <input maxlength="4" type="password" className="form-control" id="username" value={confirmPin} onChange={(e)=> {
+                            <label htmlFor="username" className="form-label form-label-c">Confirm Pin</label>
+                            <input type="email" className="form-control form-control-c" id="username" value={confirmCreatePin} onChange={(e)=> {
                                 setIsError(false)
-                                setConfirmPin(e.target.value)
+                                setConfirmCreatePin(e.target.value)
                             }
                             }
-                                name="password" placeholder="4 digit transaction pin"/>
+                                name="username" placeholder="4 digit transaction pin"/>
                         </div>
                         {isError && <div style={{color: "red"}}>{errorMessage}</div>}
-                        <div className="mb-3 mt-3">
-                        <button className="btn btn-primary" onClick={TransactionPinInput}> { isLoading && <LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}Create</button>
+                        <div className="mb-3 mt-5">
+                        <button className="btn btn-primary btn-c" onClick={TransactionPinInput}> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}Create</button>
                     </div>
                     </div>
                 </Modal.Body>
             </Modal>
-        </div>
+            <div className="rectangle-2">
+                <ToastContainer />
+      </div>
+        </>
     );
 }
 

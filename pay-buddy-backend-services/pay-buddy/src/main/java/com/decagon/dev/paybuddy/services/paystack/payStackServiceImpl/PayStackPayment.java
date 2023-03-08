@@ -93,6 +93,8 @@ public class PayStackPayment implements PaystackPaymentService {
                 walletRepository.save(wallet);
 
                 Transaction walletTransaction = Transaction.builder()
+                        .name(user.getFirstName() + " " + user.getLastName())
+                        .bankCode("CARD")
                         .wallet(wallet)
                         .transactionType(TransactionType.FUNDWALLET)
                         .transactionStatus(TransactionStatus.SUCCESS)
@@ -100,7 +102,7 @@ public class PayStackPayment implements PaystackPaymentService {
                         .transactionReference(paymentReference)
                         .build();
                 walletTransactionRepository.save(walletTransaction);
-                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/walletdashboard")).build();
+                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/pay-buddy/dashboard")).build();
 
                 }
             }

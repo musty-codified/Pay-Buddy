@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table (name = "wallet_tbl")
+@Table//(name = "wallet_tbl")
 public class Wallet {
 
     @Id

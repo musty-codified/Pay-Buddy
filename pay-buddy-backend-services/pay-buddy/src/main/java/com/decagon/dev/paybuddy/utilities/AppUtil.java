@@ -44,5 +44,9 @@ public class AppUtil {
         String combinedString = userId + email.hashCode() + String.valueOf(randomNumber);
         return combinedString.substring(0, 10);
     }
+    public String concealAccountNumber(String accountNumber) {
+        String obscured = "XXXXXXXX" + accountNumber.substring(6);
+        return obscured.substring(obscured.length() - 10);
+    }
 
 }

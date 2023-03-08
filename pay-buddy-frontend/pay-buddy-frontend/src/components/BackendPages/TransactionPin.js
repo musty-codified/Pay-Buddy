@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import "./TransactionPin.css";
 import axios from 'axios';
@@ -38,8 +38,11 @@ const TransactionPinInput = async(e)=>{
     }
     }   
     };
+    useEffect(() => {
+    
+    }, [])
     return (
-        <>
+        <div className='modals mt-1'>
             <Modal show={props.open} onHide={props.handleClose}>
                 <Modal.Body>
                 <div className='container_modal mt-1' >
@@ -68,13 +71,13 @@ const TransactionPinInput = async(e)=>{
                                 name="password" placeholder="4 digit transaction pin"/>
                         </div>
                         {isError && <div style={{color: "red"}}>{errorMessage}</div>}
-                        <div className="mb-3 mt-5">
+                        <div className="mb-3 mt-3">
                         <button className="btn btn-primary" onClick={TransactionPinInput}> { isLoading && <LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}Create</button>
                     </div>
                     </div>
                 </Modal.Body>
             </Modal>
-        </>
+        </div>
     );
 }
 

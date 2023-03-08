@@ -16,14 +16,17 @@ import Payment from "./components/BackendPages/Payment";
 import Welcome from "./components/Pages/Welcome";
 import TransactionPin from "./components/BackendPages/TransactionPin";
 import SettingsMenu from "./components/Settings/Settings";
+import { Toaster } from "react-hot-toast";
 import ConfirmFund from "./components/BackendPages/wallet/ConfirmFund";
 import SendMoneyPartThree from "./components/BackendPages/SendMoneyPartThree";
+
 
 
 
 function App() {
   return (
     <div className="App">
+      <Toaster />
       <MyContextProvider>
       <Routes>
               <Route path="/" element={<Home />} />

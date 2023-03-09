@@ -42,9 +42,11 @@ const Payment = () => {
                         <img src={ Data } alt="Data-svg" />
                     </div>
                     <div>
+                        <Link to="/pay-buddy/buy-data-1" >
                         <h3 className="payment-header-title">Buy Data</h3>
                         <p className="payment-header-p">Data is life! Buy instant data to stay connected to your world.
                          Get a 20% discount on every data purchase</p>
+                        </Link>
                     </div>
                 </div>
                 <div className="payment-item">

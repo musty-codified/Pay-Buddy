@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Objects;
 
 
 @Service
@@ -64,6 +65,7 @@ public class PayStackPayment implements PaystackPaymentService {
         try {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<PaymentResponse> response = restTemplate.exchange(PayStackUtil.INITIALIZE_DEPOSIT, HttpMethod.POST, entity, PaymentResponse.class);
+            log.info(Objects.requireNonNull(response.getBody()).toString());
 
             return new ResponseEntity<>(response.getBody().getData().getAuthorization_url(),HttpStatus.ACCEPTED);
         } catch (HttpClientErrorException e) {
@@ -83,6 +85,7 @@ public class PayStackPayment implements PaystackPaymentService {
         try {
             ResponseEntity<String> response = restTemplate.exchange(PayStackUtil.VERIFY_URL + reference, HttpMethod.GET, entity, String.class);
             if(response.getStatusCodeValue()==200){
+                log.info(response.getBody());
                 System.out.println(response);
                 if(transactionType.equalsIgnoreCase("makepayment")){
                     return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/")).build();

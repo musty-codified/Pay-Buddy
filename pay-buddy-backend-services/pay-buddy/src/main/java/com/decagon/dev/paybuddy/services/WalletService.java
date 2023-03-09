@@ -7,6 +7,7 @@ import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
+import com.decagon.dev.paybuddy.models.User;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.paystack.payStackPojos.Bank;
 import org.springframework.http.ResponseEntity;

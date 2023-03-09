@@ -1,6 +1,7 @@
 package com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class BuyDataPlanResponse {
     private String code;
     public String response_description;

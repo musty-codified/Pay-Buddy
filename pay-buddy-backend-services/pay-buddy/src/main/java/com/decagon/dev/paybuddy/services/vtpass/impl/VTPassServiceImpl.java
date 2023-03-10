@@ -1,9 +1,13 @@
 package com.decagon.dev.paybuddy.services.vtpass.impl;
 
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyElectricityRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.VerifyMerchantRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.BuyElectricityResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.VerifyMerchantResponse;
 import com.decagon.dev.paybuddy.services.vtpass.VTPassService;
 import com.decagon.dev.paybuddy.utilities.AppUtil;
 import com.decagon.dev.paybuddy.utilities.VTPassHttpEntity;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Calendar;
+import java.util.Optional;
 import java.util.TimeZone;
 
 import static com.decagon.dev.paybuddy.utilities.VTPassConstants.*;
@@ -43,7 +48,7 @@ public class VTPassServiceImpl implements VTPassService {
     @Override
     public DataPlansResponse getDataPlans(String dataType) {
         return restTemplate.exchange(
-                NETWORK_DATA_PLANS + dataType,
+                PAY_BILL_SERVICE + dataType,
                 HttpMethod.GET,
                 vtPassHttpEntity.getEntity(null),
                 DataPlansResponse.class
@@ -56,7 +61,7 @@ public class VTPassServiceImpl implements VTPassService {
         request.setRequest_id(getRequestId());
 
         return restTemplate.exchange(
-                PAY_DATA,
+                PAY_BILL,
                 HttpMethod.POST,
                 vtPassHttpEntity.getEntity(request),
                 BuyDataPlanResponse.class
@@ -64,8 +69,44 @@ public class VTPassServiceImpl implements VTPassService {
     }
 
 
+    @Override
+    public DataServicesResponse getAllElectricityService() {
+        return restTemplate
+                .exchange(
+                        ALL_ELECTRICITY_SERVICES,
+                        HttpMethod.GET,
+                        vtPassHttpEntity.getEntity(null),
+                        DataServicesResponse.class
+                ).getBody();
+    }
+
+    @Override
+    public VerifyMerchantResponse verifyElectricityMeter(VerifyMerchantRequest merchantRequest) {
+        return restTemplate
+                .exchange(
+                        VERIFY_MERCHANT,
+                        HttpMethod.POST,
+                        vtPassHttpEntity.getEntity(merchantRequest),
+                        VerifyMerchantResponse.class
+                ).getBody();
 
 
+    }
+
+    @Override
+    public BuyElectricityResponse buyElectricity(BuyElectricityRequest electricityRequest) {
+        electricityRequest.setRequest_id(getRequestId());
+       return restTemplate
+                  .exchange(
+                          PAY_BILL,
+                          HttpMethod.POST,
+                          vtPassHttpEntity.getEntity(electricityRequest),
+                          BuyElectricityResponse.class
+
+                  ).getBody();
+
+
+    }
 
     /**
      * <a href="https://www.vtpass.com/documentation/how-to-generate-request-id/">...</a>

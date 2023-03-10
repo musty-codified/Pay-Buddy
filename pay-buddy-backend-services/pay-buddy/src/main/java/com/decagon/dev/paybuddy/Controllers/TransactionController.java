@@ -1,7 +1,7 @@
 package com.decagon.dev.paybuddy.Controllers;
 
 
-import com.decagon.dev.paybuddy.dtos.responses.TransactionResponseViewModel;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.TransactionResponseViewModel;
 import com.decagon.dev.paybuddy.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

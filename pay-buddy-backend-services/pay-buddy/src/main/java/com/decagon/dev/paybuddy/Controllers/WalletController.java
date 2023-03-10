@@ -2,11 +2,15 @@ package com.decagon.dev.paybuddy.Controllers;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
 import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
-import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyElectricityRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.VerifyMerchantRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.WalletResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.BuyElectricityResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.VerifyMerchantResponse;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.WalletService;
 import com.decagon.dev.paybuddy.services.paystack.payStackPojos.Bank;
@@ -17,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -76,4 +79,22 @@ public class WalletController {
                                                            @RequestParam String pin) {
         return ResponseEntity.ok(walletService.buyDataPlan(request, pin));
     }
+
+    @GetMapping("/electricity-services")
+    public ResponseEntity<DataServicesResponse> getAllElectricityServices(){
+        return ResponseEntity.ok(walletService.getAllElectricityService());
+    }
+    @PostMapping("/buy-electricity")
+    public ResponseEntity<BuyElectricityResponse> buyElectricity(@RequestBody BuyElectricityRequest request, @RequestParam String pin)
+    {
+        return ResponseEntity.ok(walletService.buyElectricity(request, pin));
+    }
+
+    @PostMapping("/verify-merchant")
+    public ResponseEntity<VerifyMerchantResponse> verifyMerchant(@RequestBody VerifyMerchantRequest request)
+    {
+        return ResponseEntity.ok(walletService.verifyElectricityMeter(request));
+    }
+
+
 }

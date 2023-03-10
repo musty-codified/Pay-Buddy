@@ -1,11 +1,9 @@
-package com.decagon.dev.paybuddy.dtos.responses;
+package com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data;
 
 
-import com.decagon.dev.paybuddy.dtos.requests.TransactionDto;
 import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
 import com.decagon.dev.paybuddy.models.Transaction;
-import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import lombok.*;
 
 import java.math.BigDecimal;

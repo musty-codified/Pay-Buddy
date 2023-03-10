@@ -73,7 +73,6 @@ public class VTPassServiceImpl implements VTPassService {
         ).getBody();
 
     }
-
     @Override
     public AirtimeServiceResponse getAirtimeServices() {
         return restTemplate.exchange(

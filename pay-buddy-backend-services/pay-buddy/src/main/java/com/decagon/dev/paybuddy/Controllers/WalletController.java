@@ -76,8 +76,8 @@ public class WalletController {
         return ResponseEntity.ok(walletService.buyDataPlan(request, pin));
     }
     @PostMapping("/buy_airtime")
-    public ResponseEntity<BuyAirtimeResponse> buyAirtime(@RequestBody BuyAirtimeRequest buyAirtimeRequest) {
-        BuyAirtimeResponse response = walletService.buyAirtimeServices(buyAirtimeRequest);
+    public ResponseEntity<BuyAirtimeResponse> buyAirtime(@RequestBody BuyAirtimeRequest buyAirtimeRequest, @RequestParam String pin) {
+        BuyAirtimeResponse response = walletService.buyAirtimeServices(buyAirtimeRequest,pin);
         return new ResponseEntity<>(response,HttpStatus.OK);
 
     }

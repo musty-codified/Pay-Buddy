@@ -163,10 +163,9 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public BuyAirtimeResponse buyAirtimeServices(BuyAirtimeRequest buyAirtimeRequest) {
-        String pin = buyAirtimeRequest.getPin();
+    public BuyAirtimeResponse buyAirtimeServices(BuyAirtimeRequest buyAirtimeRequest , String pin) {
         Wallet wallet = walletRepository.findWalletByUser_Email(getLoggedInUser().getEmail());
-//
+
 
         if (!passwordEncoder.matches(pin, wallet.getPin()))  //Check pin accuracy
             throw new WalletServiceException("Pin is wrong");

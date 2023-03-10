@@ -3,10 +3,9 @@ package com.decagon.dev.paybuddy.services;
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
 import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
 import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
 import com.decagon.dev.paybuddy.models.User;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.paystack.payStackPojos.Bank;
@@ -26,4 +25,7 @@ public interface WalletService {
     DataServicesResponse getDataServices();
     DataPlansResponse getDataPlans(String dataType);
     BuyDataPlanResponse buyDataPlan(BuyDataPlanRequest request, String pin);
+    BuyAirtimeResponse buyAirtimeServices(BuyAirtimeRequest buyAirtimeRequest);
+
+    AirtimeServiceResponse getAirtimeServices();
 }

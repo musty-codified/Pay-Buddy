@@ -9,9 +9,7 @@ import com.decagon.dev.paybuddy.utilities.VTPassHttpEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -21,11 +19,9 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -128,7 +124,7 @@ class VTPassServiceImplTest {
                 .build();
 
         when(restTemplate.exchange(
-                VTPassConstants.PAY_DATA,
+                VTPassConstants.PAY_BILL,
                 HttpMethod.POST,
                 vtPassHttpEntity.getEntity(null),
                 BuyDataPlanResponse.class

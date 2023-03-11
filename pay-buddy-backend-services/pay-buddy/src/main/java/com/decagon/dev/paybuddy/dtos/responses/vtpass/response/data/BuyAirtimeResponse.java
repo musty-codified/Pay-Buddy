@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -15,7 +17,7 @@ public class BuyAirtimeResponse {
     private String response_description;
     private String requestId;
     private String transactionId;
-    private Double amount;
+    private BigDecimal amount;
     private TransactionDate transaction_date;
     private String purchase_code;
 

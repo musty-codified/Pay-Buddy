@@ -3,10 +3,9 @@ package com.decagon.dev.paybuddy.serviceImpl;
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
 import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
 import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
@@ -162,5 +161,52 @@ public class WalletServiceImpl implements WalletService {
 
         return response;
     }
+
+    @Override
+    public BuyAirtimeResponse buyAirtimeServices(BuyAirtimeRequest buyAirtimeRequest , String pin) {
+        Wallet wallet = walletRepository.findWalletByUser_Email(getLoggedInUser().getEmail());
+
+
+        if (!passwordEncoder.matches(pin, wallet.getPin()))  //Check pin accuracy
+            throw new WalletServiceException("Pin is wrong");
+
+        if (wallet.getAccountBalance().compareTo(buyAirtimeRequest.getAmount()) <= 0) //Check if wallet balance can perform transaction
+            throw new WalletServiceException("Insufficient balance");
+
+        BuyAirtimeResponse buyAirtimeResponse = vtPassService.buyAirtime(buyAirtimeRequest);
+
+        if (this.isSuccessful(buyAirtimeResponse.getResponse_description())) {
+            Wallet updatedWallet = deductCharges(wallet, buyAirtimeRequest.getAmount());//Deduct the wallet
+
+            Transaction walletTransaction = Transaction.builder()
+                    .name(buyAirtimeRequest.getServiceID())
+                    .bankCode(buyAirtimeRequest.getPhone())
+                    .wallet(updatedWallet)
+                    .transactionType(TransactionType.DEBIT)
+                    .amount(buyAirtimeRequest.getAmount())
+                    .transactionReference(buyAirtimeRequest.getRequest_id())
+                    .transactionStatus(TransactionStatus.SUCCESS)
+                    .build();
+            transactionRepository.save(walletTransaction);
+        }
+        return buyAirtimeResponse;
+    }
+
+    @Override
+    public AirtimeServiceResponse getAirtimeServices() {
+        return vtPassService.getAirtimeServices() ;
+    }
+
+    private Wallet deductCharges(Wallet wallet, BigDecimal amount){
+        wallet.setAccountBalance(wallet.getAccountBalance().subtract(amount)); //Deduct the wallet
+        Wallet updatedWallet = walletRepository.save(wallet);
+        return  updatedWallet;
+    }
+       private  boolean isSuccessful(String response_description){
+        if(response_description.equals("TRANSACTION SUCCESSFUL"))
+            return true;
+        return false;
+    }
+
 
 }

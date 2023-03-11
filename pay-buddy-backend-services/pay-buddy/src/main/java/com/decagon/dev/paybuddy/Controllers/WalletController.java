@@ -3,10 +3,9 @@ package com.decagon.dev.paybuddy.Controllers;
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
 import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
 import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.WalletService;
 import com.decagon.dev.paybuddy.services.paystack.payStackPojos.Bank;
@@ -76,4 +75,17 @@ public class WalletController {
                                                            @RequestParam String pin) {
         return ResponseEntity.ok(walletService.buyDataPlan(request, pin));
     }
+    @PostMapping("/buy_airtime")
+    public ResponseEntity<BuyAirtimeResponse> buyAirtime(@RequestBody BuyAirtimeRequest buyAirtimeRequest, @RequestParam String pin) {
+        BuyAirtimeResponse response = walletService.buyAirtimeServices(buyAirtimeRequest,pin);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+
+    }
+    @GetMapping("/airtime_services")
+    public ResponseEntity<AirtimeServiceResponse> AirtimeServices() {
+        AirtimeServiceResponse response = walletService.getAirtimeServices();
+        return new ResponseEntity<>(response, HttpStatus.FOUND);
+
+    }
+
 }

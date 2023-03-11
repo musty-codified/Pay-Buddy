@@ -71,6 +71,12 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(value = {WalletServiceException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleWalletServiceException(WalletServiceException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(value = {BadCredentialsException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse BadCredentialsException(BadCredentialsException ex) {

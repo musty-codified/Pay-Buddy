@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-//@Table(name = "transaction_tbl")
+@Table(name = "transaction_tbl")
 public class Transaction {
 
     @Id

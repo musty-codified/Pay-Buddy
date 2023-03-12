@@ -27,6 +27,8 @@ const TransactionPinInput = async(e)=>{
     .then(res => {
         console.log(res);
         notifySuccess("Pin updated");
+        setCreatePin("");
+        setConfirmCreatePin("");
         setIsLoading(false);
     })
     .catch(err =>{
@@ -38,8 +40,6 @@ const TransactionPinInput = async(e)=>{
     return (
         <>
             <Modal show={props.open} onHide={props.handleClose}>
-                {/* <Modal.Header closeButton>
-                </Modal.Header> */}
                 <Modal.Body>
                 <div className='container_modal mt-1' >
                     <div> 
@@ -50,7 +50,7 @@ const TransactionPinInput = async(e)=>{
                     </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
                             <label htmlFor="username" className="form-label">Create Pin</label>
-                            <input type="email" className="form-control form-control-c" id="username" value={createPin} onChange={(e)=> {
+                            <input maxLength="4" type="password" className="form-control form-control-c" id="username" value={createPin} onChange={(e)=> {
                                 setIsError(false)
                                 setCreatePin(e.target.value)
                             }
@@ -59,7 +59,7 @@ const TransactionPinInput = async(e)=>{
                         </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
                             <label htmlFor="username" className="form-label form-label-c">Confirm Pin</label>
-                            <input type="email" className="form-control form-control-c" id="username" value={confirmCreatePin} onChange={(e)=> {
+                            <input maxLength="4" type="password" className="form-control form-control-c" id="username" value={confirmCreatePin} onChange={(e)=> {
                                 setIsError(false)
                                 setConfirmCreatePin(e.target.value)
                             }

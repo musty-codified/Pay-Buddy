@@ -1,12 +1,11 @@
-import "../Pages/welcome.css";
+import "../../Pages/welcome.css";
 import React from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
-import { currency } from '../../includes/Config';
+import { currency } from '../../../includes/Config';
 
-export default function SendMoneyPartThree() {
+export default function BuyDataSuccessMessage() {
     const navigate = useNavigate();
-    const amountSent = localStorage.getItem("amountSent");
-    const beneficiary = localStorage.getItem("beneficiary")
+    const {state} = useLocation();
 
   const dashboard = (e) => {
     e.preventDefault();
@@ -16,7 +15,7 @@ export default function SendMoneyPartThree() {
     <div className="welcome__parent">
       <div className="welcome__content bg-color-600">
         {<h1>Your data purchase was successful  🥳 </h1>}
-        <p>Your data purchase of  {currency.format(amountSent)} for {beneficiary} has been sent to {beneficiary} </p>
+        <p>Your data purchase of  {state.description} has been sent to {state.phoneNumber} </p>
         <button onClick={dashboard}>Continue</button>
       </div>
     </div>

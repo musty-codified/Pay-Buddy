@@ -20,7 +20,7 @@ import { Toaster } from "react-hot-toast";
 import ConfirmFund from "./components/BackendPages/wallet/ConfirmFund";
 import SendMoneyPartThree from "./components/BackendPages/SendMoneyPartThree";
 import BuyDataPartOne from "./components/BackendPages/buy_data/BuyDataPartOne";
-import SuccessDataPurchase from "./components/BackendPages/SuccessDataPurchase";
+import BuyDataSuccessMessage from "./components/BackendPages/buy_data/BuyDataSuccessMessage"
 
 
 
@@ -49,8 +49,10 @@ function App() {
                   <Route path="send-money-1" element={<SendMoneyPartOne />}/>
                   <Route path="send-money-2" element={<SendMoneyPartTwo />}/>
                   <Route path="send-money-3" element={<SendMoneyPartThree />}/>
-                 
+
+                  <Route path="buy-data-1" element={<BuyDataPartOne />}/> 
               </Route>
+              <Route path="buy-data-2" element={<BuyDataSuccessMessage />}/>
           </Routes>
       </MyContextProvider>
           

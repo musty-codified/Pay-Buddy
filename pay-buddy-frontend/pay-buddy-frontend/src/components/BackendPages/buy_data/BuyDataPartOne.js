@@ -19,6 +19,7 @@ const BuyDataPartOne = () => {
     const [network, setNetwork] = useState(null);
     const [dataPlan, setDataPlan] = useState(null);
     const [amount, setAmount] = useState(null);
+    const [dataDescription, setDataDescription] = useState(null);
 
 
 //GET ALL NETWORKS
@@ -56,9 +57,10 @@ useEffect(()=>{
 },[network]);
 
 const handleDataPlanChange = (e) =>{
-    let dataVariationAndAmount= e.target.value.split("+");
-    setDataPlan(dataVariationAndAmount[0]);
-    setAmount(dataVariationAndAmount[1])
+    let dataVariationAndAmountAndDescription= e.target.value.split("+");
+    setDataPlan(dataVariationAndAmountAndDescription[0]);
+    setAmount(dataVariationAndAmountAndDescription[1])
+    setDataDescription(dataVariationAndAmountAndDescription[2]);
 }
 
 const handlePhoneNumber = (e) =>{
@@ -85,6 +87,12 @@ const handleSubmit = (e) =>{
         console.log(res);
         setIsLoading(false);
         notifySuccess(res.data.response_description);
+
+        const successMessage = {
+            phoneNumber : phoneNumber,
+            description : dataDescription
+        }
+        navigate("/buy-data-2",{state:successMessage});
     })
     .catch(err =>{
         console.log(err);
@@ -131,9 +139,8 @@ const handleSubmit = (e) =>{
                             <select className="form-select" required onChange={handleDataPlanChange}>
 
                                 <option value="">Select Data Plan</option>
-
                                 {dataPlans.map(dataPlan =>(
-                                <option value={`${dataPlan.variation_code}+${dataPlan.variation_amount}`}>{`${dataPlan.name}`}</option>
+                                <option value={`${dataPlan.variation_code}+${dataPlan.variation_amount}+${dataPlan.name}`}>{`${dataPlan.name}`}</option>
                                 ))}
                             </select>
 

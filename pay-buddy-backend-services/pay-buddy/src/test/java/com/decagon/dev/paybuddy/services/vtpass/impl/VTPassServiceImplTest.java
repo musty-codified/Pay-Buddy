@@ -1,5 +1,6 @@
 package com.decagon.dev.paybuddy.services.vtpass.impl;
 
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
 import com.decagon.dev.paybuddy.services.vtpass.VTPassService;
@@ -9,9 +10,7 @@ import com.decagon.dev.paybuddy.utilities.VTPassHttpEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -35,7 +33,7 @@ import static org.mockito.Mockito.when;
  */
 
 @ExtendWith(MockitoExtension.class)
-class VTPassServiceImplTest {
+class  VTPassServiceImplTest {
 
     private VTPassService vtPassService;
 
@@ -128,7 +126,7 @@ class VTPassServiceImplTest {
                 .build();
 
         when(restTemplate.exchange(
-                VTPassConstants.PAY_DATA,
+                VTPassConstants.PAY_BILL,
                 HttpMethod.POST,
                 vtPassHttpEntity.getEntity(null),
                 BuyDataPlanResponse.class
@@ -136,5 +134,60 @@ class VTPassServiceImplTest {
 
         BuyDataPlanResponse response = vtPassService.payDataPlan(request);
         assertEquals(buyDataPlanResponse, response);
+    }
+
+    @Test
+    void getAirtimeServices() {
+        AirtimeServices airtimeServices = AirtimeServices.builder()
+                .ServiceID("mtn")
+                .amount(new BigDecimal(1000d))
+                .name("MTN Airtime VTU")
+                .image("https://sandbox.vtpass.com/resources/products/200X200/MTN-Airtime.jpg")
+                .build();
+
+      AirtimeServiceResponse airtimeServiceResponse = AirtimeServiceResponse.builder()
+                .response_description("0000")
+                .content(new ArrayList<>(List.of(airtimeServices)))
+                .build();
+
+      when(restTemplate.exchange(
+              VTPassConstants.All_AIRTIME_SERVICES,
+              HttpMethod.GET,
+              vtPassHttpEntity.getEntity(null),
+              AirtimeServiceResponse.class
+      )).thenReturn(new ResponseEntity<>(airtimeServiceResponse,HttpStatus.OK));
+
+      AirtimeServiceResponse airtimeServiceResponse1 = vtPassService.getAirtimeServices();
+      assertEquals(airtimeServiceResponse,airtimeServiceResponse1);
+    }
+
+    @Test
+    void buyAirtime(){
+        BuyAirtimeRequest buyAirtimeRequest = BuyAirtimeRequest.builder()
+                .request_id("202303110941Yan-he")
+                .serviceID("airtime")
+                .amount(new BigDecimal(1000d))
+                .phone("08011111111")
+                .build();
+
+        BuyAirtimeResponse buyAirtimeResponse = BuyAirtimeResponse.builder()
+                .requestId("20230311102003pby2p07")
+                .response_description("TRANSACTION SUCCESSFUL")
+                .transaction_date(new TransactionDate("20230211", 3,"Africa/Lagos"))
+                .amount(new BigDecimal(1000d))
+                .code(12)
+                .transactionId("null")
+                .purchase_code("")
+                .build();
+
+        when(restTemplate.exchange(
+                VTPassConstants.PAY_BILL,
+                HttpMethod.POST,
+                vtPassHttpEntity.getEntity(null),
+                BuyAirtimeResponse.class
+        )).thenReturn(new ResponseEntity<>(buyAirtimeResponse, HttpStatus.OK));
+
+        BuyAirtimeResponse airtimeResponse = vtPassService.buyAirtime(buyAirtimeRequest);
+        assertEquals(buyAirtimeResponse, airtimeResponse);
     }
 }

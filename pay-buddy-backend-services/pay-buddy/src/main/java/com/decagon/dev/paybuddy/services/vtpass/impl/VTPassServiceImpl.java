@@ -1,9 +1,8 @@
 package com.decagon.dev.paybuddy.services.vtpass.impl;
 
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
 import com.decagon.dev.paybuddy.services.vtpass.VTPassService;
 import com.decagon.dev.paybuddy.utilities.AppUtil;
 import com.decagon.dev.paybuddy.utilities.VTPassHttpEntity;
@@ -56,15 +55,34 @@ public class VTPassServiceImpl implements VTPassService {
         request.setRequest_id(getRequestId());
 
         return restTemplate.exchange(
-                PAY_DATA,
+                PAY_BILL,
                 HttpMethod.POST,
                 vtPassHttpEntity.getEntity(request),
                 BuyDataPlanResponse.class
         ).getBody();
     }
 
+    @Override
+    public BuyAirtimeResponse buyAirtime(BuyAirtimeRequest buyAirtimeRequest) {
+        buyAirtimeRequest.setRequest_id(getRequestId());
+        return restTemplate.exchange(
+                PAY_BILL,
+                HttpMethod.POST,
+                vtPassHttpEntity.getEntity(buyAirtimeRequest),
+                BuyAirtimeResponse.class
+        ).getBody();
 
+    }
+    @Override
+    public AirtimeServiceResponse getAirtimeServices() {
+        return restTemplate.exchange(
+                All_AIRTIME_SERVICES,
+                HttpMethod.GET,
+                vtPassHttpEntity.getEntity(null),
+                AirtimeServiceResponse.class
+        ).getBody();
 
+    }
 
 
     /**
@@ -83,6 +101,8 @@ public class VTPassServiceImpl implements VTPassService {
                         ? "0" + (cal.get(Calendar.MINUTE)) : cal.get(Calendar.MINUTE)) +
                 util.generateSerialNumber("D");
     }
+
+
 
 }
 

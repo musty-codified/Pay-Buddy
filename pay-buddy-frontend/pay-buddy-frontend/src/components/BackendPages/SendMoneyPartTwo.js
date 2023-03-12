@@ -36,9 +36,7 @@ const SendMoneyPartTwo = () => {
             console.log(res);
             setIsLoading(false);
             notifySuccess("Transaction successful");
-            localStorage.setItem("amountSent",formData["amount"]);
-            localStorage.setItem("beneficiary",`${user.firstName} ${user.lastName}`);
-            navigate("/pay-buddy/send-money-3");
+            navigate("/send-money-success",{state:{amountSent:formData["amount"],beneficiary:`${user.firstName} ${user.lastName}`}});
         })
         .catch(err => {
             console.log(err.response.data.error);

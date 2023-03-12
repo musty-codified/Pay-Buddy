@@ -32,9 +32,11 @@ const Payment = () => {
                         <img src={ Airtime } alt="Payment-svg" />
                     </div>
                     <div>
+                    <Link to="/pay-buddy/buy-airtime-partone" >
                         <h3 className="payment-header-title">Buy Airtime</h3>
                         <p className="payment-header-p">Never run out of airtime to reach important people in your life.
                          Get 10% discount on every recharge</p>
+                    </Link>
                     </div>
                 </div>
                 <div className="payment-item">

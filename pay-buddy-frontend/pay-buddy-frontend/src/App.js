@@ -19,6 +19,7 @@ import SettingsMenu from "./components/Settings/Settings";
 import { Toaster } from "react-hot-toast";
 import ConfirmFund from "./components/BackendPages/wallet/ConfirmFund";
 import SendMoneyPartThree from "./components/BackendPages/SendMoneyPartThree";
+import SuccessDataPurchase from "./components/BackendPages/SuccessDataPurchase";
 
 
 
@@ -47,6 +48,8 @@ function App() {
                   <Route path="send-money-1" element={<SendMoneyPartOne />}/>
                   <Route path="send-money-2" element={<SendMoneyPartTwo />}/>
                   <Route path="send-money-3" element={<SendMoneyPartThree />}/>
+
+                  <Route path="success-data-purchase" element={<SuccessDataPurchase />}/>
                  
               </Route>
           </Routes>

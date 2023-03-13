@@ -19,8 +19,8 @@ import SettingsMenu from "./components/Settings/Settings";
 import { Toaster } from "react-hot-toast";
 import ConfirmFund from "./components/BackendPages/wallet/ConfirmFund";
 import SendMoneyPartThree from "./components/BackendPages/SendMoneyPartThree";
-
-
+import BuyAirtimePartOne from "./components/BackendPages/buyairtime/BuyAirtime";
+import BuyDataPartOne from "./components/BackendPages/buy_data/BuyDataPartOne";
 
 
 function App() {
@@ -47,6 +47,9 @@ function App() {
                   <Route path="send-money-1" element={<SendMoneyPartOne />}/>
                   <Route path="send-money-2" element={<SendMoneyPartTwo />}/>
                   <Route path="send-money-3" element={<SendMoneyPartThree />}/>
+
+                  <Route path="buy-airtime-partone" element={<BuyAirtimePartOne />}/>
+                  <Route path="buy-data-1" element={<BuyDataPartOne />}/>
                  
               </Route>
           </Routes>

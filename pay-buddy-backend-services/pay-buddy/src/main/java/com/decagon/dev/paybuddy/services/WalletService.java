@@ -2,6 +2,7 @@ package com.decagon.dev.paybuddy.services;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
 import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
+
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyElectricityRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.VerifyMerchantRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.WalletResponse;
@@ -11,6 +12,13 @@ import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansRes
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.BuyElectricityResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.VerifyMerchantResponse;
+
+import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
+import com.decagon.dev.paybuddy.models.User;
+
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.paystack.payStackPojos.Bank;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +36,15 @@ public interface WalletService {
     DataServicesResponse getDataServices();
     DataPlansResponse getDataPlans(String dataType);
     BuyDataPlanResponse buyDataPlan(BuyDataPlanRequest request, String pin);
+
     DataServicesResponse getAllElectricityService();
 
     VerifyMerchantResponse verifyElectricityMeter(VerifyMerchantRequest merchantRequest);
 
     BuyElectricityResponse buyElectricity(BuyElectricityRequest electricityRequest, String pin);
+
+    BuyAirtimeResponse buyAirtimeServices(BuyAirtimeRequest buyAirtimeRequest , String pin);
+
+    AirtimeServiceResponse getAirtimeServices();
 
 }

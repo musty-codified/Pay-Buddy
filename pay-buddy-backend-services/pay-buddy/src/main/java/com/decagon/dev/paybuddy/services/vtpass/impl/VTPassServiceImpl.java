@@ -1,5 +1,6 @@
 package com.decagon.dev.paybuddy.services.vtpass.impl;
 
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyElectricityRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.VerifyMerchantRequest;
@@ -8,6 +9,8 @@ import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansRes
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.BuyElectricityResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.VerifyMerchantResponse;
+
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
 import com.decagon.dev.paybuddy.services.vtpass.VTPassService;
 import com.decagon.dev.paybuddy.utilities.AppUtil;
 import com.decagon.dev.paybuddy.utilities.VTPassHttpEntity;
@@ -68,6 +71,15 @@ public class VTPassServiceImpl implements VTPassService {
         ).getBody();
     }
 
+    @Override
+    public BuyAirtimeResponse buyAirtime(BuyAirtimeRequest buyAirtimeRequest) {
+        buyAirtimeRequest.setRequest_id(getRequestId());
+        return restTemplate.exchange(
+                PAY_BILL,
+                HttpMethod.POST,
+                vtPassHttpEntity.getEntity(buyAirtimeRequest),
+                BuyAirtimeResponse.class
+        ).getBody();
 
     @Override
     public DataServicesResponse getAllElectricityService() {
@@ -90,6 +102,15 @@ public class VTPassServiceImpl implements VTPassService {
                         VerifyMerchantResponse.class
                 ).getBody();
 
+    }
+    @Override
+    public AirtimeServiceResponse getAirtimeServices() {
+        return restTemplate.exchange(
+                All_AIRTIME_SERVICES,
+                HttpMethod.GET,
+                vtPassHttpEntity.getEntity(null),
+                AirtimeServiceResponse.class
+        ).getBody();
 
     }
 
@@ -124,6 +145,8 @@ public class VTPassServiceImpl implements VTPassService {
                         ? "0" + (cal.get(Calendar.MINUTE)) : cal.get(Calendar.MINUTE)) +
                 util.generateSerialNumber("D");
     }
+
+
 
 }
 

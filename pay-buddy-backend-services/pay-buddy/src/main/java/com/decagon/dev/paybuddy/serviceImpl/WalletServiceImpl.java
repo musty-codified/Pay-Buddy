@@ -2,6 +2,15 @@ package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
 import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyElectricityRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.VerifyMerchantRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.WalletResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.BuyElectricityResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.VerifyMerchantResponse;
 import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
@@ -9,6 +18,7 @@ import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
+import com.decagon.dev.paybuddy.exceptions.IncorrectMerchantIdentity;
 import com.decagon.dev.paybuddy.exceptions.WalletServiceException;
 import com.decagon.dev.paybuddy.models.Transaction;
 import com.decagon.dev.paybuddy.models.User;
@@ -28,9 +38,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -163,6 +173,72 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public DataServicesResponse getAllElectricityService()
+    {
+
+        return vtPassService.getAllElectricityService();
+    }
+
+    @Override
+    public VerifyMerchantResponse verifyElectricityMeter(VerifyMerchantRequest merchantRequest)
+    {
+        return vtPassService.verifyElectricityMeter(merchantRequest);
+    }
+
+    @Override
+    @Transactional
+    public BuyElectricityResponse buyElectricity(BuyElectricityRequest electricityRequest,String pin)
+    {
+
+
+
+        User walletOwner = getLoggedInUser();
+
+        Wallet wallet = walletRepository.findWalletByUser_Email(walletOwner.getEmail());
+
+
+        if (!passwordEncoder.matches(pin, wallet.getPin()))
+            throw new WalletServiceException("Pin is wrong");
+
+        if (wallet.getAccountBalance().compareTo(electricityRequest.getAmount()) <= 0) //Check if wallet balance can perform transaction
+            throw new WalletServiceException("Insufficient balance");
+
+
+        VerifyMerchantRequest merchantRequest = new VerifyMerchantRequest();
+        merchantRequest.setServiceID(electricityRequest.getServiceID());
+        merchantRequest.setBillersCode(electricityRequest.getBillersCoder());
+        merchantRequest.setType(electricityRequest.getVariation_code());
+        VerifyMerchantResponse verifyMerchantResponse =  verifyElectricityMeter(merchantRequest);
+
+
+        if(!verifyMerchantResponse.getCode().equals("000"))
+        {
+            throw new IncorrectMerchantIdentity("incorrect meter number");
+        }
+
+        BuyElectricityResponse response = vtPassService.buyElectricity(electricityRequest);
+        if (Objects.equals(response.getResponse_description(), "TRANSACTION SUCCESSFUL"))
+        {
+            wallet.setAccountBalance(wallet.getAccountBalance().subtract(electricityRequest.getAmount())); //Deduct the wallet
+
+            Transaction walletTransaction = Transaction.builder()
+                    .name(electricityRequest.getServiceID())
+                    .bankCode(electricityRequest.getPhone())
+                    .wallet(wallet)
+                    .transactionType(TransactionType.DEBIT)
+                    .amount(electricityRequest.getAmount())
+                    .transactionReference(response.getExchangeReference())
+                    .transactionStatus(TransactionStatus.SUCCESS)
+                    .build();
+
+        }
+
+        return response;
+
+
+
+
+    }
     public BuyAirtimeResponse buyAirtimeServices(BuyAirtimeRequest buyAirtimeRequest , String pin) {
         Wallet wallet = walletRepository.findWalletByUser_Email(getLoggedInUser().getEmail());
 
@@ -207,6 +283,5 @@ public class WalletServiceImpl implements WalletService {
             return true;
         return false;
     }
-
 
 }

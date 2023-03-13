@@ -1,10 +1,7 @@
 package com.decagon.dev.paybuddy.services;
 
 
-import com.decagon.dev.paybuddy.dtos.responses.TransactionResponse;
-import com.decagon.dev.paybuddy.dtos.responses.TransactionResponseViewModel;
-
-import java.util.List;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.TransactionResponseViewModel;
 
 
 public interface TransactionService {

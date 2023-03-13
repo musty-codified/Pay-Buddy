@@ -1,5 +1,5 @@
 
-import sendMoneyLogo from "../../../assets/images/sendmoney-logo.svg";
+import sendMoneyLogo from "../../../assets/images/buyairtime-logo.svg";
 import { useNavigate} from "react-router-dom";
 import appApi from "../../../apis/AppApi.js";
 import { useEffect, useState } from "react";
@@ -26,10 +26,10 @@ const BuyAirtimePartOne = () => {
 const getAllNetworks = () => {
     appApi.get("/api/v1/wallet/airtime-services")
     .then(res => {
-        setNetworks(res.response.data.content)
+        setNetworks(res.data.content)
     })
     .catch(err => {
-        setNetworks(err.response.data.content)
+      
     });
 }
 
@@ -62,12 +62,11 @@ const handleWalletPin = (e) => {
     setWalletPin(e.target.value);
 }
 const handleAmount =(e)=>{
-    setAmount(e.value.target);
+    setAmount(e.target.value);
 }
 
 //BUY AIRTIME 
 const handleSubmit = (e) =>{
-    alert(network);
     e.preventDefault();
     setIsLoading(true);
     const data ={
@@ -81,6 +80,7 @@ const handleSubmit = (e) =>{
         console.log(res);
         setIsLoading(false);
         notifySuccess(res.data.response_description);
+        navigate("/buy-airtime-success",{state:{amount:amount,phoneNumber:phoneNumber}})
     })
     .catch(err =>{
         console.log(err);
@@ -120,7 +120,7 @@ const handleSubmit = (e) =>{
                             <input type="text" className="form-control" required onChange={handlePhoneNumber}/>
                         </div>
                         <div className="mb-3">
-                            <label for="phoneNumber" className="form-label">Amount</label>
+                            <label for="amount" className="form-label">Amount</label>
                             <input type="text" className="form-control" required onChange={handleAmount}/>
                         </div>
 

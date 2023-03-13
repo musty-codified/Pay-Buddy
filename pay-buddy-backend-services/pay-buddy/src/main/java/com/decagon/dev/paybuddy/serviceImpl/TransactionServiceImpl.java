@@ -1,13 +1,11 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
-import com.decagon.dev.paybuddy.dtos.responses.TransactionResponse;
-import com.decagon.dev.paybuddy.dtos.responses.TransactionResponseViewModel;
-import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.TransactionResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.TransactionResponseViewModel;
 import com.decagon.dev.paybuddy.models.Transaction;
 import com.decagon.dev.paybuddy.repositories.TransactionRepository;
 import com.decagon.dev.paybuddy.repositories.UserRepository;
 import com.decagon.dev.paybuddy.services.TransactionService;
-import com.decagon.dev.paybuddy.utilities.ResponseCodeUtil;
 import com.decagon.dev.paybuddy.utilities.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

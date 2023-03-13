@@ -52,7 +52,7 @@ function App() {
                   <Route path="buy-airtime-partone" element={<BuyAirtimePartOne />}/>
                   <Route path="buy-data-1" element={<BuyDataPartOne />}/>   
               </Route>
-              <Route path="buy-data-2" element={<BuyDataSuccessMessage />}/>   
+              <Route path="buy-data-2" element={<BuyDataSuccessMessage />}/>
               <Route path="send-money-success" element={<SendMoneyPartThree />}/>
               <Route path="buy-airtime-success" element={<BuyAirtimeSuccessScreen />}/>
           </Routes>

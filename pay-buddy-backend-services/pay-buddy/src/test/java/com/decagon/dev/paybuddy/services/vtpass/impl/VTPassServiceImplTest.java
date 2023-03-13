@@ -7,6 +7,7 @@ import com.decagon.dev.paybuddy.services.vtpass.VTPassService;
 import com.decagon.dev.paybuddy.utilities.AppUtil;
 import com.decagon.dev.paybuddy.utilities.VTPassConstants;
 import com.decagon.dev.paybuddy.utilities.VTPassHttpEntity;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,7 +97,7 @@ class  VTPassServiceImplTest {
                 .build();
 
         when(restTemplate.exchange(
-                VTPassConstants.NETWORK_DATA_PLANS + "mtn-data",
+                VTPassConstants.PAY_BILL_SERVICE + "mtn-data",
                 HttpMethod.GET,
                 vtPassHttpEntity.getEntity(null),
                 DataPlansResponse.class
@@ -135,6 +135,23 @@ class  VTPassServiceImplTest {
         BuyDataPlanResponse response = vtPassService.payDataPlan(request);
         assertEquals(buyDataPlanResponse, response);
     }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @Test
+    void getAllElectricityService() {
+    }
+
+    @Test
+    void verifyElectricityMeter() {
+    }
+
+    @Test
+    void buyElectricity() {
+    }
+}
 
     @Test
     void getAirtimeServices() {

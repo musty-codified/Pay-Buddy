@@ -1,4 +1,4 @@
-package com.decagon.dev.paybuddy.dtos.responses;
+package com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data;
 
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import lombok.*;

@@ -2,7 +2,7 @@ package com.decagon.dev.paybuddy.Controllers;
 
 import com.decagon.dev.paybuddy.dtos.requests.LoginUserRequest;
 import com.decagon.dev.paybuddy.dtos.requests.SocialLoginUserRequest;
-import com.decagon.dev.paybuddy.dtos.responses.SocialLoginResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.SocialLoginResponse;
 import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 import com.decagon.dev.paybuddy.services.UserService;
 import lombok.RequiredArgsConstructor;

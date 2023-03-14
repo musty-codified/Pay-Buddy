@@ -80,6 +80,7 @@ public class VTPassServiceImpl implements VTPassService {
                 vtPassHttpEntity.getEntity(buyAirtimeRequest),
                 BuyAirtimeResponse.class
         ).getBody();
+    }
 
     @Override
     public DataServicesResponse getAllElectricityService() {
@@ -103,6 +104,7 @@ public class VTPassServiceImpl implements VTPassService {
                 ).getBody();
 
     }
+
     @Override
     public AirtimeServiceResponse getAirtimeServices() {
         return restTemplate.exchange(
@@ -117,21 +119,19 @@ public class VTPassServiceImpl implements VTPassService {
     @Override
     public BuyElectricityResponse buyElectricity(BuyElectricityRequest electricityRequest) {
         electricityRequest.setRequest_id(getRequestId());
-       return restTemplate
-                  .exchange(
-                          PAY_BILL,
-                          HttpMethod.POST,
-                          vtPassHttpEntity.getEntity(electricityRequest),
-                          BuyElectricityResponse.class
 
-                  ).getBody();
-
-
+        return restTemplate.exchange(
+                        PAY_BILL,
+                        HttpMethod.POST,
+                        vtPassHttpEntity.getEntity(electricityRequest),
+                        BuyElectricityResponse.class
+                ).getBody();
     }
 
     /**
      * <a href="https://www.vtpass.com/documentation/how-to-generate-request-id/">...</a>
      */
+
     private String getRequestId() { //edge cases taking care off
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+01:00"));
         return String.valueOf(cal.get(Calendar.YEAR)) +
@@ -145,8 +145,6 @@ public class VTPassServiceImpl implements VTPassService {
                         ? "0" + (cal.get(Calendar.MINUTE)) : cal.get(Calendar.MINUTE)) +
                 util.generateSerialNumber("D");
     }
-
-
 
 }
 

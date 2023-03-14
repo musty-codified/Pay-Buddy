@@ -5,6 +5,9 @@
   }
 }
 
+body{
+  background-color: #e3f1ff;
+}
 /* Sidebar */
 .sidebar {
   position: fixed;

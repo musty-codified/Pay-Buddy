@@ -222,7 +222,7 @@
 }
 
 .rectangle-2{
-    background-color: var(--light-blue-color);
+    background-color: var(--primary50);
     width: 100%;
     padding: 15PX;
     height: 100%;

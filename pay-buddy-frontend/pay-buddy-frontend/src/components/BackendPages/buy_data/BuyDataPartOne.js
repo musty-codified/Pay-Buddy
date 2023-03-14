@@ -97,7 +97,7 @@ const handleSubmit = (e) =>{
     const navigate = useNavigate();
 
         return (
-            <div className= "row justify-content-center align-items-center">
+            <div className= "row justify-content-center align-items-center mt-5">
                 <div className="col-md-5">
                     <form onSubmit={handleSubmit}>
                         <div className= "payment-logo mb-3">
@@ -147,7 +147,7 @@ const handleSubmit = (e) =>{
                         </div>
 
                         <div className="mb-3 button-margin">
-                            <button type="submit" className="btn btn-primary proceed"> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Proceed</button>
+                            <button type="submit" className="btn btn-primary proceed c-submit-button"> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Proceed</button>
                         </div>
                     </form>
                     <div className="rectangle-2">

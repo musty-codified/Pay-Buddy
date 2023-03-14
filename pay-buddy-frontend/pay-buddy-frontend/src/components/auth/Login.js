@@ -107,9 +107,9 @@ function Login() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md-4 c-padding">
+        <div className="col-md-4 c-padding scrol-vertical">
           <img src={logo} alt="Logo" width="72" height="72" />
-          <h4 className="h4 mb-3 mt-3">Log in</h4>
+          <h6 className="h6 mb-3 mt-3 display-6 title-text" style={{color:"#000"}}>Log in</h6>
           <span>Enter your details to access your account</span>
 
           <div className="mb-3 mt-3 form-control align-items-center social-login form-control-c" onClick={() => login()}>
@@ -159,8 +159,8 @@ function Login() {
 
             <div className="mb-3 mt-5">
               {responseStatus && <div className="text-danger">{responseStatus}</div>}
-              <button className="btn btn-primary c-submit-button btn-c">
-                { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}Sign in</button>
+              <button className="btn btn-primary c-submit-button">
+                { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}<span>Sign in</span></button>
             </div>
 
             <div className="mb-3">
@@ -169,16 +169,34 @@ function Login() {
           </form>
         </div>
 
-        <div className="col-md-8 bg-color-50 banner">
-          <div class="h-100vh"></div>
+        <div className="col-md-8 bg-color-600 banner p-5 fixed-position">
+          <div class="h-100vh">
+          <div className="info-header">
+                <div className="register-text">
+                    <h3>It takes 20 years to build a reputation 
+                        and five minutes<br/> to ruin it, 
+                        if you think about that, you'll do things 
+                        <br/>differently."</h3>
+                </div>
+                <div className="quote-owner-details">
+                <h5 className="quote-owner-h4">-Boluwatife</h5>
+                <p className="quote-office-p">Founder,Pay-Buddy</p>
+               </div>
+            </div>
+
+            <div className="right-div-design">     
+            <div className="rectangle-1">   
+            <div className="rectangle-2">
+                <ToastContainer />
+             </div>
+            </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
       <Email open={open} handleClose={handleClose} handleOpen={handleOpen} />
-
-      <div className="rectangle-2">
-                <ToastContainer />
-      </div>
     </div>
   );
 }

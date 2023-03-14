@@ -24,6 +24,12 @@
     background-color: var(--primary600) !important;
     border:none !important;
     color: #fff !important;
+    border-radius: 5px !important;
+    padding: 10px !important;
+    
+}
+.c-submit-button span{
+    font-size: 1.3rem !important;
 }
 .font-color-600{
     color :var(--primary600) !important;
@@ -103,11 +109,19 @@ form{
     padding:15px;
 }
 
+
 main{
+    padding: 15px 10px 10px 10px ;
     background-color: var(--primary50);
-    height: auto !important;
-    padding: 50px;
 }
+@media(min-width:768px){
+    main{
+        background-color: var(--primary50);
+        height: auto !important;
+        padding: 50px;
+    }
+}
+
 
 form button{
     width : 100% !important;
@@ -141,6 +155,11 @@ form label{
 form button {
     text-transform: capitalize !important;
     font-size: 20px !important;
+}
+
+.title-text{
+    font-size: 2rem;
+    font-weight: 600 !important;
 }
 
 .profileImage{
@@ -189,6 +208,12 @@ form button {
 
     .bg-color-600{
         background-color: var(--primary600) !important;
+    }
+
+    .fixed-position{
+        position:fixed;
+        right:0px;
+        top:opx;
     }
 
 

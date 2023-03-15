@@ -1,8 +1,8 @@
 package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.*;
-import com.decagon.dev.paybuddy.dtos.responses.LoginResponseDto;
-import com.decagon.dev.paybuddy.dtos.responses.SocialLoginResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.LoginResponseDto;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.SocialLoginResponse;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.Roles;
 import com.decagon.dev.paybuddy.enums.WalletStatus;

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from 'react';
 import { MyContext } from "../../statemanagement/ComponentState";
 import "./paymentStyle.css"
 
@@ -32,9 +32,11 @@ const Payment = () => {
                         <img src={ Airtime } alt="Payment-svg" />
                     </div>
                     <div>
+                    <Link to="/pay-buddy/buy-airtime-partone" >
                         <h3 className="payment-header-title">Buy Airtime</h3>
                         <p className="payment-header-p">Never run out of airtime to reach important people in your life.
                          Get 10% discount on every recharge</p>
+                    </Link>
                     </div>
                 </div>
                 <div className="payment-item">
@@ -42,9 +44,11 @@ const Payment = () => {
                         <img src={ Data } alt="Data-svg" />
                     </div>
                     <div>
+                        <Link to="/pay-buddy/buy-data-1" >
                         <h3 className="payment-header-title">Buy Data</h3>
                         <p className="payment-header-p">Data is life! Buy instant data to stay connected to your world.
                          Get a 20% discount on every data purchase</p>
+                        </Link>
                     </div>
                 </div>
                 <div className="payment-item">

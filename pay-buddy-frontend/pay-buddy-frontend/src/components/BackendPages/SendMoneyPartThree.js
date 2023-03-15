@@ -1,4 +1,5 @@
 import "../Pages/welcome.css";
+import successScreen from "../../assets/images/successScreen.svg";
 import React from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
 import { currency } from '../../includes/Config';
@@ -7,6 +8,7 @@ export default function SendMoneyPartThree() {
     const navigate = useNavigate();
     const amountSent = localStorage.getItem("amountSent");
     const beneficiary = localStorage.getItem("beneficiary")
+    const{state} = useLocation();
 
   const dashboard = (e) => {
     e.preventDefault();
@@ -14,10 +16,13 @@ export default function SendMoneyPartThree() {
   }
   return (
     <div className="welcome__parent">
-      <div className="welcome__content bg-color-600">
-        {<h1>Your money is on it's way  🥳 </h1>}
-        <p>Your {currency.format(amountSent)} transfer to {beneficiary} is succesful and it’s on it’s way to his account</p>
-        <button onClick={dashboard}>Continue</button>
+      <div className="welcome__content">
+          <img src={successScreen} className="img-fluid" />
+          <div className="successMessage">
+            {<h1>Your money is on it's way  🥳 </h1>}
+            <p>Your {currency.format(state.amountSent)} transfer to {state.beneficiary} is succesful and it’s on it’s way to his account</p>
+            <button onClick={dashboard}>Continue</button>
+         </div>
       </div>
     </div>
   )

@@ -7,7 +7,7 @@ import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 const TopNavbar = () => {
   const { pagename, setPageName } = useContext(MyContext);
-  const pageGroupName = (pagename =="Payment" || pagename=="Dashboard")?null:"Payment ";
+  const pageGroupName = (pagename =="Payment" || pagename=="Dashboard" || pagename=="Settings")?null:"Payment ";
 
     let fullName="";
     let  profileImage ="";
@@ -20,16 +20,14 @@ const TopNavbar = () => {
         user= JSON.parse(user);
         fullName= user.firstName +" " + user.lastName;
         profileImage = user.picture;
-        console.log(user);
-
-        console.log(fullName+" "+profileImage+" "+token)
-        console.log(token);
     }else{
       navigate("/login");
     }
     const logout = () => {
         localStorage.removeItem("userProfile");
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      
         navigate("/login");
     }
     return ( 

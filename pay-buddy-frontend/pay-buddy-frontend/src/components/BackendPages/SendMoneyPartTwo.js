@@ -36,9 +36,7 @@ const SendMoneyPartTwo = () => {
             console.log(res);
             setIsLoading(false);
             notifySuccess("Transaction successful");
-            localStorage.setItem("amountSent",formData["amount"]);
-            localStorage.setItem("beneficiary",`${user.firstName} ${user.lastName}`);
-            navigate("/pay-buddy/send-money-3");
+            navigate("/send-money-success",{state:{amountSent:formData["amount"],beneficiary:`${user.firstName} ${user.lastName}`}});
         })
         .catch(err => {
             console.log(err.response.data.error);
@@ -61,7 +59,7 @@ const SendMoneyPartTwo = () => {
     setPageName("Send Money");
     
     return ( 
-        <div class="row justify-content-center align-items-center">
+        <div class="row justify-content-center align-items-center mt-5">
             <div class="col-md-5">
                 <form onSubmit={handleSubmit}> 
                     <div class="payment-logo mb-3">
@@ -101,7 +99,7 @@ const SendMoneyPartTwo = () => {
                     </div>
 
                     <div className="mb-3 button-margin">
-                        <button type="submit" class="btn btn-primary">{ isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Pay</button>
+                        <button type="submit" class="btn btn-primary c-submit-button">{ isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Pay</button>
                     </div>
                 </form>
                 <div className="rectangle-2">

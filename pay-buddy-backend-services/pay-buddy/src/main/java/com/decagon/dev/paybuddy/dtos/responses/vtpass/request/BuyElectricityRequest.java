@@ -23,7 +23,7 @@ public class BuyElectricityRequest {
     private String serviceID;
     @NotBlank
     @Schema
-    private String billersCoder;
+    private String billersCode;
     @NotBlank
     @Schema
     private String variation_code;

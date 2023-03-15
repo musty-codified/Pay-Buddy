@@ -80,7 +80,7 @@ const SendMoneyPartOne = () => {
     }
     
     return ( 
-        <div class="row justify-content-center align-items-center">
+        <div class="row justify-content-center align-items-center mt-5">
             <div class="col-md-5">
                 <form onSubmit={handleSubmit}>
                     <div class="payment-logo mb-3">
@@ -112,7 +112,7 @@ const SendMoneyPartOne = () => {
                             {accountName} { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}</div>
                     </div>
                     <div class="mb-3 button-margin">
-                        <button type="submit" className="btn btn-primary proceed" disabled={isDisabled}>Proceed</button>
+                        <button type="submit" className="btn btn-primary proceed c-submit-button" disabled={isDisabled}>Proceed</button>
                     </div>
                 </form>
             </div>

@@ -14,3 +14,6 @@ endPoint.interceptors.request.use(config => {
 });
 
 export default endPoint;
+
+export const baseURL = 'http://localhost:8080';
+export const baseURLFE ='http://localhost:3000';

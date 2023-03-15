@@ -6,6 +6,8 @@ import { notifyError, notifySuccess, notifyWarning } from '../../notification/To
 import LoadingSpin from "react-loading-spin";
 import { WiStars } from 'react-icons/wi'
 import { Link, useNavigate } from 'react-router-dom';
+import { baseURL } from '../../../apis/AppApi';
+import axios from 'axios';
 
 const loginState = {
     firstName: '',
@@ -91,7 +93,7 @@ const Register =()=> {
  const handleClick=(e)=> {
     e.preventDefault();
     setIsLoading(true)
-    appApi.post("/api/v1/auth/register", {
+    axios.post(`${baseURL}/api/v1/auth/register`, {
         firstName: firstName,
         lastName: lastName,
         otherName: otherName,
@@ -109,9 +111,8 @@ const Register =()=> {
     })
     .catch(err => {
         console.log(err)
-        setRegFormData(loginState)
         setIsLoading(false)
-        notifyError("Internal Server Error. Registration Failed!")
+        notifyError("Internal Server Error. Registration Failed!" +err)
     })
  }
     
@@ -196,11 +197,11 @@ const Register =()=> {
                         and five minutes<br/> to ruin it, 
                         if you think about that, you'll do things 
                         <br/>differently."</h3>
-                        </div>
+                </div>
                 <div className="quote-owner-details">
                 <h5 className="quote-owner-h4">-Boluwatife</h5>
                 <p className="quote-office-p">Founder,Pay-Buddy</p>
-                </div>
+               </div>
             </div>
 
             <div className="right-div-design">     

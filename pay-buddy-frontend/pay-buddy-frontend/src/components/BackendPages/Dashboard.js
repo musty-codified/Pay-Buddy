@@ -17,13 +17,14 @@ import Wallet from './wallet/Wallet';
 import { screenSize } from '../../includes/Config';
 
 function Dashboard() {
+    const [isAccountBalanceReady, setIsAccountBalanceReady] =useState(null);
+
     //CONTENT DISPLAY LOGIC
     let hiddenElement= "";
     if(screenSize<768){
         hiddenElement= "hiddenElement";
     }
     
-
     const { name, setPageName } = useContext(MyContext);
     setPageName("Dashboard");
     

@@ -22,6 +22,7 @@
 
     padding: 0 8px;
     padding-top: 60px;
+    position:relative;
 }
 
 .welcome__content button {
@@ -45,4 +46,13 @@
 
 .welcome__content button:hover {
     background-color: rgb(209, 225, 244);
+}
+
+.successMessage{
+    position: absolute;
+    background-color: var(--primary600) !important;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
 }

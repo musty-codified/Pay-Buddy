@@ -41,7 +41,7 @@
 }
 
 .total-balance-div, .card-balance-div {
-    padding: 25px;
+    padding: 10px;
     border: none;
     display: flex;
     flex-direction: column;
@@ -308,3 +308,15 @@
 .filter{
     color: blue;
 }
+
+.transaction-list-box h4{
+    font-size: 0.7rem;
+}
+
+@media(min-width:768px) {
+    .transaction-list-box h4{
+    font-size: 0.9rem;
+    }
+}
+
+

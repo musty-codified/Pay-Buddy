@@ -113,11 +113,13 @@ form{
 main{
     padding: 15px 10px 10px 10px ;
     background-color: var(--primary50);
+    height: 100vh !important;
+    
 }
 @media(min-width:768px){
     main{
         background-color: var(--primary50);
-        height: auto !important;
+        height: 100vh !important;
         padding: 50px;
     }
 }
@@ -214,6 +216,16 @@ form button {
         position:fixed;
         right:0px;
         top:opx;
+    }
+
+    .page-title{
+        display: none;
+    }
+
+    @media(min-width:768px){
+        .page-title{
+            display: block;
+        }
     }
 
 

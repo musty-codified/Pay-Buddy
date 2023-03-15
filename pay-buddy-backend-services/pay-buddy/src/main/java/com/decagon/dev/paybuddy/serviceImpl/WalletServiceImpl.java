@@ -2,19 +2,13 @@ package com.decagon.dev.paybuddy.serviceImpl;
 
 import com.decagon.dev.paybuddy.dtos.requests.CreateTransactionPinDto;
 import com.decagon.dev.paybuddy.dtos.requests.WithdrawalDto;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyElectricityRequest;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.VerifyMerchantRequest;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.WalletResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.BuyDataPlanResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataPlansResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.DataServicesResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.BuyElectricityResponse;
-import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.VerifyMerchantResponse;
-import com.decagon.dev.paybuddy.dtos.responses.WalletResponse;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyAirtimeRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyDataPlanRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.BuyElectricityRequest;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.request.VerifyMerchantRequest;
 import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.data.*;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.BuyElectricityResponse;
+import com.decagon.dev.paybuddy.dtos.responses.vtpass.response.electricity.VerifyMerchantResponse;
 import com.decagon.dev.paybuddy.enums.ResponseCodeEnum;
 import com.decagon.dev.paybuddy.enums.TransactionStatus;
 import com.decagon.dev.paybuddy.enums.TransactionType;
@@ -206,7 +200,7 @@ public class WalletServiceImpl implements WalletService {
 
         VerifyMerchantRequest merchantRequest = new VerifyMerchantRequest();
         merchantRequest.setServiceID(electricityRequest.getServiceID());
-        merchantRequest.setBillersCode(electricityRequest.getBillersCoder());
+        merchantRequest.setBillersCode(electricityRequest.getBillersCode());
         merchantRequest.setType(electricityRequest.getVariation_code());
         VerifyMerchantResponse verifyMerchantResponse =  verifyElectricityMeter(merchantRequest);
 

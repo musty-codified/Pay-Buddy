@@ -6,6 +6,8 @@ import { notifyError, notifySuccess, notifyWarning } from '../../notification/To
 import LoadingSpin from "react-loading-spin";
 import { WiStars } from 'react-icons/wi'
 import { Link, useNavigate } from 'react-router-dom';
+import { baseURL } from '../../../apis/AppApi';
+import axios from 'axios';
 
 const loginState = {
     firstName: '',
@@ -91,7 +93,7 @@ const Register =()=> {
  const handleClick=(e)=> {
     e.preventDefault();
     setIsLoading(true)
-    appApi.post("/api/v1/auth/register", {
+    axios.post(`${baseURL}/api/v1/auth/register`, {
         firstName: firstName,
         lastName: lastName,
         otherName: otherName,

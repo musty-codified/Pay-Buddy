@@ -9,6 +9,8 @@ import appApi from "../../apis/AppApi";
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
+import { baseURL } from "../../apis/AppApi";
+import { baseURLFE } from "../../apis/AppApi";
 
 function Login() {
   const [responseStatus, setResponseStatus] = useState(null);
@@ -36,14 +38,15 @@ function Login() {
 
 
   const localLogin = (data) => {
-    appApi.post("/api/v1/auth/login",data)
+    axios.post(`${baseURL}/api/v1/auth/login`,data)
         .then(res => {
           console.log(res.data.token);
           loginRef = loginRef.current.reset();
           localStorage.setItem("token",res.data.token)
           localStorage.setItem("user",JSON.stringify(res.data))
           notifySuccess("Login suceessful");
-         navigate("/pay-buddy/dashboard");
+         //navigate("/pay-buddy/dashboard");
+         window.location.href=`${baseURLFE}/pay-buddy/dashboard`;
           setIsLoading(false);
         })
         .catch(err => {
@@ -60,11 +63,12 @@ function Login() {
   }
 
   const socialLogin = (data) =>  {
-    appApi.post("/api/v1/auth/social-login",data)
+    axios.post(`${baseURL}/api/v1/auth/social-login`,data)
         .then(res => {
             localStorage.setItem("token",res.data.jwtToken)
             notifySuccess("Login suceessful");
-            navigate("/pay-buddy/dashboard");
+            //navigate("/pay-buddy/dashboard");
+            window.location.href=`${baseURLFE}/pay-buddy/dashboard`;
         })
         .catch(err => {
           notifyError("Internal server error!");

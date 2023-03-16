@@ -56,9 +56,11 @@ const Payment = () => {
                         <img src={ Electricity } alt="Electricity-svg" />
                     </div>
                     <div>
+                        <Link to="/pay-buddy/buy-electricity" >
                         <h3 className="payment-header-title">Buy Electricity</h3>
                         <p className="payment-header-p">Never run out of power! 
                         Prepaid and postpaid services available</p>
+                        </Link>
                     </div>
                 </div>
             </div>

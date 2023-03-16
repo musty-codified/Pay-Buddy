@@ -23,6 +23,8 @@ import BuyAirtimePartOne from "./components/BackendPages/buyairtime/BuyAirtime";
 import BuyDataPartOne from "./components/BackendPages/buy_data/BuyDataPartOne";
 import BuyDataSuccessMessage from "./components/BackendPages/buy_data/BuyDataSuccessMessage"
 import BuyAirtimeSuccessScreen from "./components/BackendPages/buyairtime/BuyAIrtimeSuccessScreen";
+import BuyElectricity from "./components/BackendPages/BuyElectricity";
+import BuyElectricitySuccessScreen from "./components/BackendPages/BuyElectricitySuccessScreen";
 
 
 function App() {
@@ -49,12 +51,18 @@ function App() {
                   <Route path="send-money-1" element={<SendMoneyPartOne />}/>
                   <Route path="send-money-2" element={<SendMoneyPartTwo />}/>
 
+                  <Route path="buy-electricity" element={<BuyElectricity />}/>
+
+
                   <Route path="buy-airtime-partone" element={<BuyAirtimePartOne />}/>
-                  <Route path="buy-data-1" element={<BuyDataPartOne />}/>   
+                  <Route path="buy-data-1" element={<BuyDataPartOne />}/>
+
               </Route>
               <Route path="buy-data-2" element={<BuyDataSuccessMessage />}/>
               <Route path="send-money-success" element={<SendMoneyPartThree />}/>
               <Route path="buy-airtime-success" element={<BuyAirtimeSuccessScreen />}/>
+              <Route path="buy-electricity-success" element={<BuyElectricitySuccessScreen />}/>
+
           </Routes>
       </MyContextProvider>
           

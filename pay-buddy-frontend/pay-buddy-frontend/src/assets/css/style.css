@@ -109,7 +109,6 @@ form{
     padding:15px;
 }
 
-
 main{
     padding: 15px 10px 10px 10px ;
     background-color: var(--primary50);
@@ -123,8 +122,18 @@ main{
         padding: 50px;
     }
 }
+@media(min-width:800px){
+    main{
+        background-color: var(--primary50);
+        height: auto !important;
+        padding: 50px;
+    }
 
-
+     .page-title{
+        display:block;
+    }
+}
+    
 form button{
     width : 100% !important;
     background-color: var(--primary600) !important;

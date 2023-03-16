@@ -29,7 +29,7 @@ const getAllNetworks = () => {
         setNetworks(res.data.content)
     })
     .catch(err => {
-      
+        console.log(err);
     });
 }
 

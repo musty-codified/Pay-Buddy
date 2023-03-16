@@ -8,7 +8,7 @@ const Footer = () => {
       <div className='container p-5'>
       <div class="row align-items-center justify-content-center">
       <div className='col-md-4 d-flex align-items-center justify-content-center flex-column'>
-        <h4>Pay Buddy</h4>
+        <h4 className='bold-heading'>Pay Buddy</h4>
              <ul className="list-unstyled">
                <li>+2348142274320</li>
                <li>Lagos, Nigeria</li>
@@ -16,7 +16,7 @@ const Footer = () => {
           </ul>
         </div>
         <div className='col-md-4 d-flex align-items-center justify-content-center flex-column'>
-            <h4>Services</h4>
+            <h4 className='bold-heading'>Services</h4>
             <ul className="list-unstyled">
               <li>Artime Subscription</li>
               <li>DSTV Subscription</li>
@@ -24,7 +24,7 @@ const Footer = () => {
             </ul>
         </div>
         <div className='col-md-4 d-flex align-items-center justify-content-center flex-column'>
-        <h4>Branch Offices</h4>
+        <h4 className='bold-heading'>Branch Offices</h4>
             <ul className="list-unstyled">
               <li>Edo-Tech Park, Benin</li>
               <li>Sangotedo, Lagos</li>

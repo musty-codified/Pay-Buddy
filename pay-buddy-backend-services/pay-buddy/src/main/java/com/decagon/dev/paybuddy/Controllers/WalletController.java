@@ -104,7 +104,7 @@ public class WalletController {
     @GetMapping("/airtime-services")
     public ResponseEntity<AirtimeServiceResponse> AirtimeServices() {
         AirtimeServiceResponse response = walletService.getAirtimeServices();
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 

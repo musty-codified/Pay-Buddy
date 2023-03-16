@@ -2,7 +2,7 @@ import React from "react";
 import "./welcome.css";
 import successScreen from "../../assets/images/successScreen.svg";
 import { useLocation, useNavigate } from "react-router-dom";
-import successScreen from "../../assets/images/successScreen.svg";
+// import successScreen from "../../assets/images/successScreen.svg";
 
 const Welcome = () => {
   const { state } = useLocation();

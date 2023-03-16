@@ -65,7 +65,8 @@ const TopNavbar = () => {
                  
                   <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                     <li><a className="dropdown-item" href="#">My profile</a></li>
-                    <li><a className="dropdown-item" href="#">Settings</a></li>
+                    <li><Link to ="/" className="dropdown-item" href="#">Landing Page</Link></li>
+                    <li><Link to ="/pay-buddy/settings-menu" className="dropdown-item" href="#">Settings</Link></li>
                     <li><a className="dropdown-item" href="#" onClick={logout}>Logout</a></li>
                   </ul>
                 </li>

@@ -156,72 +156,18 @@ function Dashboard() {
   ];
 
   const QuickTransfer = aa.map((list) => (
-    <div className="recipient-info col-sm-3 col-6">
+    <div className="recipient-info col-sm-3 col-6 align-items-center justify-content-center">
       <button>{getInitials(list.user)}</button>
 
       <p>{list.user}</p>
     </div>
   ));
 
-  const ListOfTransaction =
-    Search === ""
-      ? aa.map((list) => {
-          const getDebit =
-            list.transactionType === "DEBIT"
-              ? "red text-right"
-              : list.transactionType === "CREDIT text-right"
-              ? "green text-center"
-              : "text-right";
-
-          return (
-            <div className="row">
-              <div className="col-2">
-                <div className="bank-logo">
-                  <img src={bankLogo} alt="" />
-                </div>
-              </div>
-              <div className="col-6  user-name">
-                <h4>{list.user}</h4>
-                <p>{list.bankname}</p>
-              </div>
-              <div className="col-4">
-                <h5 className={getDebit}>{list.amount}</h5>
-              </div>
-            </div>
-          );
-        })
-      : aa
-          .filter((p) => p.user.includes(Search))
-          .map((list) => {
-            const getDebit =
-              list.transactionType === "DEBIT"
-                ? "red text-right"
-                : list.transactionType === "CREDIT text-right"
-                ? "green text-center"
-                : "text-right";
-
-            return (
-              <div className="row">
-                <div className="col-2">
-                  <div className="bank-logo">
-                    <img src={bankLogo} alt="" />
-                  </div>
-                </div>
-                <div className="col-6  user-name">
-                  <h4>{list.user}</h4>
-                  <p>{list.bankname}</p>
-                </div>
-                <div className="col-4">
-                  <h5 className={getDebit}>{list.amount}</h5>
-                </div>
-              </div>
-            );
-          });
 
   return (
     <>
       <div className="row dashboard ">
-        <div className="col-md-8 ">
+        <div className="col-md-7 p-3 ">
           {/* the user card  starts here*/}
           <div className="row mt-3">
             <div className="col-6">
@@ -289,10 +235,10 @@ function Dashboard() {
           {/* refer and end earn here */}
         </div>
 
-        <div className="col-md-4 list-of-transaction">
+        <div className="col-md-5 list-of-transaction p-3">
           {/* search transaction starts here */}
           <div className="row mt-3">
-            <div className="col-10">
+            <div className="col-12 d-flex align-items-center justify-content-center">
               <div className="transaction-search-box d-flex align-items-center">
                 <div className="search-icon">
                   <AiOutlineSearch />
@@ -305,13 +251,12 @@ function Dashboard() {
                     placeholder="Search Transaction"
                   />
                 </div>
-              </div>
-            </div>
-            <div className="col-2">
+              </div>&nbsp;&nbsp;
               <div className="search-filter">
                 <RiFilter3Fill className="filter" />
               </div>
             </div>
+          
           </div>
 
           {/* <div className='mt-5'> 
@@ -330,25 +275,25 @@ function Dashboard() {
 
                   return (
                     <div className="row">
-                      <div className="col-2">
+                      <div className="col-2 d-flex flex-column align-items-center">
                         <div className="bank-logo">
                           <img src={bankLogo} alt="" />
                         </div>
                       </div>
-                      <div className="col-6  user-name">
+                      <div className="col-6  user-name d-flex flex-column align-items-start">
                         {/* <h4>{list.user}</h4> */}
-                        <h4>{list.name}</h4>
+                        <h4 className="text-uppercase">{list.name}</h4>
                         {/* <p>{list.bankname}</p> */}
-                        <p>{list.bankCode}</p>
+                        <p className="text-left">{list.bankCode}</p>
                       </div>
-                      <div className="col-4">
+                      <div className="col-4 d-flex flex-column align-items-center ">
                         <h5 className={getDebit}>{currency.format(list.amount)}</h5>
                       </div>
                     </div>
                   );
                 })
-              : initialValues
-                  .filter((p) => p.user.includes(Search))
+              : transaction
+                  .filter((p) => p.name.includes(Search))
                   .map((list) => {
                     const getDebit =
                       list.transactionType === "DEBIT"
@@ -359,22 +304,23 @@ function Dashboard() {
 
                     return (
                       <div className="row">
-                        <div className="col-2">
+                        <div className="col-2 align-items-center justify-content-center">
                           <div className="bank-logo">
                             <img src={bankLogo} alt="" />
                           </div>
                         </div>
-                        <div className="col-6  user-name">
-                          <h4>{list.user}</h4>
-                          <p>{list.bankname}</p>
+                        <div className="col-6  user-name align-items-center justify-content-center">
+                          <h4>{list.name}</h4>
+                          <p>{list.bankCode}</p>
                         </div>
-                        <div className="col-4">
-                          <h5 className={getDebit}>{list.amount}</h5>
+                        <div className="col-4 align-items-center justify-content-center">
+                          <h5 className={getDebit}>{currency.format(list.amount)}</h5>
                         </div>
                       </div>
                     );
                   })}
           </div>
+          <div className="d-flex align-items-center justify-content-center">
           <Pagination
             className="my-3"
             count={pageTotal}
@@ -385,6 +331,8 @@ function Dashboard() {
             shape="rounded"
             onChange={pageHandler}
           />
+          </div>
+          
         </div>
       </div>
 

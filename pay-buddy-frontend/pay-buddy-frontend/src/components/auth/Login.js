@@ -11,6 +11,7 @@ import { notifyError, notifySuccess, notifyWarning } from '../notification/Toast
 import LoadingSpin from "react-loading-spin";
 import { baseURL } from "../../apis/AppApi";
 import { baseURLFE } from "../../apis/AppApi";
+import loginScreenImage from "../../assets/images/loginScreen.jpg";
 
 function Login() {
   const [responseStatus, setResponseStatus] = useState(null);
@@ -20,6 +21,12 @@ function Login() {
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
   const [oauth2Response, setOauth2Response] = useState(null);
+
+  const token = localStorage.getItem("token");
+  if(token){
+      navigate("/pay-buddy/dashboard");
+  }
+
   let user = {}
 
   const [formData, setFormData] = useState({});
@@ -112,7 +119,7 @@ function Login() {
     <div className="container-fluid">
       <div className="row">
         <div className="col-md-4 c-padding scrol-vertical">
-          <img src={logo} alt="Logo" width="72" height="72" />
+          <Link to ="/"><img src={logo} alt="Logo" width="72" height="72" /></Link>
           <h6 className="h6 mb-3 mt-3 display-6 title-text" style={{color:"#000"}}>Log in</h6>
           <span>Enter your details to access your account</span>
 
@@ -189,10 +196,13 @@ function Login() {
             </div>
 
             <div className="right-div-design">     
-            <div className="rectangle-1">   
-            <div className="rectangle-2">
+            <div className="rectangle-1"> 
+ 
+           
+              <img src = {loginScreenImage}  className="img-fluid"/>
+              
                 <ToastContainer />
-             </div>
+             
             </div>
             </div>
 

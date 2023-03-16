@@ -8,6 +8,7 @@ import { WiStars } from 'react-icons/wi'
 import { Link, useNavigate } from 'react-router-dom';
 import { baseURL } from '../../../apis/AppApi';
 import axios from 'axios';
+import registrationScreenImage from "../../../assets/images/signUpScreen.jpg";
 
 const loginState = {
     firstName: '',
@@ -206,10 +207,9 @@ const Register =()=> {
 
             <div className="right-div-design">     
             <div className="rectangle-1">   
-            <div className="rectangle-2">
+             <img src = {registrationScreenImage} className ="img-fluid" />
                 <ToastContainer />
              </div>
-            </div>
             </div>
         </div>
 

@@ -19,7 +19,8 @@ const Layout = () => {
              <Sidebar/>
              <TopNavbar />
             </header>
-             <main style={{marginTop: '58px',width:mainWidth,float:float}}>
+             <main style={{marginTop: '58px',padding:'15px'
+             ,width:mainWidth,float:float}}>
                     <Outlet />
             </main>
       {/* <Footer /> */}

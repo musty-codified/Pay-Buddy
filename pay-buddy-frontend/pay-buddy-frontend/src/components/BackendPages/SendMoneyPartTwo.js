@@ -36,7 +36,7 @@ const SendMoneyPartTwo = () => {
             console.log(res);
             setIsLoading(false);
             notifySuccess("Transaction successful");
-            navigate("/send-money-success",{state:{amountSent:formData["amount"],beneficiary:`${user.firstName} ${user.lastName}`}});
+            navigate("/send-money-success",{state:{amountSent:formData["amount"],beneficiary:`${formData["accountName"] }`}});
         })
         .catch(err => {
             console.log(err.response.data.error);

@@ -21,7 +21,7 @@ const Home = () => {
       </div>
       <div className="row mt-5">
         <div className="col-md-6">
-        <h1 className='display-5'>The Future is here</h1>
+        <h1 className='display-5 bold-heading'><b>The Future is here</b></h1>
       <p class="lead">Bank with PAY-BUDDY! </p>
         </div>
      
@@ -32,10 +32,10 @@ const Home = () => {
           <img src={collectPayment} alt="MultiplePayment" className='img-fluid'/>
       </div>
       <div className="col-md-6">
-      <h6 className='display-6'>
-      We offer payments and utility services nationwide
+      <h6 className='display-6 bold-heading'>
+      <b>We offer payments and utility services nationwide</b>
       </h6>
-      <p className='lead'>
+      <p className='lead text-justify'>
       Welcome to our online payment platform! With our secure and easy-to-use system, you can make payments quickly and conveniently from anywhere in the world. All transactions are processed in real-time, ensuring that your payments are processed quickly and efficiently.
       </p>
 
@@ -66,7 +66,7 @@ const Home = () => {
         </div>
       </div>
        <center>
-          <Link to="/login" class="btn">Get started</Link>
+          <a href="/login" class="btn">Get started</a>
         </center>
       </div>
     </div>

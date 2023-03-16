@@ -6,8 +6,6 @@ import { currency } from '../../includes/Config';
 
 export default function SendMoneyPartThree() {
     const navigate = useNavigate();
-    const amountSent = localStorage.getItem("amountSent");
-    const beneficiary = localStorage.getItem("beneficiary")
     const{state} = useLocation();
 
   const dashboard = (e) => {

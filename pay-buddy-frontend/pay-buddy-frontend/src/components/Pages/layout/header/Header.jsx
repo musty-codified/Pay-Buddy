@@ -7,6 +7,7 @@ import harmburger from "../../../../assets/images/harmburger.png";
 
 
 const Header = () => {
+  const token = localStorage.getItem("token");
   return (
   <>
     <nav className="navbar fixed-top navbar-expand-lg navbar-light  nav-container">
@@ -20,9 +21,11 @@ const Header = () => {
           <li className="nav-item">
           <Link to ="/"  className="nav-link active">Home</Link>
           </li>
-          <li className="nav-item">
+          {!token &&  <li className="nav-item">
           <Link to ="/login"  className="nav-link">Login</Link>
-          </li>
+          </li> 
+          }
+         
           <li className="nav-item">
           <Link to ="/register"  className="nav-link">Register</Link>
           </li>

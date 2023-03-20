@@ -11,5 +11,9 @@ import javax.validation.constraints.NotBlank;
 public class CreateTransactionPinDto {
     @NotBlank
     @NonNull
-    private String pin;
+    private String oldPin;
+    private String newPin;
+    private String confirmNewPin;
+
+
 }

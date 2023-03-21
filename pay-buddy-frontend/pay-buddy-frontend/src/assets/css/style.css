@@ -245,4 +245,13 @@ form button {
         font-weight: 500;
     }
 
+    @media(min-width:768px) and (max-width:820px){
+        .col-md-100{
+            width:100% !important;
+        }
+        .quickTransferBanner{
+            display:none;
+        }
+    }
+
 

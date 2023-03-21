@@ -11,14 +11,17 @@ import { MdAccountBalanceWallet } from "react-icons/md";
 import Mastercard from "../../assets/images/mastercard.svg";
 import HappyUser from "../../assets/images/happyuser.svg";
 import bankLogo from "../../assets/images/bank-logo.svg";
+import searchIcon from "../../assets/images/search-icon.png";
 import appApi from "../../apis/AppApi.js";
 import { currency } from "../../includes/Config";
 import Wallet from "./wallet/Wallet";
 import { screenSize } from "../../includes/Config";
 import { pageLimit } from "../../includes/Config";
 import { Pagination } from "@mui/material";
+import { getInitials, capitalizeFirstLetter,checkCredit} from "../../includes/Functions";
 
 function Dashboard() {
+
   const initialValues = [
     {
       id: 1,
@@ -95,11 +98,6 @@ function Dashboard() {
     setSearch(e.target.value);
   }
 
-  function getInitials(name) {
-    const nameArr = name.split(" ");
-    const initials = nameArr.map((word) => word[0].toUpperCase());
-    return initials.join("");
-  }
 
   const [pageTotal, setPageTotal] = useState(10);
 
@@ -155,19 +153,19 @@ function Dashboard() {
     },
   ];
 
-  const QuickTransfer = aa.map((list) => (
+  const limitTransaction = transaction.slice(0, 4);
+  const QuickTransfer =limitTransaction.map((list) => (
     <div className="recipient-info col-sm-3 col-6 align-items-center justify-content-center">
-      <button>{getInitials(list.user)}</button>
+      <button>{getInitials(list.name)}</button>
 
-      <p>{list.user}</p>
+      <p>{list.name}</p>
     </div>
   ));
-
 
   return (
     <>
       <div className="row dashboard ">
-        <div className="col-md-7 p-3 ">
+        <div className="col-md-7 p-3  col-md-100">
           {/* the user card  starts here*/}
           <div className="row mt-3">
             <div className="col-6">
@@ -221,7 +219,7 @@ function Dashboard() {
 
           {/* Quick transfer ends here */}
           {/* refer and end start here */}
-          <div className={`row ${hiddenElement}`}>
+          <div className={`row ${hiddenElement} quickTransferBanner`}>
             <div className="col-md-12 mt-3">
               <div className="refer-dashboard-div">
                 <p>Earn and Refer</p>
@@ -235,15 +233,15 @@ function Dashboard() {
           {/* refer and end earn here */}
         </div>
 
-        <div className="col-md-5 list-of-transaction p-3">
+        <div className="col-md-5 list-of-transaction p-3 col-md-100">
           {/* search transaction starts here */}
           <div className="row mt-3">
             <div className="col-12 d-flex align-items-center justify-content-center">
               <div className="transaction-search-box d-flex align-items-center">
                 <div className="search-icon">
-                  <AiOutlineSearch />
+                 <img src={searchIcon} />
                 </div>
-                <div className="search-input-field">
+                &nbsp;&nbsp;&nbsp;&nbsp;<div className="search-input-field">
                   <input
                     type="search"
                     value={Search}
@@ -251,7 +249,7 @@ function Dashboard() {
                     placeholder="Search Transaction"
                   />
                 </div>
-              </div>&nbsp;&nbsp;
+              </div>&nbsp;&nbsp;&nbsp;&nbsp;
               <div className="search-filter">
                 <RiFilter3Fill className="filter" />
               </div>
@@ -282,18 +280,18 @@ function Dashboard() {
                       </div>
                       <div className="col-6  user-name d-flex flex-column align-items-start">
                         {/* <h4>{list.user}</h4> */}
-                        <h4 className="text-uppercase">{list.name}</h4>
+                        <h4 className="">{capitalizeFirstLetter(list.name)}</h4>
                         {/* <p>{list.bankname}</p> */}
                         <p className="text-left">{list.bankCode}</p>
                       </div>
                       <div className="col-4 d-flex flex-column align-items-center ">
-                        <h5 className={getDebit}>{currency.format(list.amount)}</h5>
+                        <h5 className={getDebit}>{checkCredit(list.transactionType )}{currency.format(list.amount)}</h5>
                       </div>
                     </div>
                   );
                 })
               : transaction
-                  .filter((p) => p.name.includes(Search))
+                  .filter((p) => p.name.toLowerCase().includes(Search.toLocaleLowerCase()))
                   .map((list) => {
                     const getDebit =
                       list.transactionType === "DEBIT"
@@ -304,19 +302,21 @@ function Dashboard() {
 
                     return (
                       <div className="row">
-                        <div className="col-2 align-items-center justify-content-center">
-                          <div className="bank-logo">
-                            <img src={bankLogo} alt="" />
-                          </div>
-                        </div>
-                        <div className="col-6  user-name align-items-center justify-content-center">
-                          <h4>{list.name}</h4>
-                          <p>{list.bankCode}</p>
-                        </div>
-                        <div className="col-4 align-items-center justify-content-center">
-                          <h5 className={getDebit}>{currency.format(list.amount)}</h5>
+                      <div className="col-2 d-flex flex-column align-items-center">
+                        <div className="bank-logo">
+                          <img src={bankLogo} alt="" />
                         </div>
                       </div>
+                      <div className="col-6  user-name d-flex flex-column align-items-start">
+                        {/* <h4>{list.user}</h4> */}
+                        <h4 className="">{capitalizeFirstLetter(list.name)}</h4>
+                        {/* <p>{list.bankname}</p> */}
+                        <p className="text-left">{list.bankCode}</p>
+                      </div>
+                      <div className="col-4 d-flex flex-column align-items-center ">
+                        <h5 className={getDebit}>{checkCredit(list.transactionType )}{currency.format(list.amount)}</h5>
+                      </div>
+                    </div>
                     );
                   })}
           </div>

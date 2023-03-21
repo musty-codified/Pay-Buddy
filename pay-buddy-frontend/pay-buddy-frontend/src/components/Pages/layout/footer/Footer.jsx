@@ -9,7 +9,7 @@ const Footer = () => {
       <div class="row align-items-center justify-content-center">
       <div className='col-md-4 d-flex align-items-center justify-content-center flex-column'>
         <h4 className='bold-heading'>Pay Buddy</h4>
-             <ul className="list-unstyled">
+             <ul className="list-unstyled text-center">
                <li>+2348142274320</li>
                <li>Lagos, Nigeria</li>
               <li>Decagon Institute</li>
@@ -17,15 +17,15 @@ const Footer = () => {
         </div>
         <div className='col-md-4 d-flex align-items-center justify-content-center flex-column'>
             <h4 className='bold-heading'>Services</h4>
-            <ul className="list-unstyled">
-              <li>Artime Subscription</li>
-              <li>DSTV Subscription</li>
-              <li>Bank Transfer</li>
+            <ul className="list-unstyled text-center">
+              <li>Send Money</li>
+              <li>Buy Electricity</li>
+              <li>Buy Airtime/Data</li>
             </ul>
         </div>
         <div className='col-md-4 d-flex align-items-center justify-content-center flex-column'>
         <h4 className='bold-heading'>Branch Offices</h4>
-            <ul className="list-unstyled">
+            <ul className="list-unstyled text-center">
               <li>Edo-Tech Park, Benin</li>
               <li>Sangotedo, Lagos</li>
               <li>E-Library, Uyo</li>

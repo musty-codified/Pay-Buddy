@@ -17,6 +17,8 @@ function Header() {
     const logout = () => {
         localStorage.removeItem("userProfile");
         localStorage.removeItem("token");
+        localStorage.removeItem("count");
+        localStorage.removeItem("bankDetails");  
         navigate("/login");
     }
     if(token || userProfile) {

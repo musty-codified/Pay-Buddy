@@ -23,6 +23,7 @@ function Login() {
   const [oauth2Response, setOauth2Response] = useState(null);
 
   const token = localStorage.getItem("token");
+
   if(token){
       navigate("/pay-buddy/dashboard");
   }
@@ -51,6 +52,9 @@ function Login() {
           loginRef = loginRef.current.reset();
           localStorage.setItem("token",res.data.token)
           localStorage.setItem("user",JSON.stringify(res.data))
+          // if(res.data.loginCount === 1){
+          //   localStorage.setItem("count",res.data.loginCount)
+          // }
           notifySuccess("Login suceessful");
          //navigate("/pay-buddy/dashboard");
          window.location.href=`${baseURLFE}/pay-buddy/dashboard`;

@@ -14,6 +14,17 @@ function TransactionPin(props) {
     const [isError, setIsError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [formData, setFormData] = useState({});
+
+    let isPinUpdated = localStorage.getItem("isPinUpdated");
+    if(isPinUpdated =="false"){
+        isPinUpdated =false;
+    }
+
+    const handleChange = (e) =>{
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    }
 
 
 const TransactionPinInput = async(e)=>{
@@ -23,7 +34,12 @@ const TransactionPinInput = async(e)=>{
     setErrorMessage("Pin do not match")
    }else{
     setIsLoading(true);
-    appApi.put("/api/v1/wallet/updateWalletPin", {pin:createPin})
+
+    if(!isPinUpdated){
+        formData["oldPin"]="0000";
+    }
+    console.log(formData);
+    appApi.put("/api/v1/wallet/updateWalletPin",formData)
     .then(res => {
         console.log(res);
         notifySuccess("Pin updated");
@@ -41,36 +57,42 @@ const TransactionPinInput = async(e)=>{
         <>
             <Modal show={props.open} onHide={props.handleClose}>
                 <Modal.Body>
+                <form onSubmit={TransactionPinInput}>
                 <div className='container_modal mt-1' >
                     <div> 
-                        <h3 className="create-transaction-h3" style={{fontWeight: "bold"}}>Create Transaction Pin</h3>
+                        <h3 className="create-transaction-h3" style={{fontWeight: "bold"}}>{isPinUpdated && <span>Update</span> }{!isPinUpdated && <span>Create</span> }Transaction Pin</h3>
                         <p className="secured-transaction-p_tag">
-                            Create a transaction pin to be able to make a <br></br>secured transaction
+                        {isPinUpdated && <span>Update</span> }{!isPinUpdated && <span>Create</span> } a transaction pin to be able to make a <br></br>secured transaction
                         </p>
                     </div>
+                    {isPinUpdated &&
                         <div className="mb-3" style={{fontWeight: "bold"}}>
-                            <label htmlFor="username" className="form-label">Create Pin</label>
-                            <input maxLength="4" type="password" className="form-control form-control-c" id="username" value={createPin} onChange={(e)=> {
-                                setIsError(false)
-                                setCreatePin(e.target.value)
-                            }
-                            }
-                                name="username" placeholder="4 digit transaction pin"/>
+                            <label htmlFor="username" className="form-label">Old Pin</label>
+                            <input maxLength="4" type="password" className="form-control form-control-c"
+                             id="username"  onChange={handleChange}
+                            name="oldPin" placeholder="4 digit transaction pin" required/>
+                        </div>
+                    }
+                        <div className="mb-3" style={{fontWeight: "bold"}}>
+                            <label htmlFor="username" className="form-label">New Pin</label>
+                            <input maxLength="4" type="password" className="form-control form-control-c" 
+                            id="username" onChange={handleChange}
+                             name="newPin" placeholder="4 digit transaction pin" required/>
                         </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
                             <label htmlFor="username" className="form-label form-label-c">Confirm Pin</label>
-                            <input maxLength="4" type="password" className="form-control form-control-c" id="username" value={confirmCreatePin} onChange={(e)=> {
-                                setIsError(false)
-                                setConfirmCreatePin(e.target.value)
-                            }
-                            }
-                                name="username" placeholder="4 digit transaction pin"/>
+                            <input maxLength="4" type="password" className="form-control 
+                            form-control-c" id="username"
+                            onChange={handleChange}
+                            name="confirmNewPin" placeholder="4 digit transaction pin" required/>
                         </div>
                         {isError && <div style={{color: "red"}}>{errorMessage}</div>}
                         <div className="mb-3 mt-5">
-                        <button className="btn btn-primary btn-c" onClick={TransactionPinInput}> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}Create</button>
+                        <button className="btn btn-c btn-primary c-submit-button" onClick={TransactionPinInput}> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}{isPinUpdated && <span>Update</span> }{!isPinUpdated && <span>Create</span> }</button>
                     </div>
                     </div>
+                </form>
+                
                 </Modal.Body>
             </Modal>
             <div className="rectangle-2">

@@ -17,6 +17,10 @@ import Wallet from "./wallet/Wallet";
 import { screenSize } from "../../includes/Config";
 import { pageLimit } from "../../includes/Config";
 import { Pagination } from "@mui/material";
+import Transaction from "../BackendPages/TransactionPin";
+import { ToastContainer } from "react-bootstrap";
+import { toUnitless } from "@mui/material/styles/cssUtils";
+
 
 function Dashboard() {
   const initialValues = [
@@ -66,15 +70,33 @@ function Dashboard() {
   setPageName("Dashboard");
 
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
+  const onLoadOpen = () => setModalOpen(true);
+  const onLoadClose = () => setModalOpen(false)
+
   const [walletBalance, setWalletBalance] = useState(0);
   const [Search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [transaction, setTransaction] = useState([]);
+  const [accountNumLastFourDigits, setAccountNumLastFourDigits] = useState(null);
     const rendercount = 1;
+
+    // const triggerModal = () => {
+    //   const user = localStorage.getItem("user")
+    //   const userDetails= JSON.parse(user);
+    //   if (userDetails.loginCount === 1){
+    //     return (
+    //       <>
+    //       {onLoadOpen()}
+    //       </>
+    //     )
+    //   }
+    // }
     
   useEffect(() => {
+    //triggerModal();
     getBalance();
   }, [rendercount]);
 
@@ -84,6 +106,20 @@ function Dashboard() {
       .then((res) => {
         console.log(res);
         const balance = currency.format(res.data.walletBalance);
+        localStorage.setItem("isPinUpdated",res.data.pinUpdated);
+        let accountNumber = res.data.accountNumber;
+        let accountNumberArr =accountNumber.split("");
+        const count = accountNumberArr.length-1;
+        let lastFourDigits = accountNumber[count-3]+""+accountNumber[count-2]+""+accountNumber[count-1]+""+accountNumber[count]
+        setAccountNumLastFourDigits(lastFourDigits);
+        if(res.data.pinUpdated){
+          setModalOpen(false);
+        }
+        else{
+          setModalOpen(true);
+        }
+       
+          
         setWalletBalance(balance);
       })
       .catch((err) => {
@@ -185,7 +221,7 @@ function Dashboard() {
                   <img src={Mastercard} alt="" />
                   <p>Gift Chuks</p>
                 </div>
-                <h4>***1523</h4>
+                <h4>***{accountNumLastFourDigits}</h4>
               </div>
             </div>
           </div>
@@ -337,6 +373,8 @@ function Dashboard() {
       </div>
 
       <Wallet open={open} handleClose={handleClose} handleOpen={handleOpen} />
+      <Transaction open={modalOpen} handleClose={onLoadClose} handleOpen={onLoadOpen} />
+
     </>
   );
 }

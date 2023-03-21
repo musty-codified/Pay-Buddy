@@ -14,10 +14,19 @@ function Wallet(props) {
     const navigate= useNavigate();
     const [amount, setAmount] = useState("");
     const[isLoading, setIsLoading] = useState(false)
+    const[formattedAmount, setFormmattedAmount] = useState(null);
 
 
     const handleChange = (e) =>{
-        setAmount(e.target.value);
+        if(e.target.value!=""){
+            let unformattedAmount = parseInt(e.target.value.replace(",",""));
+            setAmount(unformattedAmount);
+            setFormmattedAmount(unformattedAmount.toLocaleString());
+        }
+        else{
+            setFormmattedAmount("");
+        }
+       
     }
 
     const loadWallet = (data) =>{
@@ -57,7 +66,7 @@ function Wallet(props) {
                     </div>
                         <div className="mb-3" style={{fontWeight: "bold"}}>
                             {/* <label htmlFor="username" className="form-label">Create Pin</label> */}
-                            <input type="text" className="form-control" id="amount" value={amount}
+                            <input type="text" className="form-control" id="amount" value={formattedAmount}
                                 name="amount" placeholder="Enter Amount"  onChange={handleChange} required/>
                         </div>
     

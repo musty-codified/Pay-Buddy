@@ -243,6 +243,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public SocialLoginResponse socialLogin(SocialLoginUserRequest request) {
      Optional<User> userFound = userRepository.findByEmail(request.getEmail());
+
         if (userFound.isEmpty()) {
             String firstName = request.getFirstName();
             String lastName = request.getLastName();
@@ -254,13 +255,13 @@ public class UserServiceImpl implements UserService {
             createUser.setEmail(email);
             createUser.setIsEmailVerified(true);
             createUser.setRoles(getUserRoles(Collections.singleton(String.valueOf(Roles.ROLE_USER))));
+            createUser.setLoginCount(1);
             userRepository.save(createUser);
-
             createWallet(createUser);
         }
 
         String token = jwtUtil.generateToken(request.getEmail());
-        return new SocialLoginResponse(token);
+        return new SocialLoginResponse(token, userFound.map(User::getLoginCount).orElse(0));
     }
 
     private void createWallet(User user) {

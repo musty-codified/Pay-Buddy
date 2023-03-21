@@ -69,8 +69,10 @@ public class WalletServiceImpl implements WalletService {
             User walletOwner = getLoggedInUser();
             Wallet wallet = walletRepository.findWalletByUser_Email(walletOwner.getEmail());
             walletResponse = WalletResponse.builder()
-                    .userName(walletOwner.getFirstName()+" " + walletOwner.getLastName())
+                    .userName(walletOwner.getFirstName() + " " + walletOwner.getLastName())
                     .walletBalance(wallet.getAccountBalance())
+                    .accountNumber(wallet.getAccountNumber())
+                    .isPinUpdated(wallet.isPinUpdated())
                     .build();
             return responseCodeUtil.updateResponseData(walletResponse, ResponseCodeEnum.SUCCESS, "Wallet Balance");
         } catch (Exception e) {
@@ -101,11 +103,25 @@ public class WalletServiceImpl implements WalletService {
 
         Wallet userWallet = walletRepository.findWalletByUser_Email(authEmail);
         if (userWallet != null){
+            log.info("Database pin: {}", passwordEncoder.encode("0000"));
+            log.info("Database pin: {}", userWallet.getPin());
+            log.info("User pin: {}", createTransactionPinDto.getOldPin());
 
-            userWallet.setPin(passwordEncoder.encode(createTransactionPinDto.getPin()));
-            walletRepository.save(userWallet);
-            return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS,
-                    "Wallet pin successfully changed");
+            if(passwordEncoder.matches(createTransactionPinDto.getOldPin(), userWallet.getPin())){
+                if(createTransactionPinDto.getNewPin().equals(createTransactionPinDto.getConfirmNewPin())){
+                    userWallet.setPin(passwordEncoder.encode(createTransactionPinDto.getNewPin()));
+                    userWallet.setPinUpdated(true);
+                    walletRepository.save(userWallet);
+                    return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.SUCCESS,
+                            "Wallet pin successfully changed");
+                } else{
+                    return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR,
+                            "New pin does not match the confirmed pin");
+                }
+            }else {
+                return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR,
+                        "Old pin does not match existing pin");
+            }
         }
         return responseCodeUtil.updateResponseData(baseResponse, ResponseCodeEnum.ERROR,
                 "Wallet not found");

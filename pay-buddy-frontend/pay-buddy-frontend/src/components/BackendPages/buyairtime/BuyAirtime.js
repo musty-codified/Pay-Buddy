@@ -21,6 +21,7 @@ const BuyAirtimePartOne = () => {
     const [network, setNetwork] = useState(null);
     const [dataPlan, setDataPlan] = useState(null);
     const [amount, setAmount] = useState(null);
+    const [formatAmount, setFormatAmount]= useState(null)
 
 
 //GET ALL NETWORKS
@@ -63,7 +64,15 @@ const handleWalletPin = (e) => {
     setWalletPin(e.target.value);
 }
 const handleAmount =(e)=>{
-    setAmount(e.target.value);
+    if(e.target.value!=""){
+        let unFormatAmount = parseInt(e.target.value.replace(",",""));
+        setAmount(unFormatAmount);
+        setFormatAmount(unFormatAmount.toLocaleString());
+
+    }
+    else{
+        setFormatAmount("");
+    }
 }
 
 //BUY AIRTIME 
@@ -122,7 +131,8 @@ const handleSubmit = (e) =>{
                         </div>
                         <div className="mb-3">
                             <label for="amount" className="form-label">Amount</label>
-                            <input type="text" className="form-control" required onChange={handleAmount}/>
+                            <input type="text" className="form-control"  value={formatAmount}
+                            required onChange={handleAmount}/>
                         </div>
 
                         <div className="mb-3">

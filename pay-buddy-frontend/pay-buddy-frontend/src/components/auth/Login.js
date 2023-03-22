@@ -4,7 +4,7 @@ import Email from "./authenticationManager/Email";
 import {useGoogleLogin} from '@react-oauth/google';
 import googleLogo from "../../assets/images/google-logo.png";
 import axios from "axios";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate,useParams} from "react-router-dom";
 import appApi from "../../apis/AppApi";
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../notification/Toastify';
@@ -24,6 +24,7 @@ function Login() {
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
   const [oauth2Response, setOauth2Response] = useState(null);
+
 
   const token = localStorage.getItem("token");
 
@@ -127,13 +128,13 @@ function Login() {
       <div className="row">
         <div className="col-md-4 c-padding scrol-vertical col-100-percent">
           <Link to ="/"><img src={logo} alt="Logo" width="72" height="72" /></Link>
-          <h6 className="h6 mb-3 mt-3 display-6 title-text" style={{color:"#000"}}>Log in</h6>
+          <h6 className="h6 mb-3 mt-3 display-6 title-text" style={{color:"#000"}}>Login</h6>
           <span>Enter your details to access your account</span>
 
           <div className="mb-3 mt-3 form-control align-items-center social-login form-control-c" onClick={() => login()}>
             <center>
               <img src={googleLogo} alt="Google" width="25" height="25"/>
-              <span> Log in with Google</span>
+              <span> Login with Google</span>
             </center>
           </div>
 
@@ -182,14 +183,14 @@ function Login() {
             </div>
 
             <div className="mb-3">
-              Not a member? <span className="font-color-600"><Link to="/register">Sign Up</Link></span>
+              Not a member? <span className="font-color-600"><Link to="/register">SignUp</Link></span>
             </div>
           </form>
         </div>
 
         <div className="col-md-8  bg-color-600 banner p-5 fixed-position right-screen-side">
             <div className="right-div-design">     
-              <img src = {loginScreenImage}  className="img-fluid"/>
+              <img src = {loginScreenImage}  className="img-fluid" style={{height:"100vh"}}/>
               
                 <ToastContainer />
 

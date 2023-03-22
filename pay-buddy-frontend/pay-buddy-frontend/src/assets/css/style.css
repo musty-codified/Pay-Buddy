@@ -152,7 +152,12 @@ main{
 @media(min-width:821px){
     .right-screen-side,.right-register-div{
         display: block ;
+        height:100vh !important;
     }
+    .right-screen-side img,right-register-div img, right-div-design img{
+        height:100vh !important;
+    }
+    
 }
     
 form button{

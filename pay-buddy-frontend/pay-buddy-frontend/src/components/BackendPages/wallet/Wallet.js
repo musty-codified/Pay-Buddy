@@ -9,6 +9,7 @@ import appApi from "../../../apis/AppApi";
 import "../TransactionPin.css";
 import { loadAuth2WithProps } from 'gapi-script';
 import LoadingSpin from "react-loading-spin";
+import { spinnerSize,spinnerColor,spinnerNumberOfRotation } from "../../../includes/Config";
 
 function Wallet(props) {
     const navigate= useNavigate();
@@ -71,7 +72,7 @@ function Wallet(props) {
                         </div>
     
                         <div className="mb-3 mt-5">
-                        <button className="btn btn-primary" type="submit"> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Load Wallet</button>
+                        <button className="btn btn-primary" type="submit"> { isLoading &&<LoadingSpin  size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>} Load Wallet</button>
                     </div>
                     </div>
                 </form>

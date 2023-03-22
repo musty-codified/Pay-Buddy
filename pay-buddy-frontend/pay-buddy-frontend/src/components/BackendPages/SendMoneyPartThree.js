@@ -17,8 +17,8 @@ export default function SendMoneyPartThree() {
       <div className="welcome__content">
           <img src={successScreen} className="img-fluid" />
           <div className="successMessage">
-            {<h1>Your money is on it's way  🥳 </h1>}
-            <p>Your {currency.format(state.amountSent)} transfer to {state.beneficiary} is succesful and it’s on it’s way to his account</p>
+            {<h1>Your money is on it's way </h1>}
+            <p>Your {currency.format(state.amountSent)} transfer to {state.beneficiary} is succesful</p>
             <button onClick={dashboard}>Continue</button>
          </div>
       </div>

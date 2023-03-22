@@ -40,6 +40,7 @@ const SendMoneyPartTwo = () => {
         formData["accountName"] = bankDetails.accountName;
         formData["accountNumber"] = bankDetails.accountNumber;
         formData["bankCode"] = bankDetails.bankCode;
+        formData["amount"] = amount;
         setIsLoading(true);
         sendMoney(formData);
     }

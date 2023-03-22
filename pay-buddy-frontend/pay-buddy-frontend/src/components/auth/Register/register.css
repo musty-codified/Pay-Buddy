@@ -213,7 +213,7 @@
     width: 109%;
     border-radius:12px;
 }
-.rectangle-1{
+/* .rectangle-1{
     height: 731px;
     width: 1009px;
     padding: 12px;
@@ -228,7 +228,7 @@
     padding: 15PX;
     height: 100%;
     padding-right: 0%;
-}
+} */
 @media (max-width:846px) {
     .register-section{
         display: block;

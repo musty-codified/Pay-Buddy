@@ -1,18 +1,4 @@
-.payment-copy-section {
-    min-height: 95vh;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
 
-.payment-container-section {
-    padding: 30px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(336px, 1fr));
-    gap: 30px;
-    place-items: center;
-
-}
 
 .payment-header-title {
     font-size: 20px;
@@ -34,11 +20,7 @@
 }
 
 .payment-item {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 336px;
-    height: 211px;
+    height: 220px;
     background-color: white;
     padding: 20px;
 }

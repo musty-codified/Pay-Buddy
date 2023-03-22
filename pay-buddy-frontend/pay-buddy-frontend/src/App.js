@@ -25,6 +25,7 @@ import BuyDataSuccessMessage from "./components/BackendPages/buy_data/BuyDataSuc
 import BuyAirtimeSuccessScreen from "./components/BackendPages/buyairtime/BuyAIrtimeSuccessScreen";
 import BuyElectricity from "./components/BackendPages/BuyElectricity";
 import BuyElectricitySuccessScreen from "./components/BackendPages/BuyElectricitySuccessScreen";
+import AccountVerified from "./components/auth/Register/AccountVerified";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/reset-password/:token" element={<PasswordResetForm />} />
               <Route path="/reset" element={<PasswordReset />} />
+              <Route path="/accountverified" element={<AccountVerified />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/welcome" element={<Welcome />} />

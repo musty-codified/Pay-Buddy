@@ -38,7 +38,7 @@ const TopNavbar = () => {
               <button className="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <i className="fas fa-bars" />
               </button>
-              <Link to="/pay_buddy/dashboard" className="navbar-brand">
+              <Link to="/pay-buddy/dashboard" className="navbar-brand">
                 <img src={logo} alt="Logo" width="45" height="45" loading="lazy" /> <b>Pay Buddy</b>
               </Link>
               {/* Right links */}

@@ -8,6 +8,7 @@ import appApi from "../../apis/AppApi.js";
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
+import { spinnerSize , spinnerColor,spinnerNumberOfRotation } from "../../includes/Config";
 
 const SendMoneyPartTwo = () => {
     const navigate = useNavigate();
@@ -84,7 +85,7 @@ const SendMoneyPartTwo = () => {
                     </div>
                     <div className="mb-3">
                         <label for="accountNumber" class="form-label">Note (Optional)</label>
-                        <input type="text" class="form-control" id="note"  name="note" placeholder="Eneter a transaction note" />
+                        <input type="text" class="form-control" id="note"  name="note" placeholder="Enter a transaction note" />
                     </div>
                     <div className="mb-3">
                         <label for="amount" class="form-label">Amount</label>
@@ -99,7 +100,7 @@ const SendMoneyPartTwo = () => {
                     </div>
 
                     <div className="mb-3 button-margin">
-                        <button type="submit" class="btn btn-primary c-submit-button">{ isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Pay</button>
+                        <button type="submit" class="btn btn-primary c-submit-button">{ isLoading &&<LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>} Pay</button>
                     </div>
                 </form>
                 <div className="rectangle-2">

@@ -7,6 +7,7 @@ import appApi from "../../apis/AppApi";
 import "./TransactionPin.css";
 import LoadingSpin from "react-loading-spin";
 import { notifyError, notifySuccess, notifyWarning } from '../notification/Toastify';
+import { spinnerSize, spinnerColor , spinnerNumberOfRotation } from '../../includes/Config';
 
 function TransactionPin(props) {
     const [createPin, setCreatePin] = useState("");
@@ -68,7 +69,7 @@ const TransactionPinInput = async(e)=>{
                         </div>
                         {isError && <div style={{color: "red"}}>{errorMessage}</div>}
                         <div className="mb-3 mt-5">
-                        <button className="btn btn-primary btn-c" onClick={TransactionPinInput}> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}Create</button>
+                        <button className="btn btn-primary btn-c" onClick={TransactionPinInput}> { isLoading &&<LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>}Create</button>
                     </div>
                     </div>
                 </Modal.Body>

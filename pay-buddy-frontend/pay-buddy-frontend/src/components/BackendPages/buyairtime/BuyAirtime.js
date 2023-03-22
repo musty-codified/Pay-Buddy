@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { notifyError ,notifySuccess, notifyWarning} from "../../notification/Toastify";
 import { ToastContainer } from 'react-toastify';
 import LoadingSpin from "react-loading-spin";
+import { spinnerSize,spinnerColor,spinnerNumberOfRotation } from "../../../includes/Config";
 
 const BuyAirtimePartOne = () => {
 
@@ -130,7 +131,7 @@ const handleSubmit = (e) =>{
                         </div>
 
                         <div className="mb-3 button-margin">
-                            <button type="submit" className="btn btn-primary proceed c-submit-button"> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Proceed</button>
+                            <button type="submit" className="btn btn-primary proceed c-submit-button"> { isLoading &&<LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>} Proceed</button>
                         </div>
                     </form>
                     <div className="rectangle-2">

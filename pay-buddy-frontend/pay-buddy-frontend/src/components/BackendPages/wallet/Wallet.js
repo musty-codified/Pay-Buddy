@@ -9,15 +9,14 @@ import appApi from "../../../apis/AppApi";
 import "../TransactionPin.css";
 import { loadAuth2WithProps } from 'gapi-script';
 import LoadingSpin from "react-loading-spin";
-import { spinnerColor } from '../../../includes/Config';
-import { spinnerSize } from '../../../includes/Config';
-import { spinnerNumberOfRotation } from '../../../includes/Config';
 
 function Wallet(props) {
     const navigate= useNavigate();
     const [amount, setAmount] = useState("");
     const[isLoading, setIsLoading] = useState(false)
     const[formattedAmount, setFormmattedAmount] = useState(null);
+
+
     const handleChange = (e) =>{
         if(e.target.value!=""){
             let unformattedAmount = parseInt(e.target.value.replace(",",""));
@@ -27,49 +26,60 @@ function Wallet(props) {
         else{
             setFormmattedAmount("");
         }
+       
     }
+
     const loadWallet = (data) =>{
         appApi.post(`api/v1/wallet/fundWallet?amount=${amount}`)
         .then(res => {
             const payStackFundWalletUrl= res.data;
-            window.location.href=payStackFundWalletUrl          
-              setIsLoading(false);
+            window.location.href=payStackFundWalletUrl
+            setIsLoading(false);
         })
         .catch(err => {
             console.log(err);
             setIsLoading(false);
         });
     }
+
     function handleSubmit(e){
         e.preventDefault();
         setIsLoading(true);
         loadWallet(amount);
     }
- return (
-   <>            
-       <Modal show={props.open} onHide={props.handleClose}>
-         <Modal.Body>                
-        <form onSubmit={handleSubmit}>
-        <div className='container_modal mt-1' >                
-           <div>
-             <h3 className="create-transaction-h3" style={{fontWeight: "bold"}}>Fund Account</h3>                 
-           </div>                     
-                 <div className="mb-3" style={{fontWeight: "bold"}}>                 
-                    <input type="text" className="form-control" id="amount" value={formattedAmount}
-                        name="amount" placeholder="Enter Amount"  onChange={handleChange} required/>                 
-             </div>
-                    <div className="mb-3 mt-5">             
-                    <button className="btn btn-primary" type="submit"> { isLoading &&<LoadingSpin size = {spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>} Load Wallet</button>           
-             </div>                 
-            </div>
-                                                            
-                
-            </form>
 
-             </Modal.Body>         
-         </Modal>
-      </>    
-   );
+
+
+ return (
+        <>
+            <Modal show={props.open} onHide={props.handleClose}>
+                {/* <Modal.Header closeButton>
+                </Modal.Header> */}
+                <Modal.Body>
+                <form onSubmit={handleSubmit}>
+                <div className='container_modal mt-1' >
+                    <div> 
+                        <h3 className="create-transaction-h3" style={{fontWeight: "bold"}}>Fund Account</h3>
+                        {/* <p className="secured-transaction-p_tag">
+                            Load Wallet <br></br>secured transaction
+                        </p> */}
+                    </div>
+                        <div className="mb-3" style={{fontWeight: "bold"}}>
+                            {/* <label htmlFor="username" className="form-label">Create Pin</label> */}
+                            <input type="text" className="form-control" id="amount" value={formattedAmount}
+                                name="amount" placeholder="Enter Amount"  onChange={handleChange} required/>
+                        </div>
+    
+                        <div className="mb-3 mt-5">
+                        <button className="btn btn-primary" type="submit"> { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Load Wallet</button>
+                    </div>
+                    </div>
+                </form>
+               
+                </Modal.Body>
+            </Modal>
+        </>
+    );
 }
 
 export default Wallet;

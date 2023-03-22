@@ -208,9 +208,10 @@
     margin-bottom: 40px;
 }
 .right-div-design{
-    height: 73vh; 
+    height: 100vh; 
     overflow: hidden;
-    width: 109%
+    width: 109%;
+    border-radius:12px;
 }
 .rectangle-1{
     height: 731px;

@@ -12,4 +12,6 @@ import java.math.BigDecimal;
 public class WalletResponse extends BaseResponse {
     private String userName;
     private BigDecimal walletBalance;
+    private String accountNumber;
+    private boolean isPinUpdated;
 }

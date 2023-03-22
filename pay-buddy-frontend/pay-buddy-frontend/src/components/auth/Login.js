@@ -11,7 +11,10 @@ import { notifyError, notifySuccess, notifyWarning } from '../notification/Toast
 import LoadingSpin from "react-loading-spin";
 import { baseURL } from "../../apis/AppApi";
 import { baseURLFE } from "../../apis/AppApi";
-import loginScreenImage from "../../assets/images/loginScreen.jpg";
+import loginScreenImage from "../../assets/images/loginImagejpg.jpg";
+import { spinnerSize} from "../../includes/Config";
+import { spinnerColor } from "../../includes/Config"
+import { spinnerNumberOfRotation } from "../../includes/Config";
 
 function Login() {
   const [responseStatus, setResponseStatus] = useState(null);
@@ -118,7 +121,7 @@ function Login() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md-4 c-padding scrol-vertical">
+        <div className="col-md-4 c-padding scrol-vertical col-100-percent">
           <Link to ="/"><img src={logo} alt="Logo" width="72" height="72" /></Link>
           <h6 className="h6 mb-3 mt-3 display-6 title-text" style={{color:"#000"}}>Log in</h6>
           <span>Enter your details to access your account</span>
@@ -171,7 +174,7 @@ function Login() {
             <div className="mb-3 mt-5">
               {responseStatus && <div className="text-danger">{responseStatus}</div>}
               <button className="btn btn-primary c-submit-button">
-                { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}<span>Sign in</span></button>
+                { isLoading &&<LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>}<span>Sign in</span></button>
             </div>
 
             <div className="mb-3">
@@ -180,31 +183,11 @@ function Login() {
           </form>
         </div>
 
-        <div className="col-md-8 bg-color-600 banner p-5 fixed-position">
-          <div class="h-100vh">
-          <div className="info-header">
-                <div className="register-text">
-                    <h3>It takes 20 years to build a reputation 
-                        and five minutes<br/> to ruin it, 
-                        if you think about that, you'll do things 
-                        <br/>differently."</h3>
-                </div>
-                <div className="quote-owner-details">
-                <h5 className="quote-owner-h4">-Boluwatife</h5>
-                <p className="quote-office-p">Founder,Pay-Buddy</p>
-               </div>
-            </div>
-
+        <div className="col-md-8  bg-color-600 banner p-5 fixed-position right-screen-side">
             <div className="right-div-design">     
-            <div className="rectangle-1"> 
- 
-           
               <img src = {loginScreenImage}  className="img-fluid"/>
               
                 <ToastContainer />
-             
-            </div>
-            </div>
 
           </div>
         </div>

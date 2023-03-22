@@ -8,6 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
 import AppApi from "../../apis/AppApi.js";
+import { spinnerColor, spinnerSize,spinnerNumberOfRotation } from "../../includes/Config";
+
 
 const BuyElectricity = () => {
     const navigate = useNavigate();
@@ -168,7 +170,7 @@ const BuyElectricity = () => {
                         <label htmlFor="accountName" className="form-label">Account Name</label>
                         <div type="text" disabled name="accountName" className="form-control accountName">
                             {accountName} {isLoadingMeterName &&
-                            <LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}</div>
+                            <LoadingSpin size={spinnerSize} primaryColor="white" numberOfRotationsInAnimation={spinnerNumberOfRotation}/>}</div>
                     </div>
 
                     <div className="mb-3">
@@ -190,7 +192,7 @@ const BuyElectricity = () => {
 
                     <div className="mb-3 button-margin ">
                         <button type="submit" class="btn btn-primary proceed c-submit-button">
-                            { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}
+                            { isLoading &&<LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>}
                             Pay</button>
                     </div>
                 </form>

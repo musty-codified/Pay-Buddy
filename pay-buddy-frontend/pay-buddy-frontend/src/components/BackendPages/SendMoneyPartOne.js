@@ -5,6 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../statemanagement/ComponentState";
 import appApi from "../../apis/AppApi.js";
 import LoadingSpin from "react-loading-spin";
+import { spinnerSize,spinnerColor,spinnerNumberOfRotation } from "../../includes/Config";
 
 const SendMoneyPartOne = () => {
 
@@ -109,7 +110,7 @@ const SendMoneyPartOne = () => {
                     <div class="mb-3">
                         <label for="accountName" class="form-label">Account Name</label>
                         <div type="text" disabled name="accountName" class="form-control accountName" id="accountName">
-                            {accountName} { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}</div>
+                            {accountName} { isLoading &&<LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>}</div>
                     </div>
                     <div class="mb-3 button-margin">
                         <button type="submit" className="btn btn-primary proceed c-submit-button" disabled={isDisabled}>Proceed</button>

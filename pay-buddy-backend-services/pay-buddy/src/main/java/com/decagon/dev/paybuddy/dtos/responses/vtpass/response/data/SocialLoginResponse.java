@@ -10,4 +10,5 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class SocialLoginResponse {
     private String jwtToken;
+    private int loginCount;
 }

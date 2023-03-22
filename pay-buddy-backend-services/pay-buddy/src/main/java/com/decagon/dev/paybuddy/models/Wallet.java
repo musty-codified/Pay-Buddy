@@ -24,6 +24,7 @@ public class Wallet {
     private String accountNumber;
     private BigDecimal accountBalance;
     private String pin;
+    private boolean isPinUpdated;
     @OneToOne
     @JoinColumn(name = "user_user_id")
     private User user;

@@ -4,62 +4,24 @@ import Sidebar from "./layout/Sidebar";
 import { useState } from "react";
 import "../../assets/css/dashboard.css";
 import { RiFilter3Fill } from "react-icons/ri";
-import { BsBank2 } from "react-icons/bs";
 import { BsFillPlusSquareFill } from "react-icons/bs";
-import { AiOutlineSearch } from "react-icons/ai";
 import { MdAccountBalanceWallet } from "react-icons/md";
-import Mastercard from "../../assets/images/mastercard.svg";
 import HappyUser from "../../assets/images/happyuser.svg";
 import bankLogo from "../../assets/images/bank-logo.svg";
+import logo from "../../assets/images/logo.svg";
+import searchIcon from "../../assets/images/search-icon.png";
 import appApi from "../../apis/AppApi.js";
 import { currency } from "../../includes/Config";
 import Wallet from "./wallet/Wallet";
 import { screenSize } from "../../includes/Config";
 import { pageLimit } from "../../includes/Config";
 import { Pagination } from "@mui/material";
-import Transaction from "../BackendPages/TransactionPin";
-import { ToastContainer } from "react-bootstrap";
-import { toUnitless } from "@mui/material/styles/cssUtils";
-
+import { getInitials, capitalizeFirstLetter,checkCredit} from "../../includes/Functions";
+import TransactionPin from "../BackendPages/TransactionPin";
+import axios from "axios";
 
 function Dashboard() {
-  const initialValues = [
-    {
-      id: 1,
-      user: "olayinka sulaiman",
-      bankname: "ecobank",
-      amount: 3000,
-      transactionType: "DEBIT",
-    },
-    {
-      id: 2,
-      user: "teju kolawole",
-      bankname: "access",
-      amount: 4000,
-      transactionType: "CREDIT",
-    },
-    {
-      id: 3,
-      user: "olayinka sulaiman",
-      bankname: "ecobank",
-      amount: 3000,
-      transactionType: "DEBIT",
-    },
-    {
-      id: 4,
-      user: "teju kolawole",
-      bankname: "access",
-      amount: 4000,
-      transactionType: "CREDIT",
-    },
-    {
-      id: 5,
-      user: "olayinka sulaiman",
-      bankname: "ecobank",
-      amount: 3000,
-      transactionType: "DEBIT",
-    },
-  ];
+
   //CONTENT DISPLAY LOGIC
   let hiddenElement = "";
   if (screenSize < 768) {
@@ -80,24 +42,14 @@ function Dashboard() {
   const [Search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [transaction, setTransaction] = useState([]);
+  const [bankList, setBankList] = useState({});
+  const [accountName, setAccountName] = useState(null);
   const [accountNumLastFourDigits, setAccountNumLastFourDigits] = useState(null);
     const rendercount = 1;
-
-    // const triggerModal = () => {
-    //   const user = localStorage.getItem("user")
-    //   const userDetails= JSON.parse(user);
-    //   if (userDetails.loginCount === 1){
-    //     return (
-    //       <>
-    //       {onLoadOpen()}
-    //       </>
-    //     )
-    //   }
-    // }
     
   useEffect(() => {
-    //triggerModal();
     getBalance();
+    getAllBannks() ;
   }, [rendercount]);
 
   const getBalance = () => {
@@ -107,6 +59,7 @@ function Dashboard() {
         console.log(res);
         const balance = currency.format(res.data.walletBalance);
         localStorage.setItem("isPinUpdated",res.data.pinUpdated);
+        setAccountName(res.data.userName);
         let accountNumber = res.data.accountNumber;
         let accountNumberArr =accountNumber.split("");
         const count = accountNumberArr.length-1;
@@ -127,14 +80,20 @@ function Dashboard() {
       });
   };
 
-  function HandleChange(e) {
-    setSearch(e.target.value);
+  
+  const getAllBannks =() =>{
+    axios.get("https://api.paystack.co/bank?currency=NGN")
+    .then(res => {
+      console.log(res.data);
+      //STORE THE LIST OF NIGERIA BANKS IN THE STATE
+      //SELECT BANK NAMES WHERE BANK CODES FROM DATABSE MATCH THE LIST
+      setBankList(res.data);
+    })
+    .catch(err => console.log(err));
   }
 
-  function getInitials(name) {
-    const nameArr = name.split(" ");
-    const initials = nameArr.map((word) => word[0].toUpperCase());
-    return initials.join("");
+  function HandleChange(e) {
+    setSearch(e.target.value);
   }
 
   const [pageTotal, setPageTotal] = useState(10);
@@ -145,65 +104,30 @@ function Dashboard() {
         
       .then((res) => {
           setTransaction(res.data.list);
-        // console.log("datas:", res.data);
-          console.log(transaction);
-        console.log(res.data.totalPage);
         setPageTotal(res.data.totalPage);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [currentPage]);
-  // console.log("transaction", transaction);
   const pageHandler = (event, value) => {
     setCurrentPage(() => value);
     console.log(value);
   };
 
-  const aa = [
-    {
-      id: 1,
-      user: "olayinka sulaiman",
-      bankname: "ecobank",
-      amount: currency.format(3000),
-      transactionType: "DEBIT",
-    },
-    {
-      id: 2,
-      user: "teju kolawole",
-      bankname: "access",
-      amount: currency.format(4000),
-      transactionType: "CREDIT",
-    },
-    {
-      id: 3,
-      user: "olayinka sulaiman",
-      bankname: "ecobank",
-      amount: currency.format(3000),
-      transactionType: "DEBIT",
-    },
-    {
-      id: 4,
-      user: "teju kolawole",
-      bankname: "access",
-      amount: currency.format(4000),
-      transactionType: "CREDIT",
-    },
-  ];
-
-  const QuickTransfer = aa.map((list) => (
+  const filterTransaction = transaction.filter(t=> t.bankCode.length<4);
+  const limitTransaction = filterTransaction.slice(0, 4);
+  const QuickTransfer =limitTransaction.map((list) => (
     <div className="recipient-info col-sm-3 col-6 align-items-center justify-content-center">
-      <button>{getInitials(list.user)}</button>
-
-      <p>{list.user}</p>
+      <button>{getInitials(list.name)}</button>
+      <p>{capitalizeFirstLetter(list.name)}</p>
     </div>
   ));
-
 
   return (
     <>
       <div className="row dashboard ">
-        <div className="col-md-7 p-3 ">
+        <div className="col-md-7 p-3  col-md-100">
           {/* the user card  starts here*/}
           <div className="row mt-3">
             <div className="col-6">
@@ -218,8 +142,8 @@ function Dashboard() {
             <div className="col-6">
               <div className="card-balance-div">
                 <div className="card-balance-icon">
-                  <img src={Mastercard} alt="" />
-                  <p>Gift Chuks</p>
+                  <img src={logo} alt="" />
+                  <p>{accountName}</p>
                 </div>
                 <h4>***{accountNumLastFourDigits}</h4>
               </div>
@@ -257,7 +181,7 @@ function Dashboard() {
 
           {/* Quick transfer ends here */}
           {/* refer and end start here */}
-          <div className={`row ${hiddenElement}`}>
+          <div className={`row ${hiddenElement} quickTransferBanner`}>
             <div className="col-md-12 mt-3">
               <div className="refer-dashboard-div">
                 <p>Earn and Refer</p>
@@ -271,15 +195,15 @@ function Dashboard() {
           {/* refer and end earn here */}
         </div>
 
-        <div className="col-md-5 list-of-transaction p-3">
+        <div className="col-md-5 list-of-transaction p-3 col-md-100">
           {/* search transaction starts here */}
           <div className="row mt-3">
             <div className="col-12 d-flex align-items-center justify-content-center">
               <div className="transaction-search-box d-flex align-items-center">
                 <div className="search-icon">
-                  <AiOutlineSearch />
+                 <img src={searchIcon} />
                 </div>
-                <div className="search-input-field">
+                &nbsp;&nbsp;&nbsp;&nbsp;<div className="search-input-field">
                   <input
                     type="search"
                     value={Search}
@@ -287,7 +211,7 @@ function Dashboard() {
                     placeholder="Search Transaction"
                   />
                 </div>
-              </div>&nbsp;&nbsp;
+              </div>&nbsp;&nbsp;&nbsp;&nbsp;
               <div className="search-filter">
                 <RiFilter3Fill className="filter" />
               </div>
@@ -295,9 +219,6 @@ function Dashboard() {
           
           </div>
 
-          {/* <div className='mt-5'> 
-                            {ListOfTransaction}
-                        </div> */}
 
           <div className="mt-5">
             {Search === ""
@@ -318,18 +239,18 @@ function Dashboard() {
                       </div>
                       <div className="col-6  user-name d-flex flex-column align-items-start">
                         {/* <h4>{list.user}</h4> */}
-                        <h4 className="text-uppercase">{list.name}</h4>
+                        <h4 className="">{capitalizeFirstLetter(list.name)}</h4>
                         {/* <p>{list.bankname}</p> */}
                         <p className="text-left">{list.bankCode}</p>
                       </div>
                       <div className="col-4 d-flex flex-column align-items-center ">
-                        <h5 className={getDebit}>{currency.format(list.amount)}</h5>
+                        <h5 className={getDebit}>{checkCredit(list.transactionType )}{currency.format(list.amount)}</h5>
                       </div>
                     </div>
                   );
                 })
               : transaction
-                  .filter((p) => p.name.includes(Search))
+                  .filter((p) => p.name.toLowerCase().includes(Search.toLocaleLowerCase()))
                   .map((list) => {
                     const getDebit =
                       list.transactionType === "DEBIT"
@@ -340,19 +261,21 @@ function Dashboard() {
 
                     return (
                       <div className="row">
-                        <div className="col-2 align-items-center justify-content-center">
-                          <div className="bank-logo">
-                            <img src={bankLogo} alt="" />
-                          </div>
-                        </div>
-                        <div className="col-6  user-name align-items-center justify-content-center">
-                          <h4>{list.name}</h4>
-                          <p>{list.bankCode}</p>
-                        </div>
-                        <div className="col-4 align-items-center justify-content-center">
-                          <h5 className={getDebit}>{currency.format(list.amount)}</h5>
+                      <div className="col-2 d-flex flex-column align-items-center">
+                        <div className="bank-logo">
+                          <img src={bankLogo} alt="" />
                         </div>
                       </div>
+                      <div className="col-6  user-name d-flex flex-column align-items-start">
+                        {/* <h4>{list.user}</h4> */}
+                        <h4 className="">{capitalizeFirstLetter(list.name)}</h4>
+                        {/* <p>{list.bankname}</p> */}
+                        <p className="text-left">{list.bankCode}</p>
+                      </div>
+                      <div className="col-4 d-flex flex-column align-items-center ">
+                        <h5 className={getDebit}>{checkCredit(list.transactionType )}{currency.format(list.amount)}</h5>
+                      </div>
+                    </div>
                     );
                   })}
           </div>
@@ -373,8 +296,7 @@ function Dashboard() {
       </div>
 
       <Wallet open={open} handleClose={handleClose} handleOpen={handleOpen} />
-      <Transaction open={modalOpen} handleClose={onLoadClose} handleOpen={onLoadOpen} />
-
+      <TransactionPin open ={modalOpen} handleClose={onLoadClose} handleOpen={onLoadOpen} />
     </>
   );
 }

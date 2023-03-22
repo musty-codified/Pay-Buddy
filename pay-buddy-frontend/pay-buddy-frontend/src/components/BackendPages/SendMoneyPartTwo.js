@@ -8,6 +8,7 @@ import appApi from "../../apis/AppApi.js";
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
+import { spinnerSize , spinnerColor,spinnerNumberOfRotation } from "../../includes/Config";
 
 const SendMoneyPartTwo = () => {
     const navigate = useNavigate();
@@ -15,10 +16,23 @@ const SendMoneyPartTwo = () => {
     const [amount, setAmount] = useState(null);
     const [walletPin, setWalletPin] = useState(null)
     const[isLoading, setIsLoading] = useState(false)
+    const [formatAmount, setFormatAmount]= useState(null)
     
     const handleChange = (e) =>{
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    }
+
+    const handleAmount = (e) =>{
+        if(e.target.value!=""){
+            let unFormatAmount = parseInt(e.target.value.replace(",",""));
+            setAmount(unFormatAmount);
+            setFormatAmount(unFormatAmount.toLocaleString());
+
+        }
+        else{
+            setFormatAmount("");
+        }
     }
 
     const handleSubmit = (e) =>{
@@ -84,12 +98,12 @@ const SendMoneyPartTwo = () => {
                     </div>
                     <div className="mb-3">
                         <label for="accountNumber" class="form-label">Note (Optional)</label>
-                        <input type="text" class="form-control" id="note"  name="note" placeholder="Eneter a transaction note" />
+                        <input type="text" class="form-control" id="note"  name="note" placeholder="Enter a transaction note" />
                     </div>
                     <div className="mb-3">
                         <label for="amount" class="form-label">Amount</label>
-                        <input type="number" name="amount" class="form-control" 
-                        id="amount" placeholder="Enter an amount" onChange={handleChange} />
+                        <input type="text" name="amount" class="form-control" value={formatAmount}
+                        id="amount" placeholder="Enter an amount" onChange={handleAmount} />
                     </div>
                     <div className="mb-3">
                         <label for="walletPin" class="form-label">Pin</label>
@@ -99,7 +113,7 @@ const SendMoneyPartTwo = () => {
                     </div>
 
                     <div className="mb-3 button-margin">
-                        <button type="submit" class="btn btn-primary c-submit-button">{ isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>} Pay</button>
+                        <button type="submit" class="btn btn-primary c-submit-button">{ isLoading &&<LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>} Pay</button>
                     </div>
                 </form>
                 <div className="rectangle-2">

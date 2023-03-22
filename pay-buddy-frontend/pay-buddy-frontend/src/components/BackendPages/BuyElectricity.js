@@ -8,6 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
 import AppApi from "../../apis/AppApi.js";
+import { spinnerColor, spinnerSize,spinnerNumberOfRotation } from "../../includes/Config";
+
 
 const BuyElectricity = () => {
     const navigate = useNavigate();
@@ -27,6 +29,7 @@ const BuyElectricity = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [meterNumber, setMeterNumber] = useState("");
     const [requestId, setRequestId] = useState("");
+    const [formatedElectAmount , setFormatedElectAmount] = useState(null);
 
 
     useEffect(() => {
@@ -74,6 +77,17 @@ const BuyElectricity = () => {
         setSelectedBiller(seperator[0]);
         setSelectedBillerServiceID(seperator[1]);
     };
+
+    const handleElectricityAmount = (e)=>{
+        if(e.target.value!=""){
+            let unformatedElectAmount = parseInt(e.target.value.replace(",",""));
+            setAmount(unformatedElectAmount);
+            setFormatedElectAmount(unformatedElectAmount.toLocaleString());
+        }
+        else{
+            setFormatedElectAmount("");
+        }
+    }
 
     const handleWalletPin = (e) =>{
         setWalletPin(e.target.value);
@@ -156,7 +170,7 @@ const BuyElectricity = () => {
                         <label htmlFor="accountName" className="form-label">Account Name</label>
                         <div type="text" disabled name="accountName" className="form-control accountName">
                             {accountName} {isLoadingMeterName &&
-                            <LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}</div>
+                            <LoadingSpin size={spinnerSize} primaryColor="white" numberOfRotationsInAnimation={spinnerNumberOfRotation}/>}</div>
                     </div>
 
                     <div className="mb-3">
@@ -166,8 +180,8 @@ const BuyElectricity = () => {
                     </div>
                     <div className="mb-3">
                         <label for="amount" class="form-label">Amount</label>
-                        <input type="number" name="amount" class="form-control"
-                               id="amount" placeholder="Enter amount" onChange={handleAmount} required/>
+                        <input type="text" name="amount" class="form-control" value={formatedElectAmount}
+                               id="amount" placeholder="Enter amount" onChange={handleElectricityAmount}/>
                     </div>
                     <div className="mb-3">
                         <label for="walletPin" class="form-label">Pin</label>
@@ -178,7 +192,7 @@ const BuyElectricity = () => {
 
                     <div className="mb-3 button-margin ">
                         <button type="submit" class="btn btn-primary proceed c-submit-button">
-                            { isLoading &&<LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/>}
+                            { isLoading &&<LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/>}
                             Pay</button>
                     </div>
                 </form>

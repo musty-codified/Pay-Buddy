@@ -1,6 +1,5 @@
 import './register.css';
 import React, { useState} from "react";
-import appApi from "../../../apis/AppApi";
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
@@ -8,7 +7,10 @@ import { WiStars } from 'react-icons/wi'
 import { Link, useNavigate } from 'react-router-dom';
 import { baseURL } from '../../../apis/AppApi';
 import axios from 'axios';
-import registrationScreenImage from "../../../assets/images/signUpScreen.jpg";
+import registrationScreenImage from "../../../assets/images/registrationImage.jpg";
+import { spinnerSize } from '../../../includes/Config';
+import { spinnerColor } from '../../../includes/Config';
+import { spinnerNumberOfRotation } from '../../../includes/Config';
 
 const loginState = {
     firstName: '',
@@ -141,21 +143,21 @@ const Register =()=> {
                 <input type ="text" value = {firstName} onChange={(e)=> handleRegFormData(e, "firstName")} 
                     name="full name" 
                     className={ isFirstNameEmpty ? "register-input" : isFirstNameValid ? "register-input input-valid" : "register-input input-error"} 
-                    placeholder="John" />
+                    placeholder="First Name" />
                     { isFirstNameValid || (!isFirstNameEmpty && <p className="register-sentence">Only names above two characters are required</p>)}
             </label>
             <label htmlFor ="LastName" className="register-form">Last Name 
                 <input type ="text" value = {lastName} onChange={(e)=> handleRegFormData(e, "lastName")} 
                     name="full name" 
                     className={ isLastNameEmpty ? "register-input" : isLastNameValid ? "register-input input-valid" : "register-input input-error"} 
-                    placeholder="Doe" />
+                    placeholder="Last Name" />
                     { isLastNameValid || (!isLastNameEmpty && <p className="register-sentence">Only names above two characters are required</p>)}
             </label>
             <label htmlFor ="otherName"className="register-form">Other Name 
                 <input type ="text" value = {otherName} onChange={(e)=> handleRegFormData(e, "otherName")} 
                     name="full name" 
                     className={ isOtherNameEmpty ? "register-input" : isOtherNameValid ? "register-input input-valid" : "register-input input-error"} 
-                    placeholder="Bukunmi" />
+                    placeholder="Other Name" />
                     { isOtherNameValid || (!isOtherNameEmpty && <p className="register-sentence">Only names above two characters are required</p>)}
             </label>
             <label htmlFor ="email " className="register-form">Email 
@@ -169,7 +171,7 @@ const Register =()=> {
                 <input type ="tel"  value={phoneNumber} onChange={(e)=> handleRegFormData(e, "phoneNumber")}
                     name="phone Number" 
                     className={isPhoneNumberEmpty ? "register-input" : isPhoneNumberValid ? "register-input input-valid" : "register-input input-error"} 
-                    placeholder="08039476277" />
+                    placeholder="080********" />
                     {isPhoneNumberValid || (!isPhoneNumberEmpty && <p className="register-sentence">Input the complete phoneNumber</p>)}
             </label>
         
@@ -177,41 +179,25 @@ const Register =()=> {
                 <input type ="text" value={password} onChange={(e)=> handleRegFormData(e, "password")}
                     name="password" 
                     className={isPasswordEmpty ? "register-input" : isPasswordValid? "register-input input-valid" : "register-input input-error"} 
-                    placeholder="password123@" />
+                    placeholder="Password" />
                     {isPasswordValid || (!isPasswordEmpty && <p className="register-sentence">Password length should be greater than seven</p>)}
             </label>
             <button type="submit" className={ allFieldsValid ? "opaque-btn btn-signup" : "opaque-btn btn-signup disable-btn"}>
-                { isLoading ? <LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3}/> : "Sign Up" } 
+                { isLoading ? <LoadingSpin size={spinnerSize} primaryColor={spinnerColor} numberOfRotationsInAnimation={spinnerNumberOfRotation}/> : "Sign Up" } 
             </button>
             </form>
             <div className="sign-in-link">
                 <p>Already a member? <Link to="/login">Sign In</Link></p>
-
             </div>
             </div>
         </div>
 
         <div className="right-register-div">
-            <div className="info-header">
-                <div className="register-text">
-                    <h3>It takes 20 years to build a reputation 
-                        and five minutes<br/> to ruin it, 
-                        if you think about that, you'll do things 
-                        <br/>differently."</h3>
-                </div>
-                <div className="quote-owner-details">
-                <h5 className="quote-owner-h4">-Boluwatife</h5>
-                <p className="quote-office-p">Founder,Pay-Buddy</p>
-               </div>
-            </div>
-
             <div className="right-div-design">     
-            <div className="rectangle-1">   
              <img src = {registrationScreenImage} className ="img-fluid" />
                 <ToastContainer />
              </div>
             </div>
-        </div>
 
      
        </section>

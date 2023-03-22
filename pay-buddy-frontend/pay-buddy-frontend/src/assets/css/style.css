@@ -115,12 +115,17 @@ main{
     height: 100vh !important;
     
 }
+.right-screen-side,.right-register-div{
+    display:none
+}
 @media(min-width:768px){
     main{
         background-color: var(--primary50);
         height: 100vh !important;
         padding: 50px;
+
     }
+  
 }
 @media(min-width:800px){
     main{
@@ -131,6 +136,22 @@ main{
 
      .page-title{
         display:block;
+    }
+}
+
+@media(min-width:768px) and (max-width:820px){
+    .col-100-percent,.right-register-div{
+        width: 100%;
+    }
+
+    .right-screen-side,.right-register-div{
+        display: none ;
+    }
+}
+
+@media(min-width:821px){
+    .right-screen-side,.right-register-div{
+        display: block ;
     }
 }
     

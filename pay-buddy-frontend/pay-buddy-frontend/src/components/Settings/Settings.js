@@ -14,7 +14,8 @@ const { pagename, setPageName } = useContext(MyContext);
 
     return (
         <>
-       <Link to="#"  className="list-group-item list-group-item-action py-2 ripple" onClick={handleOpen}><i className="fa fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; Create Transaction Pin</Link>
+       <Link to="#"  className="list-group-item list-group-item-action py-2 ripple"
+        onClick={handleOpen}><i className="fa fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; Update Transaction Pin</Link>
           
       <TransactionPin open={open} handleClose={handleClose} handleOpen={handleOpen} />
           <ToastContainer />

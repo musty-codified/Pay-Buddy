@@ -29,6 +29,7 @@ const BuyElectricity = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [meterNumber, setMeterNumber] = useState("");
     const [requestId, setRequestId] = useState("");
+    const [formatedElectAmount , setFormatedElectAmount] = useState(null);
 
 
     useEffect(() => {
@@ -76,6 +77,17 @@ const BuyElectricity = () => {
         setSelectedBiller(seperator[0]);
         setSelectedBillerServiceID(seperator[1]);
     };
+
+    const handleElectricityAmount = (e)=>{
+        if(e.target.value!=""){
+            let unformatedElectAmount = parseInt(e.target.value.replace(",",""));
+            setAmount(unformatedElectAmount);
+            setFormatedElectAmount(unformatedElectAmount.toLocaleString());
+        }
+        else{
+            setFormatedElectAmount("");
+        }
+    }
 
     const handleWalletPin = (e) =>{
         setWalletPin(e.target.value);
@@ -168,8 +180,8 @@ const BuyElectricity = () => {
                     </div>
                     <div className="mb-3">
                         <label for="amount" class="form-label">Amount</label>
-                        <input type="number" name="amount" class="form-control"
-                               id="amount" placeholder="Enter amount" onChange={handleAmount} required/>
+                        <input type="text" name="amount" class="form-control" value={formatedElectAmount}
+                               id="amount" placeholder="Enter amount" onChange={handleElectricityAmount}/>
                     </div>
                     <div className="mb-3">
                         <label for="walletPin" class="form-label">Pin</label>

@@ -10,7 +10,8 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity(name = "roles")
 public class Role {
-    @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @ManyToMany(mappedBy = "roles")

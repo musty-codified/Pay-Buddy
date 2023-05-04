@@ -30,7 +30,6 @@ public class WalletController {
     public BaseResponse updateWalletPin(@RequestBody CreateTransactionPinDto createTransactionPinDto){
         return walletService.updateWalletPin(createTransactionPinDto);
     }
-
     @GetMapping("/balance")
     public ResponseEntity<WalletResponse> getBalance() {
         WalletResponse response = walletService.getWalletBalance();
@@ -77,7 +76,6 @@ public class WalletController {
                                                            @RequestParam String pin) {
         return ResponseEntity.ok(walletService.buyDataPlan(request, pin));
     }
-
 
     @GetMapping("/electricity-services")
     public ResponseEntity<DataServicesResponse> getAllElectricityServices(){

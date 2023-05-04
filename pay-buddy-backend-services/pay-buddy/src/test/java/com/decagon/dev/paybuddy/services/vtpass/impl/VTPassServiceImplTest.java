@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -151,7 +152,6 @@ class  VTPassServiceImplTest {
     @Test
     void buyElectricity() {
     }
-}
 
     @Test
     void getAirtimeServices() {

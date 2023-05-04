@@ -28,6 +28,7 @@ public class Wallet {
     @OneToOne
     @JoinColumn(name = "user_user_id")
     private User user;
+
     private WalletStatus status;
     @OneToMany(mappedBy = "wallet")
     private List<BankDetails> bankDetails;

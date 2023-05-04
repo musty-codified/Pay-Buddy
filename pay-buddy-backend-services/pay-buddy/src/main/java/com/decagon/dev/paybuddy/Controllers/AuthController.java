@@ -20,7 +20,7 @@ public class AuthController {
     }
 
     @PostMapping("/social-login")
-    public SocialLoginResponse socialLogin(@RequestBody  SocialLoginUserRequest request){
+    public SocialLoginResponse socialLogin(@RequestBody SocialLoginUserRequest request){
         return userService.socialLogin(request);
     }
 }

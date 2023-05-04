@@ -10,7 +10,8 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity(name = "authorities")
 public class Authority {
-    @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @ManyToMany(mappedBy = "authorities")

@@ -9,7 +9,7 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @Entity(name = "roles")
-public class Role {
+public class  Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

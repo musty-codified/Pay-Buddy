@@ -25,16 +25,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebSecurity {
 
     private final JwtAuthFilter jwtAuthFilter;
-
     private final CustomUserDetailService userDetailService;
-
     private String path = "/api/v1/auth";
     private final String[] AUTH_WHITELIST = {
             path +"/login", path +"/social-login", path + "/forgot-password", path + "/reset-password",
             path + "/register", path + "/verify-code", path + "/references" ,
             "/v3/api-docs/**",  "/configuration/**",   "/swagger*/**",
             "/swagger-ui/**",  "/webjars/**", "/wallet/**", "/api/v1/wallet/verifyPayment/**",
-            path + "/register", path + "/verify-code", path + "/references",
+            path + "/verify-code", path + "/references",
             path + "/forgot-password/**",
             path + "/reset-password/**",
             path + "/verify-token/**",
@@ -80,8 +78,8 @@ public class WebSecurity {
         return authenticationProvider;
     }
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration    ) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
     @Bean

@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class TransactionController {
-
     private final TransactionService transactionService;
-
     @GetMapping("/viewTransaction")
     public ResponseEntity<TransactionResponseViewModel> viewTransaction(
             @RequestParam(name = "page", defaultValue = "0")

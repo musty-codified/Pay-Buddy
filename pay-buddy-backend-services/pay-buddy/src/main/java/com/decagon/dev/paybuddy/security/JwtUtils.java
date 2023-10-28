@@ -15,6 +15,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtils {
+
     @Value("${app.jwt_secret}")
     private String JWT_SECRET;
     public String extractUsername(String token){
@@ -40,9 +41,13 @@ public class JwtUtils {
         }
         return claims;
     }
+
+    //Token service implementation in OakLand
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
+
+    // See Here
     public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, email);

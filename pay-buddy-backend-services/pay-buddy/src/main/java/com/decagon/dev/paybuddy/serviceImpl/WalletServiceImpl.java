@@ -200,8 +200,6 @@ public class WalletServiceImpl implements WalletService {
     public BuyElectricityResponse buyElectricity(BuyElectricityRequest electricityRequest,String pin)
     {
 
-
-
         User walletOwner = getLoggedInUser();
 
         Wallet wallet = walletRepository.findWalletByUser_Email(walletOwner.getEmail());
@@ -246,12 +244,9 @@ public class WalletServiceImpl implements WalletService {
         return response;
 
 
-
-
     }
     public BuyAirtimeResponse buyAirtimeServices(BuyAirtimeRequest buyAirtimeRequest , String pin) {
         Wallet wallet = walletRepository.findWalletByUser_Email(getLoggedInUser().getEmail());
-
 
         if (!passwordEncoder.matches(pin, wallet.getPin()))  //Check pin accuracy
             throw new WalletServiceException("Pin is wrong");

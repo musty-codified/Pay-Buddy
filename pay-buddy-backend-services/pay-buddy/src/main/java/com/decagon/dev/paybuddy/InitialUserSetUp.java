@@ -26,7 +26,6 @@ public class InitialUserSetUp {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
 
-
     @EventListener
     @Transactional
     public void onApplicationEvent(ApplicationReadyEvent event) {

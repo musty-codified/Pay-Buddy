@@ -11,15 +11,10 @@ public interface UserService {
 
     BaseResponse signUp(CreateUserRequest createUserRequest);
     BaseResponse confirmRegistration(String confirmationToken);
-
     BaseResponse login(LoginUserRequest request);
-   SocialLoginResponse socialLogin(SocialLoginUserRequest request);
-
+    SocialLoginResponse socialLogin(SocialLoginUserRequest request);
     BaseResponse  forgotPasswordRequest(ForgetPasswordRequest forgotPasswordRequest);
-
     BaseResponse resetPassword(ResetPasswordRequest request, String token);
-
-//    BaseResponse verifyToken(VerifyTokenRequest verifyTokenRequest);
 
 }
 

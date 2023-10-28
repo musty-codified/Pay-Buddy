@@ -164,7 +164,7 @@ public class PayStackWithdrawal implements PayStackWithdrawalService {
         HttpEntity<TransferRecipient> request = new HttpEntity<>(transferRecipient, getHeaders());
 
         ResponseEntity<WithdrawalResponse> response = new RestTemplate().postForEntity(
-                PayStackUtil.CREATE_TRANSFER_RECEIPIENT
+                PayStackUtil.CREATE_TRANSFER_RECIPIENT
                 , request, WithdrawalResponse.class
         );
 

@@ -204,7 +204,6 @@ public class UserServiceImpl implements UserService {
             ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
             resetPasswordToken.setToken(generatedToken);
             resetPasswordToken.setUser(user.get());
-
             String link = String.format("%s%s", forgotPasswordUrl, generatedToken + " expires in 15 minutes.");
             EmailSenderDto emailSenderDto = new EmailSenderDto();
             emailSenderDto.setTo(forgotPasswordRequest.getEmail());

@@ -9,7 +9,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AppUtil {
-
     public boolean validImage(String fileName)
     {
         String regex = "(.*/)*.+\\.(png|jpg|gif|bmp|jpeg|PNG|JPG|GIF|BMP|JPEG)$";
@@ -21,7 +20,6 @@ public class AppUtil {
         return m.matches();
     }
 
-    //Email validation
     public boolean validEmail(String email) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         return email.matches(regex);

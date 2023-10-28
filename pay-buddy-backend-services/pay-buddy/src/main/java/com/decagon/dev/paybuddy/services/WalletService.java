@@ -27,15 +27,10 @@ public interface WalletService {
     DataServicesResponse getDataServices();
     DataPlansResponse getDataPlans(String dataType);
     BuyDataPlanResponse buyDataPlan(BuyDataPlanRequest request, String pin);
-
     DataServicesResponse getAllElectricityService();
-
     VerifyMerchantResponse verifyElectricityMeter(VerifyMerchantRequest merchantRequest);
-
     BuyElectricityResponse buyElectricity(BuyElectricityRequest electricityRequest, String pin);
-
     BuyAirtimeResponse buyAirtimeServices(BuyAirtimeRequest buyAirtimeRequest , String pin);
-
     AirtimeServiceResponse getAirtimeServices();
 
 }

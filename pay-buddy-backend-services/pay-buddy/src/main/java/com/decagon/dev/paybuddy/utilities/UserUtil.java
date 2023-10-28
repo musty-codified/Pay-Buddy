@@ -21,8 +21,8 @@ public class UserUtil {
 
     public User currentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principle = authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.convertValue(principle, User.class);
+        return objectMapper.convertValue(principal, User.class);
     }
 }

@@ -86,7 +86,6 @@ public class WalletController {
     {
         return ResponseEntity.ok(walletService.buyElectricity(request, pin));
     }
-
     @PostMapping("/verify-merchant")
     public ResponseEntity<VerifyMerchantResponse> verifyMerchant(@RequestBody VerifyMerchantRequest request)
     {
@@ -97,13 +96,11 @@ public class WalletController {
     public ResponseEntity<BuyAirtimeResponse> buyAirtime(@RequestBody BuyAirtimeRequest buyAirtimeRequest, @RequestParam String pin) {
         BuyAirtimeResponse response = walletService.buyAirtimeServices(buyAirtimeRequest,pin);
         return new ResponseEntity<>(response,HttpStatus.OK);
-
     }
     @GetMapping("/airtime-services")
     public ResponseEntity<AirtimeServiceResponse> AirtimeServices() {
         AirtimeServiceResponse response = walletService.getAirtimeServices();
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
 

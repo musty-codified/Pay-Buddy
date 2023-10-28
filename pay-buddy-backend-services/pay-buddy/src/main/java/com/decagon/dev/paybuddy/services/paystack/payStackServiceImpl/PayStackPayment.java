@@ -55,11 +55,11 @@ public class PayStackPayment implements PaystackPaymentService {
         }else{
             paymentDto.setTransactionType(TransactionType.FUNDWALLET.getTransaction());
         }
-        paymentDto.setCallback_url(PayStackUtil.CALLBACK_URL+paymentDto.getReference()+"/"+paymentDto.getTransactionType());
+        paymentDto.setCallback_url(PayStackUtil.CALLBACK_URL + paymentDto.getReference() + "/"+ paymentDto.getTransactionType());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer "+PayStackUtil.SECRET_KEY);
+        headers.set("Authorization", "Bearer "+ PayStackUtil.SECRET_KEY);
 
         HttpEntity<PaymentDto> entity = new HttpEntity<>(paymentDto, headers);
         try {
@@ -67,7 +67,7 @@ public class PayStackPayment implements PaystackPaymentService {
             ResponseEntity<PaymentResponse> response = restTemplate.exchange(PayStackUtil.INITIALIZE_DEPOSIT, HttpMethod.POST, entity, PaymentResponse.class);
             log.info(Objects.requireNonNull(response.getBody()).toString());
 
-            return new ResponseEntity<>(response.getBody().getData().getAuthorization_url(),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(response.getBody().getData().getAuthorization_url(), HttpStatus.ACCEPTED);
         } catch (HttpClientErrorException e) {
             log.error(e.getMessage());
             return new ResponseEntity<>("Failed to initiate transaction", e.getStatusCode());
@@ -78,7 +78,7 @@ public class PayStackPayment implements PaystackPaymentService {
         User user = userRepository.findByEmail(userEmail).get();
         wallet = walletRepository.findByUser_UserId(user.getUserId());
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer "+PayStackUtil.SECRET_KEY);
+        headers.set("Authorization", "Bearer "+ PayStackUtil.SECRET_KEY);
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(headers);
 

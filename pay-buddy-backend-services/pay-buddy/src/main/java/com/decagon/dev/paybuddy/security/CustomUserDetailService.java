@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 
 @AllArgsConstructor
@@ -29,7 +28,11 @@ public class CustomUserDetailService implements UserDetailsService {
                 .orElseThrow(() ->new UsernameNotFoundException("User not found with email: " + email));
         String password = user.getPassword() == null || user.getPassword().isEmpty() ? "****" : user.getPassword();
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), password, user.getIsEmailVerified(), true, true, true, getAuthorities(user));
+                user.getEmail(), password, user.getIsEmailVerified(),
+                true,
+                true,
+                true,
+                getAuthorities(user));
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities(User user) {

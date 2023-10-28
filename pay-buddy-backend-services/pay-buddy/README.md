@@ -1,3 +1,4 @@
+
 # pay-buddy-backend-services
 The backend api for a finance management application that uses MySQL as the database.
 The application enable users to send and receive money and pay bills securely and seamlessly
@@ -14,6 +15,9 @@ Following tools and libraries were used during the development of the API :
 - **Swagger**
 - **JWT**
 - **Docker**
+
+## Database Schema ##
+![](/Users/decagon/Documents/Decagon Directory/Paybuddy Project/Paybuddy Software Design/PayBuddy UML.pdf)
 
 ### Authentication and Authorization
 Uses Spring Security with JWT for stateless authentication and authorization.

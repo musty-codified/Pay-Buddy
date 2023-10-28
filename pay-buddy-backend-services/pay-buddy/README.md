@@ -16,9 +16,6 @@ Following tools and libraries were used during the development of the API :
 - **JWT**
 - **Docker**
 
-## Database Schema ##
-![](/Users/decagon/Documents/Decagon Directory/Paybuddy Project/Paybuddy Software Design/PayBuddy UML.pdf)
-
 ### Authentication and Authorization
 Uses Spring Security with JWT for stateless authentication and authorization.
 

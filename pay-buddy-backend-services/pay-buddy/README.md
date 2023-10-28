@@ -28,7 +28,7 @@ The application can be deployed on any Java Servlet container, or docker contain
 
 
 ## Running the server in a Docker Container ##
-* Simply download the [Docker compose file](https://github.com/musty-codified/Pay-Buddy/blob/main/docker-compose.yml)
+* Simply download the [Docker compose file](https://github.com/musty-codified/Pay-Buddy/blob/main/pay-buddy-backend-services/pay-buddy/docker-compose.yml)
 * You can edit the file to your custom configurations
 * Then navigate to where the file is located on your terminal and run 'docker compose up'
 * Voilà! once the image downloads are completed and the application is running, you can then visit http://localhost:8080/swagger-ui/index.html to access the end points

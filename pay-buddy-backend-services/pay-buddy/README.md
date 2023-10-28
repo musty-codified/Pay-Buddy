@@ -1,6 +1,6 @@
-# EWallet-Backend-API
-The backend api for a finance management application that uses MongoDB as the database.
-The application enable users to allows the user to send and receive money and pay bills securely and seamlessly
+# pay-buddy-backend-services
+The backend api for a finance management application that uses MySQL as the database.
+The application enable users to send and receive money and pay bills securely and seamlessly
 
 `Built with Spring Boot, secured with Spring Security (JWT), documented with Swagger (API),
 containerized with Docker, deployed on Heroku.`
